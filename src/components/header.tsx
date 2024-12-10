@@ -22,7 +22,7 @@ export const Header = () => {
     },
     {
       label: "Tentang",
-      link: "/tentag",
+      link: "/tentang",
     },
   ];
 
