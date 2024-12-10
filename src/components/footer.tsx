@@ -21,7 +21,7 @@ export const Footer = () => {
             <p className="titleContent">
               Sampahmu berharga, tukarkan dengan manfaat!
             </p>
-            <p className="italic">
+            <p className="italic text-neutral-300">
               Setiap tindakan kecil kita dapat membuat perubahan besar bagi
               lingkungan.
             </p>

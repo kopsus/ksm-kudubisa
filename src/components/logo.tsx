@@ -8,7 +8,7 @@ export const Logo = () => {
       <div>
         <Image src={LogoIMG} alt="" width={0} height={0} sizes="100vw" />
       </div>
-      <p className="text-xl">KSM KMM</p>
+      <p className="text-xl text-white">KSM KMM</p>
     </div>
   );
 };
