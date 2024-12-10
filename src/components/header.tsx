@@ -44,7 +44,7 @@ export const Header = () => {
     <div
       className={`bg-gradient-to-b from-neutral-950 via-neutral-950 ${
         scrolled && "bg-black/80"
-      } fixed z-50 w-full max-w-screen-2xl mx-auto flex items-center justify-between px-20 py-4`}
+      } fixed z-50 w-full max-w-screen-xl mx-auto flex items-center justify-between px-20 py-4`}
     >
       <Logo />
       <div className="flex items-center gap-20">

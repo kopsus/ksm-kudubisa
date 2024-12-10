@@ -8,7 +8,7 @@ body {
 
 @layer base {
   main {
-    @apply max-w-screen-2xl mx-auto bg-[#F7F7F7];
+    @apply max-w-screen-xl mx-auto bg-[#F7F7F7];
   }
 
   .Container {
