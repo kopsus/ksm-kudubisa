@@ -1,5 +1,6 @@
 import { Highlight } from "@/components/highlight";
 import { SambutanKetua } from "@/components/sambutanKetua";
+import { StructureOrganitation } from "@/components/tentang/structureOrganitation";
 import { VisiMisi } from "@/components/tentang/visiMisi";
 import React from "react";
 
@@ -12,6 +13,7 @@ const page = () => {
       />
       <SambutanKetua />
       <VisiMisi />
+      <StructureOrganitation />
     </>
   );
 };

@@ -6,13 +6,13 @@ import pengolahanSampahIMG3 from "@/assets/pengolahan_sampah3.png";
 import pengolahanSampahIMG4 from "@/assets/pengolahan_sampah4.png";
 import pengolahanSampahIMG5 from "@/assets/pengolahan_sampah5.png";
 
-interface ICardPengelolaSampah {
+interface ICardPengolahanSampah {
   desc: string;
   img: StaticImageData;
   title: string;
 }
 
-const CardPengelolaSampah = ({ desc, img, title }: ICardPengelolaSampah) => {
+const CardPengolahanSampah = ({ desc, img, title }: ICardPengolahanSampah) => {
   return (
     <div className="rounded-xl shadow-md shadow-black/25 bg-white border-2 border-primary overflow-hidden">
       <div className="w-72 h-52 overflow-hidden border">
@@ -32,7 +32,7 @@ const CardPengelolaSampah = ({ desc, img, title }: ICardPengelolaSampah) => {
   );
 };
 
-export const PengelolaSampah = () => {
+export const PengolahanSampah = () => {
   return (
     <div className="Container">
       <div className="flex flex-col gap-5 items-center text-center w-1/2 mx-auto">
@@ -43,27 +43,27 @@ export const PengelolaSampah = () => {
         </p>
       </div>
       <div className="flex gap-10 flex-wrap justify-center mt-10">
-        <CardPengelolaSampah
+        <CardPengolahanSampah
           title="Reduce"
           desc="Pengurangan Sampah"
           img={pengolahanSampahIMG}
         />
-        <CardPengelolaSampah
+        <CardPengolahanSampah
           title="Reuse"
           desc="Penggunaan Kembali"
           img={pengolahanSampahIMG2}
         />
-        <CardPengelolaSampah
+        <CardPengolahanSampah
           title="Recycle"
           desc="Daur Ulang"
           img={pengolahanSampahIMG3}
         />
-        <CardPengelolaSampah
+        <CardPengolahanSampah
           title="Recovery"
           desc="Pemanfaatan Kembali"
           img={pengolahanSampahIMG4}
         />
-        <CardPengelolaSampah
+        <CardPengolahanSampah
           title="Disposal"
           desc="Pembuangan Akhir"
           img={pengolahanSampahIMG5}

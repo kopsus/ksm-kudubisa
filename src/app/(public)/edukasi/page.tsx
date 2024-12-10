@@ -1,6 +1,6 @@
 import { BahayaSampah } from "@/components/education/bahayaSampah";
 import { JenisSampah } from "@/components/education/jenisSampah";
-import { PengelolaSampah } from "@/components/education/pengelolaSampah";
+import { PengolahanSampah } from "@/components/education/pengolahanSampah";
 import { Highlight } from "@/components/highlight";
 import React from "react";
 
@@ -13,7 +13,7 @@ const page = () => {
       />
       <JenisSampah />
       <BahayaSampah />
-      <PengelolaSampah />
+      <PengolahanSampah />
     </>
   );
 };
