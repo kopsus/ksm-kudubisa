@@ -3,16 +3,7 @@ import sampahIMG2 from "@/assets/plastik.webp";
 import sampahIMG3 from "@/assets/besi.jpg";
 import sampahIMG4 from "@/assets/karet.jpg";
 import sampahIMG5 from "@/assets/tutup_botol_plastik.jpg";
-import { StaticImageData } from "next/image";
-
-type jenisSampah = "dipilah" | "belum";
-type TypeProducts = {
-  id: string;
-  name: string;
-  price: number;
-  image: StaticImageData;
-  jenis: jenisSampah;
-};
+import { TypeProducts } from "@/api/products";
 
 const dataProducts: TypeProducts[] = [
   {

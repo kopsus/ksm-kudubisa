@@ -4,6 +4,8 @@ import { formatIDR } from "@/lib/formated";
 import Image, { StaticImageData } from "next/image";
 import React from "react";
 import { Button } from "../ui/button";
+import { useAtom } from "jotai";
+import { storeProducts } from "@/store/products";
 
 interface ICardSampah {
   id: string;
@@ -18,18 +20,58 @@ interface Counts {
 
 export const CardSampah = ({ id, img, name, price }: ICardSampah) => {
   const [counts, setCounts] = React.useState<Counts>({});
+  const [, setProducts] = useAtom(storeProducts);
 
   const handlePlus = (id: string) => {
     setCounts((prevCounts) => ({
       ...prevCounts,
       [id]: (prevCounts[id] || 0) + 1,
     }));
+
+    setProducts((prevProducts) => {
+      const existingProduct = prevProducts.data?.find((item) => item.id === id);
+
+      if (existingProduct) {
+        // Update jumlah dan total harga produk yang ada
+        return {
+          data: prevProducts.data?.map((item) =>
+            item.id === id
+              ? { ...item, quantity: (item.quantity || 1) + 1 }
+              : item
+          ),
+        };
+      } else {
+        // Tambahkan produk baru
+        return {
+          data: [
+            ...(prevProducts.data || []),
+            {
+              id,
+              image: img,
+              name,
+              price,
+              quantity: 1,
+            },
+          ],
+        };
+      }
+    });
   };
 
   const handleMin = (id: string) => {
     setCounts((prevCounts) => ({
       ...prevCounts,
       [id]: Math.max((prevCounts[id] || 0) - 1, 0),
+    }));
+
+    setProducts((prevProducts) => ({
+      data: prevProducts.data
+        ?.map((item) =>
+          item.id === id
+            ? { ...item, quantity: Math.max((item.quantity || 1) - 1, 0) }
+            : item
+        )
+        .filter((item) => item.quantity! > 0), // Hapus item dengan kuantitas 0
     }));
   };
 
