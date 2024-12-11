@@ -8,7 +8,7 @@ export const SampahSudahDipilah = () => {
       <p className="titleSection w-max border-b-2 border-primary pb-2 mb-5">
         Sampah Sudah Dipilah
       </p>
-      <div className="grid grid-cols-2 gap-5 w-full">
+      <div className="grid grid-cols-2 gap-5 w-full max-h-96 overflow-y-auto">
         {dataProducts.map(
           (item, index) =>
             item.jenis === "dipilah" && (

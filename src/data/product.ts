@@ -10,7 +10,7 @@ type TypeProducts = {
   id: string;
   name: string;
   price: number;
-  image: string | StaticImageData;
+  image: StaticImageData;
   jenis: jenisSampah;
 };
 

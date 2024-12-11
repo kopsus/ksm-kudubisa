@@ -34,7 +34,7 @@ export const ListSampah = () => {
           <SwiperSlide key={index}>
             <div
               className="relative h-52 rounded-[20px] overflow-hidden bg-center bg-cover bg-no-repeat"
-              style={{ backgroundImage: `url(${item.image})` }}
+              style={{ backgroundImage: `url(${item.image.src})` }}
             >
               <div className="absolute top-0 left-0 w-full h-full bg-black/60" />
               <div className="relative w-full h-full flex flex-col items-center justify-center gap-5 text-white">
