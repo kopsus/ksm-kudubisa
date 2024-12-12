@@ -1,4 +1,5 @@
 import { dataJenisSampah } from "@/data/jenisSampah";
+import Image from "next/image";
 import React from "react";
 
 export const JenisSampah = () => {
@@ -24,7 +25,9 @@ export const JenisSampah = () => {
               ))}
             </ul>
           </div>
-          <div className="col-span-1 bg-white shadow-md border rounded-xl"></div>
+          <div className="col-span-1 h-56 bg-white shadow-md border rounded-xl overflow-hidden">
+            <Image src={item.image} alt="" width={0} height={0} sizes="100vw" />
+          </div>
         </div>
       ))}
     </div>

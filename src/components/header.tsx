@@ -60,7 +60,9 @@ export const Header = () => {
           </Link>
         ))}
       </div>
-      <Button>Login</Button>
+      <Link href={"/login"}>
+        <Button>Login</Button>
+      </Link>
     </div>
   );
 };
