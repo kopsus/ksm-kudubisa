@@ -12,7 +12,7 @@ export const Cart = () => {
   const products = useAtomValue(storeProducts);
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-5 sticky top-20">
       <p className="titleSection">Rincian Penjualan</p>
 
       <div className="border-2 border-primary overflow-hidden rounded-xl shadow-md">

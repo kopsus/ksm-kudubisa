@@ -11,7 +11,7 @@ export const SampahBelumDipilah = () => {
       <p className="text-neutral-400 mb-5">
         *Sampah yang belum dipilah memiliki nilai jual yang lebih rendah
       </p>
-      <div className="grid grid-cols-2 gap-5 w-full">
+      <div className="grid lg:grid-cols-2 gap-5 w-full">
         {dataProducts.map(
           (item, index) =>
             item.jenis === "belum" && (

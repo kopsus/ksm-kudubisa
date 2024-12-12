@@ -35,6 +35,20 @@ const dataProducts: TypeProducts[] = [
     jenis: "dipilah",
   },
   {
+    id: "6",
+    name: "Karet",
+    price: 8000,
+    image: sampahIMG4,
+    jenis: "dipilah",
+  },
+  {
+    id: "7",
+    name: "Plastik",
+    price: 5000,
+    image: sampahIMG2,
+    jenis: "dipilah",
+  },
+  {
     id: "5",
     name: "Tutup Botol Plastik",
     price: 5000,
