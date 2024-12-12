@@ -24,15 +24,15 @@ body {
   }
 
   .titleHighlight {
-    @apply text-3xl font-semibold;
+    @apply text-xl md:text-3xl font-semibold;
   }
 
   .titleSection {
-    @apply text-2xl font-bold;
+    @apply text-lg md:text-2xl font-bold;
   }
 
   .titleContent {
-    @apply text-lg font-semibold;
+    @apply text-base md:text-lg font-semibold;
   }
 
   p {

@@ -35,7 +35,7 @@ export const PeduliSampah = () => {
   return (
     <div className="Container">
       <p className="titleSection">Kenapa Harus Peduli Sampah?</p>
-      <div className="grid grid-cols-4 gap-5 mt-5">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 mt-5">
         <CardPeduliSampah
           img={pedulSampahIMG}
           title="Lingkungan"

@@ -5,8 +5,8 @@ import Image from "next/image";
 export const SambutanKetua = () => {
   return (
     <div className="Container">
-      <div className="grid grid-cols-3 items-stretch justify-stretch gap-20 rounded-xl shadow-md shadow-black/25 border bg-white overflow-hidden p-10">
-        <div className="col-span-2 flex flex-col gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 items-stretch justify-stretch gap-10 lg:gap-20 rounded-xl shadow-md shadow-black/25 border bg-white overflow-hidden p-5 md:p-10">
+        <div className="order-2 lg:order-1 lg:col-span-2 flex flex-col gap-4">
           <p className="titleContent">
             Selamat Datang di Kelompok Swadaya Masyarakat KMM
           </p>
@@ -33,8 +33,8 @@ export const SambutanKetua = () => {
             aliquip ex ea commodo consequat.
           </p>
         </div>
-        <div className="col-span-1">
-          <div className="w-3/4 mx-auto">
+        <div className="order-1 lg:order-2 lg:col-span-1">
+          <div className="w-1/2 md:w-1/3 lg:w-3/4 mx-auto">
             <Image src={ketuaIMG} alt="" width={0} height={0} sizes="100vw" />
           </div>
         </div>

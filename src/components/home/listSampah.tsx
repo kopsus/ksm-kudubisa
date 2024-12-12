@@ -15,7 +15,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 export const ListSampah = () => {
   return (
     <div className="ContainerY flex flex-col gap-10 items-center">
-      <p className="titleContent text-center w-1/2">
+      <p className="titleContent text-center w-10/12 md:w-1/2">
         Jenis limbah apa saja yang memiliki nilai ekonomis dan dapat
         diperdagangkan?
       </p>
@@ -24,16 +24,21 @@ export const ListSampah = () => {
           delay: 5000,
           disableOnInteraction: false,
         }}
+        breakpoints={{
+          768: {
+            slidesPerView: 3.5,
+          },
+        }}
+        slidesPerView={2}
         loop={true}
         pagination={true}
-        slidesPerView={3.5}
         spaceBetween={20}
         modules={[Autoplay]}
       >
         {dataProducts.map((item, index) => (
           <SwiperSlide key={index}>
             <div
-              className="relative h-52 rounded-[20px] overflow-hidden bg-center bg-cover bg-no-repeat"
+              className="relative h-40 md:h-52 rounded-[20px] overflow-hidden bg-center bg-cover bg-no-repeat"
               style={{
                 backgroundImage: `url(${
                   typeof item.image === "string" ? item.image : item.image.src

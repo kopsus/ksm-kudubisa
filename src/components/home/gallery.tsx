@@ -17,11 +17,11 @@ export const Gallery = () => {
   return (
     <div className="Container flex flex-col items-center gap-10">
       <p className="titleSection">Gallery</p>
-      <div className="grid grid-cols-3 gap-5 w-full">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5 w-full">
         {dataGallery.slice(0, visibleItems).map((item, index) => (
           <div
             key={index}
-            className="h-72 bg-white shadow border rounded-[20px] overflow-hidden"
+            className="h-40 md:h-52 lg:h-72 bg-white shadow border rounded-[20px] overflow-hidden"
           >
             <Image
               src={item.image}
