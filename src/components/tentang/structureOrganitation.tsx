@@ -4,7 +4,7 @@ import Image from "next/image";
 export const StructureOrganitation = () => {
   return (
     <div className="Container">
-      <div className="rounded-3xl overflow-hidden w-4/5 mx-auto">
+      <div className="rounded-3xl overflow-hidden lg:w-4/5 mx-auto">
         <p className="titleSection text-white bg-primary py-2 text-center">
           STRUKTUR OGRANISASI KSM KUDUBISA
         </p>

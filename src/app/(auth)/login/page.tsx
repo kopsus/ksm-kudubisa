@@ -10,7 +10,7 @@ const page = () => {
       style={{ backgroundImage: `url(${highlightIMG.src})` }}
     >
       <div className="absolute top-0 left-0 w-full h-full bg-black/70" />
-      <div className="relative bg-white shadow-md rounded-3xl w-96 flex flex-col gap-8 py-5 px-10 text-center">
+      <div className="relative bg-white shadow-md rounded-3xl w-11/12 md:w-96 flex flex-col gap-8 p-5 md:py-5 md:px-10 text-center">
         <p className="titleSection">Selamat Datang Di KSM KMM Banyumas</p>
         <p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do”</p>
         <div className="w-full flex flex-col gap-3">
