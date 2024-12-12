@@ -30,9 +30,9 @@ const dataJenisSampah = [
     image: sampahB3,
     listSampah: [
       "Baterai bekas",
+      "Lampu neon bekas",
       "Limbah obat-obatan kadaluarsa",
       "Bahan kimia rumah tangga berbahaya",
-      "Lampu neon bekas",
       "Pestisida bekas",
     ],
   },

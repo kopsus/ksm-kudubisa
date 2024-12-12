@@ -15,7 +15,7 @@ interface ICardPengolahanSampah {
 const CardPengolahanSampah = ({ desc, img, title }: ICardPengolahanSampah) => {
   return (
     <div className="rounded-xl shadow-md shadow-black/25 bg-white border-2 border-primary overflow-hidden">
-      <div className="w-72 h-52 overflow-hidden border">
+      <div className="h-52 overflow-hidden border">
         <Image
           src={img || ""}
           alt="services"
@@ -35,14 +35,14 @@ const CardPengolahanSampah = ({ desc, img, title }: ICardPengolahanSampah) => {
 export const PengolahanSampah = () => {
   return (
     <div className="Container">
-      <div className="flex flex-col gap-5 items-center text-center w-1/2 mx-auto">
+      <div className="flex flex-col gap-5 items-center text-center md:w-1/2 mx-auto">
         <p className="titleSection text-danger">Pengolahan Sampah</p>
         <p>
           Serangkaian proses untuk menangani sampah dengan tujuan mengurangi
           dampak negatifnya terhadap lingkungan dan kesehatan.
         </p>
       </div>
-      <div className="flex gap-10 flex-wrap justify-center mt-10">
+      <div className="flex gap-5 md:gap-10 flex-wrap justify-center mt-10">
         <CardPengolahanSampah
           title="Reduce"
           desc="Pengurangan Sampah"

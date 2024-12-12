@@ -1,4 +1,4 @@
-import { Highlight } from "@/components/highlight";
+import { Highlight } from "@/components/_global/highlight";
 import Layanan from "@/components/layanan";
 import React from "react";
 

@@ -1,5 +1,5 @@
-import { Highlight } from "@/components/highlight";
-import { SambutanKetua } from "@/components/sambutanKetua";
+import { Highlight } from "@/components/_global/highlight";
+import { SambutanKetua } from "@/components/_global/sambutanKetua";
 import { StructureOrganitation } from "@/components/tentang/structureOrganitation";
 import { VisiMisi } from "@/components/tentang/visiMisi";
 import React from "react";
