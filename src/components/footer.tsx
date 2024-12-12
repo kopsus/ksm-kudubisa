@@ -10,11 +10,11 @@ import communityIMG from "@/assets/community.avif";
 export const Footer = () => {
   return (
     <div
-      className="relative bg-center bg-cover bg-no-repeat"
+      className="relative bg-center bg-cover bg-no-repeat pb-10 md:pb-20 lg:pb-0"
       style={{ backgroundImage: `url(${communityIMG.src})` }}
     >
       <div className="absolute top-0 left-0 w-full h-full bg-black/80" />
-      <div className="relative h-full flex flex-col gap-10 items-center justify-center w-3/4 mx-auto py-10 text-white text-center">
+      <div className="relative h-full flex flex-col gap-10 items-center justify-center w-10/12 md:w-3/4 mx-auto py-10 text-white text-center">
         <div className="flex flex-col items-center gap-5">
           <Logo />
           <div className="flex flex-col gap-2">

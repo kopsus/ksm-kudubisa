@@ -8,7 +8,7 @@ export const Logo = () => {
       <div className="min-w-5">
         <Image src={LogoIMG} alt="" width={0} height={0} sizes="100vw" />
       </div>
-      <p className="text-xl text-white">KSM KMM</p>
+      <p className="text-lg md:text-xl text-white text-nowrap">KSM KMM</p>
     </div>
   );
 };

@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 export const HighlightHome = () => {
   return (
     <div
-      className="w-full relative bg-center"
+      className="w-full relative bg-center bg-cover bg-no-repeat"
       style={{ backgroundImage: `url(${highlightIMG.src})` }}
     >
       <div className="absolute top-0 left-0 w-full h-full bg-black/70" />
