@@ -1,7 +1,7 @@
 import { BahayaSampah } from "@/components/education/bahayaSampah";
 import { JenisSampah } from "@/components/education/jenisSampah";
 import { PengolahanSampah } from "@/components/education/pengolahanSampah";
-import { Highlight } from "@/components/highlight";
+import { Highlight } from "@/components/_global/highlight";
 import React from "react";
 
 const page = () => {

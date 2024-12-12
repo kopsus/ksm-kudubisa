@@ -2,7 +2,7 @@ import React from "react";
 
 // components
 import { Logo } from "./logo";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 
 // assets
 import communityIMG from "@/assets/community.avif";

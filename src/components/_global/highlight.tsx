@@ -1,6 +1,6 @@
 import React from "react";
 import highlightIMG from "@/assets/highlight_home.avif";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 
 interface IHighlight {
   title: string;
