@@ -15,6 +15,7 @@ const buttonVariants = cva(
           "bg-danger text-zinc-50 shadow hover:bg-danger/90 dark:bg-danger dark:text-zinc-900 dark:hover:bg-danger/90",
         outline:
           "text-danger border border-danger shadow hover:bg-danger/90 hover:text-white dark:text-danger dark:hover:bg-danger/90 dar:hover:text-white",
+        ghost: "bg-slate-300 hover:bg-slate-400",
       },
       size: {
         default: "h-9 px-6 py-2",

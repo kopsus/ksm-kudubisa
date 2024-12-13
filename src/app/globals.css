@@ -7,16 +7,28 @@ body {
 }
 
 @layer base {
+  body {
+    @apply bg-[#F7F7F7];
+  }
+
   main {
-    @apply max-w-screen-xl mx-auto bg-[#F7F7F7];
+    @apply max-w-screen-xl;
   }
 
   .Container {
     @apply px-5 py-14 md:py-16 lg:py-20 md:px-10 lg:px-16;
   }
 
+  .ContainerDashboard {
+    @apply p-5 md:p-10;
+  }
+
   .ContainerX {
     @apply px-5 md:px-10 lg:px-16;
+  }
+
+  .ContainerDashboardX {
+    @apply px-5 md:px-10;
   }
 
   .ContainerY {
