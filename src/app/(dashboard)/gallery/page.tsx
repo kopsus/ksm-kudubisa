@@ -1,14 +1,13 @@
-"use client";
-
 import Breadcrumb from "@/components/dashboard/Breadcrumb";
 import React from "react";
 
-const Product = () => {
+const page = () => {
   return (
     <>
-      <Breadcrumb pageName="Produk" />
+      <Breadcrumb pageName="Gallery" />
+      <p>Gallery</p>
     </>
   );
 };
 
-export default Product;
+export default page;

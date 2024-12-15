@@ -5,7 +5,27 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import { Logo } from "./logo";
 import { usePathname } from "next/navigation";
-import { BookX, Home, Store, UserCog } from "lucide-react";
+import { BookX, Home, LogOut, Store, UserCircle, UserCog } from "lucide-react";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export const Header = () => {
   const itemHeader = [
@@ -45,6 +65,8 @@ export const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const isLogin = true;
+
   return (
     <div
       className={`bg-gradient-to-b from-neutral-950 via-neutral-950 ${
@@ -67,9 +89,51 @@ export const Header = () => {
           </div>
         ))}
       </div>
-      <Link href={"/login"}>
-        <Button>Login</Button>
-      </Link>
+      {isLogin ? (
+        <DropdownMenu>
+          <DropdownMenuTrigger className="outline-none">
+            <UserCircle className="w-7 h-7 text-white" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="min-w-40 mr-5 md:mr-10 lg:mr-16">
+            <DropdownMenuLabel>
+              <Link href={"/"} className="flex items-center gap-2">
+                <UserCircle />
+                Tegar
+              </Link>
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <Dialog>
+              <DialogTrigger className="w-full flex items-center justify-between text-danger p-2 text-sm">
+                Keluar
+                <LogOut size={16} />
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle className="text-center">
+                    Apakah Anda Yakin Ingin Keluar ?
+                  </DialogTitle>
+                  <div className="flex items-center justify-center gap-5 py-5">
+                    <DialogClose asChild>
+                      <Button className="bg-slate-800 hover:bg-slate-900">
+                        Batal
+                      </Button>
+                    </DialogClose>
+                    <Button variant={"danger"}>Keluar</Button>
+                  </div>
+                  {/* <DialogDescription>
+                    This action cannot be undone. This will permanently delete
+                    your account and remove your data from our servers.
+                  </DialogDescription> */}
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ) : (
+        <Link href={"/login"}>
+          <Button>Login</Button>
+        </Link>
+      )}
     </div>
   );
 };
