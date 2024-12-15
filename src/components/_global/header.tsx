@@ -96,7 +96,7 @@ export const Header = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="min-w-40 mr-5 md:mr-10 lg:mr-16">
             <DropdownMenuLabel>
-              <Link href={"/"} className="flex items-center gap-2">
+              <Link href={"/profile"} className="flex items-center gap-2">
                 <UserCircle />
                 Tegar
               </Link>
@@ -112,7 +112,7 @@ export const Header = () => {
                   <DialogTitle className="text-center">
                     Apakah Anda Yakin Ingin Keluar ?
                   </DialogTitle>
-                  <div className="flex items-center justify-center gap-5 py-5">
+                  <div className="flex items-center justify-center gap-5 pt-5">
                     <DialogClose asChild>
                       <Button className="bg-slate-800 hover:bg-slate-900">
                         Batal
@@ -120,10 +120,6 @@ export const Header = () => {
                     </DialogClose>
                     <Button variant={"danger"}>Keluar</Button>
                   </div>
-                  {/* <DialogDescription>
-                    This action cannot be undone. This will permanently delete
-                    your account and remove your data from our servers.
-                  </DialogDescription> */}
                 </DialogHeader>
               </DialogContent>
             </Dialog>

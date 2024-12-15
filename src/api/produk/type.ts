@@ -4,14 +4,14 @@ type IProducts<T> = {
   data?: T | null;
 };
 
-type jenisSampah = "dipilah" | "belum";
+type TypejenisSampah = "dipilah" | "belum";
 type TypeProducts = {
   id: string;
   name: string;
   price: number;
   image: StaticImageData | string;
-  jenis?: jenisSampah;
+  jenis?: TypejenisSampah;
   quantity?: number;
 };
 
-export type { TypeProducts, IProducts };
+export type { TypeProducts, IProducts, TypejenisSampah };

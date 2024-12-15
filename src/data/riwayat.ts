@@ -3,15 +3,17 @@ import sampahIMG2 from "@/assets/plastik.webp";
 import sampahIMG3 from "@/assets/besi.jpg";
 import sampahIMG4 from "@/assets/karet.jpg";
 import sampahIMG5 from "@/assets/tutup_botol_plastik.jpg";
-import { TypeProducts } from "@/api/produk/type";
+import { TypeRiwayat } from "@/api/riwayat/type";
 
-const dataProducts: TypeProducts[] = [
+const dataRiwayat: TypeRiwayat[] = [
   {
     id: "1",
     name: "Alumunium",
     price: 10000,
     image: sampahIMG,
     jenis: "dipilah",
+    quantity: 5,
+    status: "Paid",
   },
   {
     id: "2",
@@ -19,6 +21,8 @@ const dataProducts: TypeProducts[] = [
     price: 12000,
     image: sampahIMG3,
     jenis: "dipilah",
+    quantity: 5,
+    status: "Unpaid",
   },
   {
     id: "3",
@@ -26,6 +30,8 @@ const dataProducts: TypeProducts[] = [
     price: 8000,
     image: sampahIMG4,
     jenis: "dipilah",
+    quantity: 5,
+    status: "Pending",
   },
   {
     id: "4",
@@ -33,6 +39,8 @@ const dataProducts: TypeProducts[] = [
     price: 5000,
     image: sampahIMG2,
     jenis: "dipilah",
+    quantity: 5,
+    status: "Paid",
   },
   {
     id: "6",
@@ -40,6 +48,8 @@ const dataProducts: TypeProducts[] = [
     price: 8000,
     image: sampahIMG4,
     jenis: "dipilah",
+    quantity: 5,
+    status: "Unpaid",
   },
   {
     id: "7",
@@ -47,6 +57,8 @@ const dataProducts: TypeProducts[] = [
     price: 5000,
     image: sampahIMG2,
     jenis: "dipilah",
+    quantity: 5,
+    status: "Pending",
   },
   {
     id: "5",
@@ -54,7 +66,24 @@ const dataProducts: TypeProducts[] = [
     price: 5000,
     image: sampahIMG5,
     jenis: "belum",
+    quantity: 5,
+    status: "Paid",
   },
 ];
 
-export { dataProducts };
+const statusesRiwayat = [
+  {
+    value: "Pending",
+    label: "Pending",
+  },
+  {
+    value: "Paid",
+    label: "Paid",
+  },
+  {
+    value: "Unpaid",
+    label: "Unpaid",
+  },
+];
+
+export { dataRiwayat, statusesRiwayat };
