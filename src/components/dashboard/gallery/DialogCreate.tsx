@@ -1,4 +1,4 @@
-import DialogLayout from "@/components/_global/dialog";
+import DialogLayout from "@/components/dashboard/_global/Layouts/Dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useImagePreview from "@/hooks/useImagePreview";
@@ -28,19 +28,14 @@ export const DialogCreate = () => {
       title={`${dialog.type === "CREATE" ? "Tambah Gallery" : "Edit Gallery"}`}
     >
       <div className="flex flex-col items-center gap-5">
-        <div className="h-72 w-full rounded-xl border bg-white shadow-1 overflow-hidden">
+        <div className="w-52 h-52 rounded-xl border bg-white shadow-1 overflow-hidden">
           {previewUrl || dialog.data?.image ? (
             <Image src={imageSrc} alt="" width={0} height={0} />
           ) : null}
         </div>
         <Input type="file" onChange={handleImageChange} className="max-w-72" />
         <div className="flex items-center justify-center gap-5">
-          <Button variant={"outline"} onClick={closeDialog}>
-            Cancel
-          </Button>
-          <Button variant={"danger"} onClick={closeDialog}>
-            Delete
-          </Button>
+          <Button onClick={closeDialog}>Simpan</Button>
         </div>
       </div>
     </DialogLayout>

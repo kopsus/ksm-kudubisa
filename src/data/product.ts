@@ -5,6 +5,17 @@ import sampahIMG4 from "@/assets/karet.jpg";
 import sampahIMG5 from "@/assets/tutup_botol_plastik.jpg";
 import { TypeProducts } from "@/api/produk/type";
 
+const jenisSampah = [
+  {
+    value: "dipilah",
+    label: "Di Pilah",
+  },
+  {
+    value: "belum",
+    label: "Belum Di Pilah",
+  },
+];
+
 const dataProducts: TypeProducts[] = [
   {
     id: "1",
@@ -57,4 +68,4 @@ const dataProducts: TypeProducts[] = [
   },
 ];
 
-export { dataProducts };
+export { dataProducts, jenisSampah };

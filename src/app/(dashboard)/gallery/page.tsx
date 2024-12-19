@@ -11,14 +11,14 @@ import Image from "next/image";
 import React from "react";
 
 const GalleryPage = () => {
-  const setDrawer = useSetAtom(storeDialog);
+  const setDialog = useSetAtom(storeDialog);
 
   return (
     <>
       <Breadcrumb
         pageName="Gallery"
         onClick={() => {
-          setDrawer({
+          setDialog({
             type: "CREATE",
             show: true,
             data: null,
@@ -36,7 +36,7 @@ const GalleryPage = () => {
                 color="white"
                 className="cursor-pointer"
                 onClick={() => {
-                  setDrawer({
+                  setDialog({
                     type: "UPDATE",
                     show: true,
                     data: item,
@@ -47,7 +47,7 @@ const GalleryPage = () => {
                 color="red"
                 className="cursor-pointer"
                 onClick={() => {
-                  setDrawer({
+                  setDialog({
                     type: "DELETE",
                     show: true,
                     data: null,

@@ -1,4 +1,7 @@
 import CardDataStats from "@/components/dashboard/_global/CardDataStats";
+import { dataGallery } from "@/data/gallery";
+import { dataProducts } from "@/data/product";
+import { dataRiwayat } from "@/data/riwayat";
 import { Album, ShoppingCart, Users } from "lucide-react";
 import React from "react";
 
@@ -6,13 +9,13 @@ const page = () => {
   return (
     <>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-        <CardDataStats title="Total Gallery" total="6">
+        <CardDataStats title="Total Gallery" total={dataGallery.length}>
           <Album className="text-primary" />
         </CardDataStats>
-        <CardDataStats title="Total Transaksi" total="45">
+        <CardDataStats title="Total Transaksi" total={dataRiwayat.length}>
           <ShoppingCart className="text-primary" />
         </CardDataStats>
-        <CardDataStats title="Total Produk" total="450">
+        <CardDataStats title="Total Produk" total={dataProducts.length}>
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -31,7 +34,7 @@ const page = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Users" total="3.456">
+        <CardDataStats title="Total Users" total={3.456}>
           <Users className="text-primary" />
         </CardDataStats>
       </div>

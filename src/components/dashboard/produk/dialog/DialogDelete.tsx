@@ -18,7 +18,7 @@ export const DialogDelete = () => {
     <DialogLayout
       show={dialog.type === "DELETE" && dialog.show}
       onHide={closeDialog}
-      titleDelete="Hapus Image ini dari Gallery"
+      titleDelete="Hapus item ini dari produk ?"
     >
       <div className="flex items-center justify-center gap-5">
         <Button variant={"outline"} onClick={closeDialog}>

@@ -1,4 +1,3 @@
-import { TypeGallery } from "@/api/gallery/type";
 import { atom } from "jotai";
 
 type IDialog<T> = {
@@ -7,7 +6,7 @@ type IDialog<T> = {
   data: T | null;
 };
 
-const storeDialog = atom<IDialog<TypeGallery>>({
+const storeDialog = atom<IDialog<any>>({
   show: false,
   type: "CREATE",
   data: null,
