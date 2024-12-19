@@ -4,8 +4,7 @@ import React from "react";
 const page = () => {
   return (
     <>
-      <Breadcrumb pageName="Transaksi" />
-      <p>Transaksi</p>
+      <Breadcrumb pageName="Transaksi Agen" />
     </>
   );
 };

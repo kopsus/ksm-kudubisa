@@ -42,16 +42,21 @@ const menuGroups = [
       {
         icon: <HandCoins />,
         label: "Transaksi",
-        route: "/transaksi",
+        route: "#",
+        children: [
+          { label: "Masyarakat", route: "/transaksi/masyarakat" },
+          { label: "Agen", route: "/transaksi/agen" },
+          { label: "Pengepul", route: "/transaksi/pengepul" },
+        ],
       },
       {
         icon: <Users />,
         label: "Pengguna",
         route: "#",
         children: [
-          { label: "Masyarakat", route: "/masyarakat" },
-          { label: "Agen", route: "/agen" },
-          { label: "Pengepul", route: "/pengepul" },
+          { label: "Masyarakat", route: "/users/masyarakat" },
+          { label: "Agen", route: "/users/agen" },
+          { label: "Pengepul", route: "/users/pengepul" },
         ],
       },
     ],
