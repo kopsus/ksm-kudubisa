@@ -8,12 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  ArrowLeft,
-  ArrowRight,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
 interface PaginationProps<TData> {
   table: Table<TData>;
@@ -21,12 +16,12 @@ interface PaginationProps<TData> {
 
 export function Pagination<TData>({ table }: PaginationProps<TData>) {
   return (
-    <div className="flex flex-col gap-5 md:flex-row items-center justify-between px-2">
-      <div className="flex-1 text-sm text-muted-foreground">
+    <div className="flex md:items-center justify-between px-2">
+      <div className="flex-1 text-sm md:text-nowrap text-muted-foreground">
         {table.getFilteredSelectedRowModel().rows.length} of{" "}
         {table.getFilteredRowModel().rows.length} row(s) selected.
       </div>
-      <div className="flex flex-col w-full gap-2 md:flex-row items-end md:items-center space-x-6 lg:space-x-8">
+      <div className="flex flex-col w-full gap-2 items-end md:flex-row md:justify-end md:items-center">
         <div className="flex items-center space-x-2">
           <p className="text-sm font-medium">Rows per page</p>
           <Select

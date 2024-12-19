@@ -1,4 +1,4 @@
-import DefaultLayout from "@/components/dashboard/Layouts/DefaultLayout";
+import DefaultLayout from "@/components/dashboard/_global/Layouts/DefaultLayout";
 
 export default function RootLayout({
   children,

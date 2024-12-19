@@ -1,6 +1,6 @@
 "use client";
 
-import Breadcrumb from "@/components/dashboard/Breadcrumb";
+import Breadcrumb from "@/components/dashboard/_global/Breadcrumb";
 import React from "react";
 
 const Product = () => {

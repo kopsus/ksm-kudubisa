@@ -1,4 +1,4 @@
-import CardDataStats from "@/components/dashboard/CardDataStats";
+import CardDataStats from "@/components/dashboard/_global/CardDataStats";
 import { Album, ShoppingCart, Users } from "lucide-react";
 import React from "react";
 
