@@ -3,7 +3,7 @@ import Link from "next/link";
 import SidebarDropdown from "./SidebarDropdown";
 import { usePathname } from "next/navigation";
 
-const SidebarItem = ({ item, pageName, setPageName }: any) => {
+const SidebarItem = ({ item, pageName, setPageName, onClick }: any) => {
   const handleClick = () => {
     const updatedPageName =
       pageName !== item.label.toLowerCase() ? item.label.toLowerCase() : "";
@@ -24,7 +24,7 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
 
   return (
     <>
-      <li>
+      <li onClick={onClick}>
         <Link
           href={item.route}
           onClick={handleClick}
