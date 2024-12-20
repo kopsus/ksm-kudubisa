@@ -1,13 +1,13 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { TypeRiwayat } from "@/api/riwayat/type";
+import { TypeProducts } from "@/api/produk/type";
 import Image from "next/image";
 import { formatIDR } from "@/lib/formated";
 import { jenisSampah } from "@/data/product";
 import ActionButtons from "./ActionButtons";
 
-export const columns: ColumnDef<TypeRiwayat>[] = [
+export const columns: ColumnDef<TypeProducts>[] = [
   {
     accessorKey: "name",
     header: "Barang",

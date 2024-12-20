@@ -10,6 +10,10 @@ type TypeStatus = "Paid" | "Unpaid" | "Pending";
 type TypeRiwayat = {
   id: string;
   name: string;
+  rt: string;
+  rw: string;
+  phone: string;
+  barang: string;
   price: number;
   image: StaticImageData | string;
   jenis?: TypejenisSampah;
