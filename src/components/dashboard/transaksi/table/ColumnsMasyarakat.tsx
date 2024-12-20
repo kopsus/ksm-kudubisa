@@ -6,7 +6,7 @@ import ActionButtons from "./ActionButtons";
 import { statusesRiwayat } from "@/data/riwayat";
 import { Badge } from "@/components/ui/badge";
 
-export const columns: ColumnDef<TypeRiwayat>[] = [
+export const ColumnsMasyarakat: ColumnDef<TypeRiwayat>[] = [
   {
     accessorKey: "name",
     header: "Nama",

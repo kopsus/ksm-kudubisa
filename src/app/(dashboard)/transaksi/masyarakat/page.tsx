@@ -3,7 +3,7 @@
 import Breadcrumb from "@/components/dashboard/_global/Breadcrumb";
 import { DialogCreate } from "@/components/dashboard/transaksi/dialog/DialogCreate";
 import { DialogDelete } from "@/components/dashboard/transaksi/dialog/DialogDelete";
-import { columns } from "@/components/dashboard/transaksi/table/Columns";
+import { ColumnsMasyarakat } from "@/components/dashboard/transaksi/table/ColumnsMasyarakat";
 import { DataTable } from "@/components/dashboard/transaksi/table/DataTable";
 import { dataRiwayat } from "@/data/riwayat";
 import { storeDialog } from "@/store/dialog";
@@ -24,7 +24,7 @@ const TransaksiMayarakat = () => {
           });
         }}
       />
-      <DataTable columns={columns} data={dataRiwayat} />
+      <DataTable columns={ColumnsMasyarakat} data={dataRiwayat} />
       <DialogDelete />
       <DialogCreate />
     </>

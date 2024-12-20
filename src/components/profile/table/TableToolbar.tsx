@@ -15,7 +15,7 @@ export function TableToolbar<TData>({ table }: ITableToolbar<TData>) {
 
   return (
     <div className="flex items-center justify-end">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 overflow-x-auto">
         {isFiltered && (
           <Button
             variant="outline"
@@ -35,11 +35,11 @@ export function TableToolbar<TData>({ table }: ITableToolbar<TData>) {
         )}
         <Input
           type="text"
-          placeholder="Cari Nama"
+          placeholder="Cari Barang"
           className="w-[150px] md:w-[250px] border outline-none"
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("barang")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table.getColumn("barang")?.setFilterValue(event.target.value)
           }
         />
       </div>

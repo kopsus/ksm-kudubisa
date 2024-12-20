@@ -10,7 +10,7 @@ import { statusesRiwayat } from "@/data/riwayat";
 
 export const columns: ColumnDef<TypeRiwayat>[] = [
   {
-    accessorKey: "name",
+    accessorKey: "barang",
     header: "Barang",
     cell: ({ row }) => {
       const data = row.original;
@@ -19,13 +19,13 @@ export const columns: ColumnDef<TypeRiwayat>[] = [
           <div className="min-w-16 max-w-16 h-16 rounded-xl overflow-hidden bg-primary shadow border">
             <Image
               src={data.image}
-              alt={row.getValue("name")}
+              alt={row.getValue("barang")}
               width={0}
               height={0}
               sizes="100vw"
             />
           </div>
-          <p>{row.getValue("name")}</p>
+          <p>{row.getValue("barang")}</p>
         </div>
       );
     },
