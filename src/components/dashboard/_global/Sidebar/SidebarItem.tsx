@@ -4,6 +4,12 @@ import SidebarDropdown from "./SidebarDropdown";
 import { usePathname } from "next/navigation";
 
 const SidebarItem = ({ item, pageName, setPageName, onClick }: any) => {
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const handleClick = () => {
     const updatedPageName =
       pageName !== item.label.toLowerCase() ? item.label.toLowerCase() : "";
@@ -34,7 +40,7 @@ const SidebarItem = ({ item, pageName, setPageName, onClick }: any) => {
         >
           {item.icon}
           {item.label}
-          {item.children && (
+          {item.children && isMounted && (
             <svg
               className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
                 pageName === item.label.toLowerCase() && "rotate-180"
@@ -55,7 +61,7 @@ const SidebarItem = ({ item, pageName, setPageName, onClick }: any) => {
           )}
         </Link>
 
-        {item.children && (
+        {item.children && isMounted && (
           <div
             className={`translate transform overflow-hidden ${
               pageName !== item.label.toLowerCase() && "hidden"
