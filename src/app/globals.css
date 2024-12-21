@@ -12,7 +12,7 @@ body {
   }
 
   main {
-    @apply max-w-screen-xl;
+    @apply max-w-screen-2xl;
   }
 
   .Container {

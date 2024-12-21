@@ -9,7 +9,7 @@ import ButtonTrigger from "@/components/_global/buttonTrigger";
 
 export default function Home() {
   return (
-    <>
+    <div className="max-w-screen-2xl mx-auto">
       <Header />
       <HighlightHome />
       <PeduliSampah />
@@ -18,6 +18,6 @@ export default function Home() {
       <Gallery />
       <Footer />
       <ButtonTrigger />
-    </>
+    </div>
   );
 }

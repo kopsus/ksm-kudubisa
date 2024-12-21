@@ -71,7 +71,7 @@ export const Header = () => {
     <div
       className={`bg-gradient-to-b from-neutral-950 via-neutral-950 ${
         scrolled && "bg-black/80"
-      } fixed z-50 w-full max-w-screen-xl mx-auto flex items-center justify-between px-5 md:px-10 lg:px-20 py-4`}
+      } fixed z-50 w-full max-w-screen-2xl mx-auto flex items-center justify-between px-5 md:px-10 lg:px-20 py-4`}
     >
       <Logo />
       <div className="fixed z-999999 bottom-0 left-0 w-full grid grid-cols-4 items-center bg-neutral-800 px-5 py-2 gap-4 lg:static lg:bg-transparent lg:flex lg:gap-20 lg:p-0 lg:justify-center">
