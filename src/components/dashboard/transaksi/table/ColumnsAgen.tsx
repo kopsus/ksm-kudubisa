@@ -1,7 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { TypeTransaksi } from "@/api/transaksi/type";
-import ActionButtons from "./ActionButtons";
-import { statusesRiwayat } from "@/data/riwayat";
+import { statusesTransaksi } from "@/data/transaksi";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatIDR } from "@/lib/formated";
@@ -81,7 +80,7 @@ export const ColumnsAgen: ColumnDef<TypeTransaksi>[] = [
     header: "Status",
     cell: ({ row }) => {
       const status = row.getValue("status") as TypeTransaksi["status"];
-      const item = statusesRiwayat.find(
+      const item = statusesTransaksi.find(
         (status) => status.value === row.getValue("status")
       );
 

@@ -1,51 +1,62 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { TypeRiwayat } from "@/api/riwayat/type";
-import Image from "next/image";
+import { TypeTransaksi } from "@/api/transaksi/type";
 import { formatIDR } from "@/lib/formated";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { statusesRiwayat } from "@/data/riwayat";
+import { statusesTransaksi } from "@/data/transaksi";
+import { TypeProducts } from "@/api/produk/type";
 
-export const columns: ColumnDef<TypeRiwayat>[] = [
+export const Columns: ColumnDef<TypeTransaksi>[] = [
   {
     accessorKey: "barang",
     header: "Barang",
     cell: ({ row }) => {
-      const data = row.original;
-      return (
-        <div className="flex items-center gap-2">
-          <div className="min-w-16 max-w-16 h-16 rounded-xl overflow-hidden bg-primary shadow border">
-            <Image
-              src={data.image}
-              alt={row.getValue("barang")}
-              width={0}
-              height={0}
-              sizes="100vw"
-            />
-          </div>
-          <p>{row.getValue("barang")}</p>
-        </div>
-      );
+      const barangList = row.getValue("barang") as TypeProducts[];
+
+      if (!barangList || barangList.length === 0) {
+        return <p>Belum ada barang</p>;
+      }
+
+      return <p>{barangList.map((barang) => `${barang.name}`).join(", ")}</p>;
     },
   },
   {
-    accessorKey: "price",
-    header: "Harga",
-    cell: ({ row }) => formatIDR(row.getValue("price")),
-  },
-  {
-    accessorKey: "quantity",
+    accessorKey: "barang",
     header: "Berat",
+    id: "barang-berat",
+    cell: ({ row }) => {
+      const barangList = row.getValue("barang") as TypeProducts[];
+
+      if (!barangList || barangList.length === 0) {
+        return <p>Belum ada barang</p>;
+      }
+
+      const totalBerat = barangList.reduce(
+        (total, barang) => total + (barang.quantity ?? 0),
+        0
+      );
+
+      return <p>{totalBerat} Kg</p>;
+    },
   },
   {
     accessorKey: "total",
     header: "Total",
     cell: ({ row }) => {
-      const quantity = row.getValue("quantity") as number;
-      const price = row.getValue("price") as number;
-      const total = quantity * price;
+      const barangList = row.getValue("barang") as TypeProducts[];
+
+      if (!barangList || barangList.length === 0) {
+        return <p>Rp 0</p>;
+      }
+
+      // Hitung total harga semua barang
+      const total = barangList.reduce(
+        (sum, barang) => sum + (barang.quantity ?? 0) * barang.price,
+        0
+      );
+
       return (
         <Button variant={"outline"} size={"sm"}>
           {formatIDR(total)}
@@ -57,8 +68,8 @@ export const columns: ColumnDef<TypeRiwayat>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      const status = row.getValue("status") as TypeRiwayat["status"];
-      const item = statusesRiwayat.find(
+      const status = row.getValue("status") as TypeTransaksi["status"];
+      const item = statusesTransaksi.find(
         (status) => status.value === row.getValue("status")
       );
 

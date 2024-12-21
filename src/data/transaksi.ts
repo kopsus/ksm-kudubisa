@@ -41,7 +41,7 @@ const dataTransaksi: TypeTransaksi[] = [
         id: "prod3",
         name: "Glass Bottle",
         price: 8000,
-        image: "/images/glass-bottle.jpg",
+        image: sampahIMG2,
         jenis: "belum",
         quantity: 7,
       },
@@ -60,7 +60,7 @@ const dataTransaksi: TypeTransaksi[] = [
         id: "prod4",
         name: "Metal Can",
         price: 4000,
-        image: "/images/metal-can.jpg",
+        image: sampahIMG,
         jenis: "dipilah",
         quantity: 15,
       },
@@ -87,7 +87,7 @@ const dataTransaksi: TypeTransaksi[] = [
         id: "prod6",
         name: "Newspapers",
         price: 2000,
-        image: "/images/newspapers.jpg",
+        image: sampahIMG2,
         jenis: "dipilah",
         quantity: 12,
       },
@@ -144,7 +144,7 @@ const dataTransaksi: TypeTransaksi[] = [
         id: "prod9",
         name: "Glass Bottle",
         price: 8000,
-        image: "/images/glass-bottle.jpg",
+        image: sampahIMG2,
         jenis: "belum",
         quantity: 6,
       },
@@ -152,7 +152,7 @@ const dataTransaksi: TypeTransaksi[] = [
         id: "prod10",
         name: "Metal Can",
         price: 4000,
-        image: "/images/metal-can.jpg",
+        image: sampahIMG,
         jenis: "dipilah",
         quantity: 9,
       },
@@ -198,7 +198,7 @@ const dataTransaksi: TypeTransaksi[] = [
         id: "prod13",
         name: "Glass Bottle",
         price: 8000,
-        image: "/images/glass-bottle.jpg",
+        image: sampahIMG2,
         jenis: "belum",
         quantity: 5,
       },
@@ -206,7 +206,7 @@ const dataTransaksi: TypeTransaksi[] = [
         id: "prod14",
         name: "Newspapers",
         price: 2000,
-        image: "/images/newspapers.jpg",
+        image: sampahIMG2,
         jenis: "dipilah",
         quantity: 10,
       },
@@ -235,4 +235,19 @@ const dataTransaksi: TypeTransaksi[] = [
   },
 ];
 
-export { dataTransaksi };
+const statusesTransaksi = [
+  {
+    value: "Pending",
+    label: "Pending",
+  },
+  {
+    value: "Paid",
+    label: "Paid",
+  },
+  {
+    value: "Unpaid",
+    label: "Unpaid",
+  },
+];
+
+export { dataTransaksi, statusesTransaksi };

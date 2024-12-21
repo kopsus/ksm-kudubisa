@@ -2,8 +2,8 @@ import { Akun } from "@/components/profile/Akun";
 import React from "react";
 import highlightIMG from "@/assets/highlight_home.avif";
 import { DataTable } from "@/components/profile/table/DataTable";
-import { dataRiwayat } from "@/data/riwayat";
-import { columns } from "@/components/profile/table/Columns";
+import { dataTransaksi } from "@/data/transaksi";
+import { Columns } from "@/components/profile/table/Columns";
 
 const page = () => {
   return (
@@ -19,7 +19,7 @@ const page = () => {
           </div>
 
           <div className="lg:col-span-2">
-            <DataTable columns={columns} data={dataRiwayat} />
+            <DataTable columns={Columns} data={dataTransaksi} />
           </div>
         </div>
       </div>

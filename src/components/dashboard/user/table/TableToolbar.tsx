@@ -1,10 +1,6 @@
 import { Input } from "@/components/ui/input";
 import React from "react";
 import { Table } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
-import { FacetedFilter } from "@/components/_global/table/facetedFilter";
-import { statusesRiwayat } from "@/data/riwayat";
 
 interface ITableToolbar<TData> {
   table: Table<TData>;

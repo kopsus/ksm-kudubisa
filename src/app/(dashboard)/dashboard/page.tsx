@@ -1,7 +1,7 @@
 import CardDataStats from "@/components/dashboard/_global/CardDataStats";
 import { dataGallery } from "@/data/gallery";
 import { dataProducts } from "@/data/product";
-import { dataRiwayat } from "@/data/riwayat";
+import { dataTransaksi } from "@/data/transaksi";
 import { Album, ShoppingCart, Users } from "lucide-react";
 import React from "react";
 
@@ -12,7 +12,7 @@ const page = () => {
         <CardDataStats title="Total Gallery" total={dataGallery.length}>
           <Album className="text-primary" />
         </CardDataStats>
-        <CardDataStats title="Total Transaksi" total={dataRiwayat.length}>
+        <CardDataStats title="Total Transaksi" total={dataTransaksi.length}>
           <ShoppingCart className="text-primary" />
         </CardDataStats>
         <CardDataStats title="Total Produk" total={dataProducts.length}>

@@ -4,7 +4,7 @@ import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { FacetedFilter } from "@/components/_global/table/facetedFilter";
-import { statusesRiwayat } from "@/data/riwayat";
+import { statusesTransaksi } from "@/data/transaksi";
 
 interface ITableToolbar<TData> {
   table: Table<TData>;
@@ -30,7 +30,7 @@ export function TableToolbar<TData>({ table }: ITableToolbar<TData>) {
           <FacetedFilter
             column={table.getColumn("status")}
             title="Filter"
-            options={statusesRiwayat}
+            options={statusesTransaksi}
           />
         )}
         <Input
