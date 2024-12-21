@@ -15,7 +15,7 @@ export function TableToolbar<TData>({ table }: ITableToolbar<TData>) {
 
   return (
     <div className="flex items-center justify-end">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 overflow-x-auto">
         {isFiltered && (
           <Button
             variant="outline"

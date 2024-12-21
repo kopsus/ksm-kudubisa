@@ -1,5 +1,3 @@
-"use client";
-
 import { ColumnDef } from "@tanstack/react-table";
 import { TypeRiwayat } from "@/api/riwayat/type";
 import ActionButtons from "./ActionButtons";
@@ -13,12 +11,12 @@ export const ColumnsMasyarakat: ColumnDef<TypeRiwayat>[] = [
   },
   {
     accessorKey: "rt",
-    header: "RT / RW",
+    header: () => <p className="text-nowrap">RT / RW</p>,
     cell: ({ row }) => {
       const rt = row.original.rt;
       const rw = row.original.rw;
       return (
-        <p>
+        <p className="text-nowrap">
           {rt} / {rw}
         </p>
       );
