@@ -28,12 +28,20 @@ export const DialogCreate = () => {
     <DialogLayout
       show={dialog.type !== "DELETE" && dialog.show}
       onHide={closeDialog}
-      title={`${dialog.type === "CREATE" ? "Tambah Produk" : "Edit Produk"}`}
+      title={`${dialog.type === "CREATE" ? "Tambah User" : "Edit User"}`}
     >
       <div className="grid gap-4 py-4">
         <div className="grid grid-cols-4 items-center gap-4">
-          <p className="">Name</p>
-          <Input placeholder="Name" className="col-span-3" />
+          <p className="">Username</p>
+          <Input placeholder="Username" className="col-span-3" />
+        </div>
+        <div className="grid grid-cols-4 items-center gap-4">
+          <p className="">Nama Lengkap</p>
+          <Input placeholder="Nama Lengkap" className="col-span-3" />
+        </div>
+        <div className="grid grid-cols-4 items-center gap-4">
+          <p className="">No Telephone</p>
+          <Input placeholder="No Telephone" className="col-span-3" />
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
           <p className="">RT / RW</p>
@@ -61,44 +69,23 @@ export const DialogCreate = () => {
           </div>
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
-          <p className="">No Telephone</p>
-          <Input
-            placeholder="No Telephone"
-            type="number"
-            className="col-span-3"
-          />
-        </div>
-        <div className="grid grid-cols-4 items-center gap-4">
-          <p className="">Brang</p>
-          <Input placeholder="Brang" className="col-span-3" />
-        </div>
-        <div className="grid grid-cols-4 items-center gap-4">
-          <p className="">Quantity</p>
-          <Input placeholder="Quantity" className="col-span-3" />
-        </div>
-        <div className="grid grid-cols-4 items-center gap-4">
-          <p className="">Status</p>
-          <div className="col-span-3">
-            <Select>
-              <SelectTrigger>
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="1" className="text-primary">
-                  Paid
-                </SelectItem>
-                <SelectItem value="2" className="text-red-600">
-                  Unpaid
-                </SelectItem>
-                <SelectItem value="3" className="text-yellow-600">
-                  Pending
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          <p className="">Role</p>
+          <Select>
+            <SelectTrigger className="w-full col-span-3">
+              <SelectValue placeholder="Role" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="1">Masyarakat</SelectItem>
+              <SelectItem value="2">Agen</SelectItem>
+              <SelectItem value="3">Pengepul</SelectItem>
+              <SelectItem value="4">Admin</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
-      <Button type="submit">Simpan Perubahan</Button>
+      <Button type="submit">
+        {dialog.type === "CREATE" ? "Tambah" : "Simpan Perubahan"}
+      </Button>
     </DialogLayout>
   );
 };

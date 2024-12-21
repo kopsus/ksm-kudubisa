@@ -5,7 +5,7 @@ import { DialogCreate } from "@/components/dashboard/transaksi/dialog/DialogCrea
 import { DialogDelete } from "@/components/dashboard/transaksi/dialog/DialogDelete";
 import { ColumnsMasyarakat } from "@/components/dashboard/transaksi/table/ColumnsMasyarakat";
 import { DataTable } from "@/components/dashboard/transaksi/table/DataTable";
-import { dataRiwayat } from "@/data/riwayat";
+import { dataTransaksi } from "@/data/transaksi";
 import { storeDialog } from "@/store/dialog";
 import { useSetAtom } from "jotai";
 import React from "react";
@@ -24,7 +24,7 @@ const TransaksiMayarakat = () => {
           });
         }}
       />
-      <DataTable columns={ColumnsMasyarakat} data={dataRiwayat} />
+      <DataTable columns={ColumnsMasyarakat} data={dataTransaksi} />
       <DialogDelete />
       <DialogCreate />
     </>

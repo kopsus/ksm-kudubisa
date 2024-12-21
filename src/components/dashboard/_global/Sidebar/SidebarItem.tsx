@@ -30,7 +30,7 @@ const SidebarItem = ({ item, pageName, setPageName, onClick }: any) => {
 
   return (
     <>
-      <li onClick={onClick}>
+      <li>
         <Link
           href={item.route}
           onClick={handleClick}

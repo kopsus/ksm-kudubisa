@@ -8,23 +8,14 @@ import { formatIDR } from "@/lib/formated";
 import { TypeProducts } from "@/api/produk/type";
 import { DataTableRowActions } from "./TableRowActions";
 
-export const ColumnsMasyarakat: ColumnDef<TypeTransaksi>[] = [
+export const ColumnsAgen: ColumnDef<TypeTransaksi>[] = [
   {
     accessorKey: "name",
     header: "Nama",
   },
   {
     accessorKey: "rt",
-    header: () => <p className="text-nowrap">RT / RW</p>,
-    cell: ({ row }) => {
-      const rt = row.original.rt;
-      const rw = row.original.rw;
-      return (
-        <p className="text-nowrap">
-          {rt} / {rw}
-        </p>
-      );
-    },
+    header: "RT",
   },
   {
     accessorKey: "phone",

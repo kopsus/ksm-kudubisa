@@ -1,10 +1,10 @@
 import { Edit, Trash } from "lucide-react";
 import { useSetAtom } from "jotai";
 import { storeDialog } from "@/store/dialog";
-import { TypeRiwayat } from "@/api/riwayat/type";
+import { TypeUser } from "@/api/users/type";
 
 interface IActionButtons {
-  item: TypeRiwayat;
+  item: TypeUser;
   itemId: string;
 }
 

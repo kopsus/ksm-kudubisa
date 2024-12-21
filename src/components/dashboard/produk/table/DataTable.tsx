@@ -72,7 +72,7 @@ export function DataTable<TData, TValue>({
                     key={header.id}
                     className={`${
                       idx === headerGroup.headers.length - 1 && "text-right"
-                    } bg-primary text-white`}
+                    } bg-gray-800 text-white`}
                   >
                     {header.isPlaceholder
                       ? null

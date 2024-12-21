@@ -4,7 +4,6 @@ import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { FacetedFilter } from "@/components/_global/table/facetedFilter";
-import { statusesRiwayat } from "@/data/riwayat";
 import { jenisSampah } from "@/data/product";
 
 interface ITableToolbar<TData> {
@@ -16,7 +15,7 @@ export function TableToolbar<TData>({ table }: ITableToolbar<TData>) {
 
   return (
     <div className="flex items-center justify-end">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 overflow-x-auto">
         {isFiltered && (
           <Button
             variant="outline"
