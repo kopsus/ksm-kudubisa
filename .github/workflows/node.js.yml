@@ -5,44 +5,43 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
-
     runs-on: self-hosted
 
     strategy:
       matrix:
         node-version: [20.17.0]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-    
-    env: 
-        DATABASE_URL: ${{secrets.DATABASE_URL}}
-        JWT_SECRET: ${{secretes.JWT_SECRET}}
-        NEXT_PUBLIC_BASE_URL: ${{secrets.NEXT_PUBLIC_BASE_URL}}
-        NEXT_PUBLIC_ROLE_MASYARAKAT: ${{secrets.NEXT_PUBLIC_ROLE_MASYARAKAT}}
+
+    env:
+      DATABASE_URL: ${{secrets.DATABASE_URL}}
+      JWT_SECRET: ${{secrets.JWT_SECRET}}
+      NEXT_PUBLIC_BASE_URL: ${{secrets.NEXT_PUBLIC_BASE_URL}}
+      NEXT_PUBLIC_ROLE_MASYARAKAT: ${{secrets.NEXT_PUBLIC_ROLE_MASYARAKAT}}
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
 
-    - name: Export environment variables
-      run: |
-        echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
-        echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
-        echo "NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }}" >> $GITHUB_ENV
-        echo "NEXT_PUBLIC_ROLE_MASYARAKAT=${{ secrets.NEXT_PUBLIC_ROLE_MASYARAKAT }}" >> $GITHUB_ENV
+      - name: Export environment variables
+        run: |
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }}" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_ROLE_MASYARAKAT=${{ secrets.NEXT_PUBLIC_ROLE_MASYARAKAT }}" >> $GITHUB_ENV
 
-    - run: npm ci
-    
-    - name: install dependencies
-      run: npm install
-    
-    - run: npm run build --if-present
+      - run: npm ci
+
+      - name: install dependencies
+        run: npm install
+
+      - run: npm run build --if-present
