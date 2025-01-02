@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum EnumRole {
+  Masyarakat
+  Agen
+  Pengepul
+  Admin
+}
+
+model Role {
+  id                String        @id @default(cuid())
+  role              EnumRole
+  users             User[]        // Relasi ke User
+
+  updatedByAgen     Transaksi[]   @relation("UpdatedByAgen") // Relasi balik ke Transaksi
+  updatedByPengepul Transaksi[]   @relation("UpdatedByPengepul") // Relasi balik ke Transaksi
+}
+
+
+model User {
+  id                  String       @id @default(cuid())
+  roleId              String
+  username            String       @unique
+  namaLengkap         String
+  noTlp               String
+  rt                  String?
+  rw                  String?
+  password            String
+  role                Role         @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  transaksi           Transaksi[] // Relasi ke Transaksi
+
+  createdAt           DateTime    @default(now()) @map("created_at")
+  updatedAt           DateTime    @updatedAt @map("updated_at")
+}
+
+enum EnumStatus {
+  Pending
+  Process
+  Paid
+  Failed
+}
+
+model Transaksi {
+  id                    String             @id @default(cuid())
+  userId                String
+  user                  User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  statusUser            EnumStatus?
+  statusAgen            EnumStatus?
+  updatedByRoleAgen     String?
+  updatedByRolePengepul String?
+  updatedByAgen         Role?              @relation("UpdatedByAgen", fields: [updatedByRoleAgen], references: [id])
+  updatedByPengepul     Role?              @relation("UpdatedByPengepul", fields: [updatedByRolePengepul], references: [id])
+
+  TransaksiProduk       TransaksiProduk[]  
+
+  createdAt             DateTime           @default(now()) @map("created_at")
+  updatedAt             DateTime           @updatedAt @map("updated_at")
+}
+
+
+model TransaksiProduk {
+  id          String     @id @default(cuid())
+  transaksiId String
+  produkId    String
+  quantity    Int
+  transaksi   Transaksi  @relation(fields: [transaksiId], references: [id], onDelete: Cascade) // Relasi ke Transaksi
+  produk      Produk     @relation(fields: [produkId], references: [id], onDelete: Cascade)   // Relasi ke Produk
+
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+}
+
+model Produk {
+  id            String       @id @default(cuid())
+  product_name  String       @unique
+  price         Float
+  image         String
+  jenisId       String
+  jenis         JenisSampah  @relation(fields: [jenisId], references: [id]) // Relasi ke JenisSampah
+  transaksi     TransaksiProduk[] // Relasi balik ke TransaksiProduk
+
+  createdAt     DateTime     @default(now()) @map("created_at")
+  updatedAt     DateTime     @updatedAt @map("updated_at")
+}
+
+enum EnumJenisSampah {
+  SudahDiPilah
+  BelumDiPilah
+}
+
+model JenisSampah {
+  id          String       @id @default(cuid())
+  jenisSampah EnumJenisSampah
+  produk      Produk[]     // Relasi balik ke Produk
+}
+
+model Gallery {
+  id    String @id @default(cuid())
+  image String
+}
