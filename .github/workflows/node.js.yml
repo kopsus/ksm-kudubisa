@@ -17,11 +17,11 @@ jobs:
       matrix:
         node-version: [20.17.0]
 
-    env:
-      DATABASE_URL: ${{secrets.DATABASE_URL}}
-      JWT_SECRET: ${{secrets.JWT_SECRET}}
-      NEXT_PUBLIC_BASE_URL: ${{secrets.NEXT_PUBLIC_BASE_URL}}
-      NEXT_PUBLIC_ROLE_MASYARAKAT: ${{secrets.NEXT_PUBLIC_ROLE_MASYARAKAT}}
+    # env:
+    #   DATABASE_URL: ${{secrets.DATABASE_URL}}
+    #   JWT_SECRET: ${{secrets.JWT_SECRET}}
+    #   NEXT_PUBLIC_BASE_URL: ${{secrets.NEXT_PUBLIC_BASE_URL}}
+    #   NEXT_PUBLIC_ROLE_MASYARAKAT: ${{secrets.NEXT_PUBLIC_ROLE_MASYARAKAT}}
 
     steps:
       - uses: actions/checkout@v4
@@ -32,9 +32,8 @@ jobs:
           cache: "npm"
       - run: npm ci
 
-      - run: npm run build
-
       - name: Change directory
-        run: cd /home/kopsus/actions-runner/_work/ksm-kudubisa/ksm-kudubisa
+        run: |
+          cd /home/kopsus/actions-runner/_work/ksm-kudubisa/ksm-kudubisa
 
       - run: pm2 restart 0
