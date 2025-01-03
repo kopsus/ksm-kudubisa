@@ -17,11 +17,11 @@ jobs:
       matrix:
         node-version: [20.17.0]
 
-    # env:
-    #   DATABASE_URL: ${{secrets.DATABASE_URL}}
-    #   JWT_SECRET: ${{secrets.JWT_SECRET}}
-    #   NEXT_PUBLIC_BASE_URL: ${{secrets.NEXT_PUBLIC_BASE_URL}}
-    #   NEXT_PUBLIC_ROLE_MASYARAKAT: ${{secrets.NEXT_PUBLIC_ROLE_MASYARAKAT}}
+    env:
+      DATABASE_URL: ${{secrets.DATABASE_URL}}
+      JWT_SECRET: ${{secrets.JWT_SECRET}}
+      NEXT_PUBLIC_BASE_URL: ${{secrets.NEXT_PUBLIC_BASE_URL}}
+      NEXT_PUBLIC_ROLE_MASYARAKAT: ${{secrets.NEXT_PUBLIC_ROLE_MASYARAKAT}}
 
     steps:
       - uses: actions/checkout@v4
