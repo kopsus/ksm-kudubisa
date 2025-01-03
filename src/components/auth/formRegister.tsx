@@ -20,7 +20,7 @@ import React from "react";
 export const FormRegister = () => {
   const router = useRouter();
   const [payload, setPayload] = React.useState({
-    roleId: roleId!,
+    roleId: "1",
     username: "",
     namaLengkap: "",
     noTlp: "",

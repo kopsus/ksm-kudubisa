@@ -3,6 +3,7 @@ import path from "path";
 import { writeFile } from "fs/promises";
 import { ResponseHandler } from "@/lib/responseHandler";
 import { verifyToken } from "../middleware/verifyToken";
+import { baseURL } from "@/constants/variables";
 
 const getBaseUrl = () => {
   if (process.env.NODE_ENV === "production") {
@@ -33,7 +34,7 @@ export const POST = async (req: Request) => {
     const filename = file.name;
     const timestamp = Date.now();
     const uniqueName = `${timestamp}_${filename}`.replace(/\s+/g, "_");
-    const fileUrl = `${getBaseUrl()}/assets/${uniqueName}`;
+    const fileUrl = `${baseURL}/assets/${uniqueName}`;
 
     await writeFile(
       path.join(process.cwd(), "public/assets", uniqueName),
