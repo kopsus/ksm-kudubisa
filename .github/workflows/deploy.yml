@@ -27,15 +27,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
       # Deploy the application to the VPS
       - name: Deploy to GCP
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.USER_VPS }} << 'EOF'
+          sshpass -p "${{ secrets.USER_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.USER_VPS }} << 'EOF'
 
             cd ksm
             git pull origin main
