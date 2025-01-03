@@ -32,6 +32,8 @@ jobs:
           cache: "npm"
       - run: npm ci
 
+      - run: npm run build
+
       - name: Change directory
         run: |
           cd /home/kopsus/actions-runner/_work/ksm-kudubisa/ksm-kudubisa
