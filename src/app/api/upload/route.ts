@@ -3,16 +3,7 @@ import path from "path";
 import { writeFile } from "fs/promises";
 import { ResponseHandler } from "@/lib/responseHandler";
 import { verifyToken } from "../middleware/verifyToken";
-import { baseURL } from "@/constants/variables";
-
-const getBaseUrl = () => {
-  if (process.env.NODE_ENV === "production") {
-    // Jika di production, gunakan domain dari environment variable
-    return `https://${process.env.VERCEL_URL}`;
-  }
-  // Jika di development, gunakan localhost
-  return "http://localhost:3000";
-};
+import { imageURL } from "@/constants/variables";
 
 export const POST = async (req: Request) => {
   const decoded = await verifyToken(req);
@@ -34,7 +25,7 @@ export const POST = async (req: Request) => {
     const filename = file.name;
     const timestamp = Date.now();
     const uniqueName = `${timestamp}_${filename}`.replace(/\s+/g, "_");
-    const fileUrl = `${baseURL}/assets/${uniqueName}`;
+    const fileUrl = `${imageURL}/assets/${uniqueName}`;
 
     await writeFile(
       path.join(process.cwd(), "public/assets", uniqueName),
