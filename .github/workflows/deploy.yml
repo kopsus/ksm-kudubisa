@@ -40,10 +40,10 @@ jobs:
             export NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }} 
             export NEXT_PUBLIC_ROLE_MASYARAKAT=${{ secrets.NEXT_PUBLIC_ROLE_MASYARAKAT }} 
 
-            npm run build
-            # pm2 restart 0 --update-env
+            # npm run build
+            pm2 restart 0 --update-env
 
             # Save PM2 process list
-            # pm2 save
+            pm2 save
 
           EOF

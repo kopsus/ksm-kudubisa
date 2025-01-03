@@ -1,0 +1,76 @@
+{
+  "version": 3,
+  "middleware": {
+    "/": {
+      "files": [
+        "server/edge-runtime-webpack.js",
+        "server/src/middleware.js"
+      ],
+      "name": "src/middleware",
+      "page": "/",
+      "matchers": [
+        {
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?(?:\\/(\\/?index|\\/?index\\.json))?[\\/#\\?]?$",
+          "originalSource": "/"
+        },
+        {
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/edukasi(\\.json)?[\\/#\\?]?$",
+          "originalSource": "/edukasi"
+        },
+        {
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/layanan(\\.json)?[\\/#\\?]?$",
+          "originalSource": "/layanan"
+        },
+        {
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/tentang(\\.json)?[\\/#\\?]?$",
+          "originalSource": "/tentang"
+        },
+        {
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/login(\\.json)?[\\/#\\?]?$",
+          "originalSource": "/login"
+        },
+        {
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/register(\\.json)?[\\/#\\?]?$",
+          "originalSource": "/register"
+        },
+        {
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/profile(\\.json)?[\\/#\\?]?$",
+          "originalSource": "/profile"
+        },
+        {
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/dashboard(\\.json)?[\\/#\\?]?$",
+          "originalSource": "/dashboard"
+        },
+        {
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/gallery(\\.json)?[\\/#\\?]?$",
+          "originalSource": "/gallery"
+        },
+        {
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/produk(\\.json)?[\\/#\\?]?$",
+          "originalSource": "/produk"
+        },
+        {
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/transaksi(?:\\/((?:[^\\/#\\?]+?)(?:\\/(?:[^\\/#\\?]+?))*))?(\\.json)?[\\/#\\?]?$",
+          "originalSource": "/transaksi/:path*"
+        },
+        {
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/users(?:\\/((?:[^\\/#\\?]+?)(?:\\/(?:[^\\/#\\?]+?))*))?(\\.json)?[\\/#\\?]?$",
+          "originalSource": "/users/:path*"
+        }
+      ],
+      "wasm": [],
+      "assets": [],
+      "env": {
+        "__NEXT_BUILD_ID": "16IuU5578bdo96RavqMYC",
+        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "DcqX9dLBEasEN8EOAAdnsEWQOzMzC7BhZ7tASDtCtWE=",
+        "__NEXT_PREVIEW_MODE_ID": "e07ee8df6a2a015e16af6da4bc2c52a3",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "275f7b6b9ad43adaf8d70189347f0b3191dd7868a72a444c435ff7407c48ed5c",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "c5c77e331639f81b11fea8ba2d90e5afa4668fbdc0dfa2fe506a8af3acfd75c2"
+      }
+    }
+  },
+  "functions": {},
+  "sortedMiddleware": [
+    "/"
+  ]
+}
