@@ -68,13 +68,32 @@ export async function PATCH(req: NextRequest, { params }: any) {
       return ResponseHandler.InvalidData("User not found");
     }
 
-    const hashedPassword = await bcrypt.hash(body.password, 10);
+    let hashedPassword;
+    if (body.password) {
+      // Jika password baru, hash password tersebut
+      if (body.password !== user.password) {
+        const salt = await bcrypt.genSalt();
+        hashedPassword = await bcrypt.hash(body.password, salt);
+      } else {
+        // Jika password sama, tidak perlu meng-hash ulang
+        hashedPassword = user.password;
+      }
+    } else {
+      // Jika tidak ada password yang baru, gunakan password lama
+      hashedPassword = user.password;
+    }
 
     const updateUser = await prisma.user.update({
       where: { id },
       data: {
         ...body,
         password: hashedPassword,
+      },
+      select: {
+        namaLengkap: true,
+        username: true,
+        rt: true,
+        rw: true,
       },
     });
 

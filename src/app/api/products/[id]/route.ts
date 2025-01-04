@@ -2,6 +2,8 @@ import { prisma } from "@/constants/variables";
 import { ResponseHandler } from "@/lib/responseHandler";
 import { NextRequest } from "next/server";
 import { verifyToken } from "../../middleware/verifyToken";
+import path from "path";
+import { unlink } from "fs/promises";
 
 export async function GET(req: NextRequest, { params }: any) {
   try {
@@ -73,6 +75,18 @@ export async function DELETE(req: NextRequest, { params }: any) {
     if (!product) {
       return ResponseHandler.InvalidData("Produk not found");
     }
+
+    const filePath = path.join(
+      process.cwd(),
+      "public/assets",
+      path.basename(product.image)
+    );
+
+    // Menghapus gambar dari folder assets
+    await unlink(filePath).catch((err) => {
+      // Log error jika gagal menghapus file, namun lanjutkan untuk menghapus gallery dari database
+      console.error("Failed to delete image:", err);
+    });
 
     const deletedProduct = await prisma.produk.delete({
       where: { id },

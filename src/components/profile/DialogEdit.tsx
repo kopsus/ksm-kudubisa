@@ -24,6 +24,7 @@ import React from "react";
 import { useMutationUser } from "@/api/users/mutations";
 import { dataRT, dataRW } from "@/data/user";
 import DialogLayout from "../dashboard/_global/Layouts/Dialog";
+import { useQueryProfile } from "@/api/users/queries";
 
 export const DialogEdit = () => {
   const [dialog, setDialog] = useAtom(storeDialog);
@@ -58,6 +59,7 @@ export const DialogEdit = () => {
     }));
   };
 
+  const { refetch } = useQueryProfile();
   const { serviceUser } = useMutationUser();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -77,6 +79,7 @@ export const DialogEdit = () => {
       id: dialog.data?.id,
     });
 
+    refetch();
     closeDialog();
   };
 
