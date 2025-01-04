@@ -126,7 +126,6 @@ export const DialogCreate = () => {
           <Input
             type="file"
             name="image"
-            required
             onChange={(e) => {
               handleImageChange(e); // Update preview
               const file = e.target.files?.[0];

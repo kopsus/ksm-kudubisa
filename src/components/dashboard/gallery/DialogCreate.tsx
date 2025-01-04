@@ -33,7 +33,7 @@ export const DialogCreate = () => {
     e.preventDefault();
 
     if (!imageFile) {
-      alert("Please select an image to upload.");
+      alert("Tolong pilih image yang akan dijadikan gallery");
       return;
     }
 
