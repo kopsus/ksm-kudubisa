@@ -97,7 +97,7 @@ export async function PATCH(req: NextRequest, { params }: any) {
       },
     });
 
-    return ResponseHandler.updated(updateUser);
+    return ResponseHandler.updated(updateUser, "Berhasil update data user");
   } catch (error) {
     console.error(error);
     return ResponseHandler.serverError();

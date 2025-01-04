@@ -188,19 +188,17 @@ export const DialogCreate = () => {
             </SelectContent>
           </Select>
         </div>
-        {dialog.type === "CREATE" && (
-          <div className="grid grid-cols-4 items-center gap-4">
-            <p>Password</p>
-            <Input
-              placeholder="Password"
-              name="password"
-              className="col-span-3"
-              value={dialog.data?.password ?? ""}
-              onChange={onInputChange}
-              required
-            />
-          </div>
-        )}
+        <div className="grid grid-cols-4 items-center gap-4">
+          <p>Password</p>
+          <Input
+            placeholder="Password"
+            name="password"
+            className="col-span-3"
+            value={dialog.data?.password ?? ""}
+            onChange={onInputChange}
+            required={dialog.type === "CREATE" && true}
+          />
+        </div>
         <Button type="submit" className="mt-5">
           {dialog.type === "CREATE" ? "Tambah" : "Simpan Perubahan"}
         </Button>
