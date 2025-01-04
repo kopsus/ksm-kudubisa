@@ -15,46 +15,6 @@ const authRoutes = ["/login", "/register"];
 const publicRoutes = ["/edukasi", "/layanan", "/tentang"];
 
 export async function middleware(request: NextRequest) {
-  const origin = request.headers.get("origin");
-  const method = request.method;
-
-  // Tentukan domain yang diizinkan
-  const allowedOrigins = [
-    "http://localhost:3000",
-    "https://ksm.regulasipetir.com",
-  ];
-  if (origin && !allowedOrigins.includes(origin)) {
-    console.error(`Origin ${origin} not allowed.`);
-    return new NextResponse(null, {
-      status: 403,
-      statusText: "Forbidden",
-    });
-  }
-
-  // Handle Preflight Request (OPTIONS)
-  if (method === "OPTIONS") {
-    return new NextResponse(null, {
-      headers: {
-        "Access-Control-Allow-Origin": origin || "*",
-        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-      },
-    });
-  }
-
-  const response = NextResponse.next();
-
-  // Tambahkan header CORS
-  response.headers.set("Access-Control-Allow-Origin", origin || "*");
-  response.headers.set(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, OPTIONS"
-  );
-  response.headers.set(
-    "Access-Control-Allow-Headers",
-    "Content-Type, Authorization"
-  );
-
   const cookie = (await cookies()).get("accessToken"); // Ambil token dari cookies
   const url = request.nextUrl.clone(); // Clone URL agar bisa dimodifikasi
   const token = cookie ? cookie.value : null;
@@ -95,7 +55,7 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  return response; // Lanjutkan ke halaman yang diminta
+  return NextResponse.next(); // Lanjutkan ke halaman yang diminta
 }
 
 export const config = {
