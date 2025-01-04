@@ -7,9 +7,6 @@ const nextConfig: NextConfig = {
       {
         hostname: "localhost",
       },
-      {
-        hostname: "ksm.regulasipetir.com",
-      },
     ],
   },
 };
