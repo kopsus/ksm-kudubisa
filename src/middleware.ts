@@ -16,7 +16,7 @@ const publicRoutes = ["/edukasi", "/layanan", "/tentang"];
 
 export async function middleware(request: NextRequest) {
   const cookie = (await cookies()).get("accessToken"); // Ambil token dari cookies
-  const url = request.nextUrl.clone(); // Clone URL agar bisa dimodifikasi
+  const url = request.nextUrl.clone();
   const token = cookie ? cookie.value : null;
 
   if (token) {
