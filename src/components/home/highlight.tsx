@@ -1,6 +1,7 @@
 import React from "react";
 import highlightIMG from "@/assets/highlight.jpg";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 export const HighlightHome = () => {
   return (
@@ -19,7 +20,9 @@ export const HighlightHome = () => {
             hijau.
           </p>
         </div>
-        <Button variant={"danger"}>JUAL SAMPAH SEKARANG</Button>
+        <Link href={"/layanan"}>
+          <Button variant={"danger"}>JUAL SAMPAH SEKARANG</Button>
+        </Link>
       </div>
     </div>
   );
