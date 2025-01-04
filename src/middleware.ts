@@ -19,7 +19,10 @@ export async function middleware(request: NextRequest) {
   const method = request.method;
 
   // Tentukan domain yang diizinkan
-  const allowedOrigins = ["http://localhost:3000"];
+  const allowedOrigins = [
+    "http://localhost:3000",
+    "https://ksm.regulasipetir.com",
+  ];
   if (origin && !allowedOrigins.includes(origin)) {
     console.error(`Origin ${origin} not allowed.`);
     return new NextResponse(null, {
