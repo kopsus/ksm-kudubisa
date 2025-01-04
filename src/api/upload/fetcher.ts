@@ -1,8 +1,7 @@
-import { baseURL } from "@/constants/variables";
 import axios from "axios";
 
 const uploadImage = async (body: any) => {
-  const res = await axios.post(`${baseURL}/upload`, body, {
+  const res = await axios.post(`https://democms.byito.dev/files`, body, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

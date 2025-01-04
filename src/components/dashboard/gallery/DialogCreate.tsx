@@ -4,6 +4,7 @@ import { uploadImage } from "@/api/upload/fetcher";
 import DialogLayout from "@/components/dashboard/_global/Layouts/Dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { imageURL } from "@/constants/variables";
 import useImagePreview from "@/hooks/useImagePreview";
 import { storeDialog } from "@/store/dialog";
 import { useAtom } from "jotai";
@@ -42,8 +43,10 @@ export const DialogCreate = () => {
     const uploadResponse = await uploadImage(formData);
 
     if (uploadResponse?.data) {
+      const imageUrl = `${imageURL}/${uploadResponse.data.id}`;
+
       const newGalleryData: TypeGallery = {
-        image: uploadResponse.data,
+        image: imageUrl,
       };
 
       if (dialog.type === "CREATE") {

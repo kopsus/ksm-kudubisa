@@ -1,3 +1,4 @@
+import { TypeGallery } from "@/api/gallery/type";
 import { useQueryJenisSampah } from "@/api/jenisSampah/queries";
 import { useMutationProduct } from "@/api/produk/mutations";
 import { uploadImage } from "@/api/upload/fetcher";
@@ -11,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { imageURL } from "@/constants/variables";
 import useImagePreview from "@/hooks/useImagePreview";
 import { storeDialog } from "@/store/dialog";
 import { useAtom } from "jotai";
@@ -63,8 +65,10 @@ export const DialogCreate = () => {
     formData.append("file", file);
 
     try {
-      const response = await uploadImage(formData); // Fungsi uploadImage Anda
-      return response.data; // URL gambar yang berhasil di-upload
+      const response = await uploadImage(formData);
+      const imageUrl = `${imageURL}/${response.data.id}`;
+
+      return imageUrl; // URL gambar yang berhasil di-upload
     } catch (error) {
       console.error("Error uploading image:", error);
       throw new Error("Failed to upload image");

@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
       {
         hostname: "localhost",
       },
+      {
+        hostname: "democms.byito.dev",
+      },
     ],
   },
 };
