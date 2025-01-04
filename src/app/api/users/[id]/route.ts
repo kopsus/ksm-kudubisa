@@ -72,7 +72,8 @@ export async function PATCH(req: NextRequest, { params }: any) {
     if (body.password) {
       // Jika password baru, hash password tersebut
       if (body.password !== user.password) {
-        hashedPassword = await bcrypt.hash(body.password, 10);
+        const salt = await bcrypt.genSalt();
+        hashedPassword = await bcrypt.hash(body.password, salt);
       } else {
         // Jika password sama, tidak perlu meng-hash ulang
         hashedPassword = user.password;

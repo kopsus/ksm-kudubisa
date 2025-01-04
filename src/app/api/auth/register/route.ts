@@ -1,6 +1,6 @@
 import { prisma } from "@/constants/variables";
 import { ResponseHandler } from "@/lib/responseHandler";
-import bcrypt from "bcrypt";
+import bcrypt, { genSalt } from "bcrypt";
 
 export async function POST(req: Request) {
   try {
@@ -29,7 +29,8 @@ export async function POST(req: Request) {
       );
     }
 
-    const hashedPassword = await bcrypt.hash(body.password, 10);
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(body.password, salt);
 
     const newUser = await prisma.user.create({
       data: {
