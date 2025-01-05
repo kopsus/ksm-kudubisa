@@ -20,8 +20,9 @@ const Dashboard = () => {
   const filteredDataPengepul =
     dataTransactions?.filter((item) => {
       return (
-        item.updatedByAgen?.role === "Agen" &&
-        dataProfile?.role?.role === "Pengepul"
+        item.updatedByAgen?.role === "Agen" ||
+        (item.updatedByAgen?.role === "Admin" &&
+          dataProfile?.role?.role === "Pengepul")
       );
     }) || [];
 
