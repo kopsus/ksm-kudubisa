@@ -14,9 +14,10 @@ const TransaksiAgen = () => {
   const filteredData =
     dataTransactions?.filter((item) => {
       return (
-        item.updatedByAgen?.role === "Agen" &&
-        item.statusUser !== "Failed" &&
-        dataProfile?.role.role !== "Agen"
+        item.updatedByAgen?.role === "Agen" ||
+        (item.updatedByAgen?.role === "Admin" &&
+          item.statusUser !== "Failed" &&
+          dataProfile?.role.role !== "Agen")
       );
     }) || [];
 
