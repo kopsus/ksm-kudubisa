@@ -64,19 +64,19 @@ const TransactionDetail = () => {
 
     // Periksa perubahan pada updatedByRoleAgen
     if (
-      payload.updatedByRoleAgen &&
+      payload.statusUser &&
       payload.updatedByRoleAgen !== originalData?.updatedByRoleAgen
     ) {
-      cartData.updatedByRoleAgen = payload.updatedByRoleAgen;
+      cartData.updatedByRoleAgen = dataProfile?.role.id;
     }
 
     // Periksa perubahan pada updatedByRolePengepul
     if (
-      payload.updatedByRolePengepul &&
+      payload.statusAgen &&
       String(payload.updatedByRolePengepul) !==
         String(originalData?.updatedByRolePengepul)
     ) {
-      cartData.updatedByRolePengepul = payload.updatedByRolePengepul;
+      cartData.updatedByRolePengepul = dataProfile?.role.id;
     }
 
     // Pastikan TransaksiProduk tetap disertakan
