@@ -29,6 +29,9 @@ export async function GET() {
         updatedByAgen: true,
         updatedByPengepul: true,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
 
     return ResponseHandler.get(transactions);

@@ -7,6 +7,9 @@ export async function GET(req: Request) {
       include: {
         role: true,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
     const usersWithoutPassword = users.map(
       ({ password, ...userWithoutPassword }) => userWithoutPassword

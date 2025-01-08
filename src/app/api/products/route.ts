@@ -8,6 +8,9 @@ export async function GET() {
       include: {
         jenis: true,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
     return ResponseHandler.get(products);
   } catch (error) {
