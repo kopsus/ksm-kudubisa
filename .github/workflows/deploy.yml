@@ -48,6 +48,8 @@ jobs:
             export NEXT_PUBLIC_IMAGE=${{ secrets.NEXT_PUBLIC_IMAGE }} 
             export NEXT_PUBLIC_ROLE_MASYARAKAT=${{ secrets.NEXT_PUBLIC_ROLE_MASYARAKAT }} 
 
+            npx prisma migrate deploy
+
             npm run build
             
             pm2 restart 0 --update-env
