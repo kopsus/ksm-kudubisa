@@ -4,11 +4,7 @@ import { verifyToken } from "../middleware/verifyToken";
 
 export async function GET() {
   try {
-    const galleries = await prisma.gallery.findMany({
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
+    const galleries = await prisma.gallery.findMany();
     return ResponseHandler.get(galleries);
   } catch (error) {
     return ResponseHandler.serverError();
