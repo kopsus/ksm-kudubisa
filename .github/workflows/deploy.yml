@@ -48,6 +48,7 @@ jobs:
             export NEXT_PUBLIC_IMAGE=${{ secrets.NEXT_PUBLIC_IMAGE }} 
             export NEXT_PUBLIC_ROLE_MASYARAKAT=${{ secrets.NEXT_PUBLIC_ROLE_MASYARAKAT }} 
 
+            npx prisma db push
             npx prisma migrate deploy
 
             npm run build
