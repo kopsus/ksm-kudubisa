@@ -48,7 +48,9 @@ export const ListSampah = () => {
             >
               <div className="absolute top-0 left-0 w-full h-full bg-black/60" />
               <div className="relative w-full h-full flex flex-col items-center justify-center gap-5 text-white">
-                <p className="titleContent uppercase">{item.product_name}</p>
+                <p className="lg:titleContent uppercase text-center">
+                  {item.product_name}
+                </p>
                 <p>{formatIDR(item.price)}/kg</p>
               </div>
             </div>
