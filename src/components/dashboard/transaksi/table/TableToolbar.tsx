@@ -22,17 +22,18 @@ interface ITableToolbar<TData> {
 
 export function TableToolbar<TData>({ table }: ITableToolbar<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
+  const [selectedMonth, setSelectedMonth] = React.useState<
+    string | undefined
+  >();
 
   const handleMonthFilter = (month: string) => {
-    table
-      .getColumn("createdAt")
-      ?.setFilterValue((rowValue: string | number | Date) => {
-        if (typeof rowValue === "string") {
-          const rowMonth = new Date(rowValue).getMonth() + 1; // Bulan 0-based
-          return rowMonth.toString() === month;
-        }
-        return false;
-      });
+    setSelectedMonth(month); // Update nilai bulan yang dipilih
+    table.getColumn("createdAt")?.setFilterValue(month); // Terapkan filter tabel
+  };
+
+  const handleResetFilters = () => {
+    table.resetColumnFilters(); // Reset filter tabel
+    setSelectedMonth(undefined); // Reset nilai bulan
   };
 
   const exportToExcel = () => {
@@ -89,7 +90,7 @@ export function TableToolbar<TData>({ table }: ITableToolbar<TData>) {
         {isFiltered && (
           <Button
             variant="outline"
-            onClick={() => table.resetColumnFilters()}
+            onClick={handleResetFilters}
             className="h-8 px-2 lg:px-3"
           >
             Reset
@@ -103,7 +104,10 @@ export function TableToolbar<TData>({ table }: ITableToolbar<TData>) {
           Export to Excel
         </Button>
 
-        <Select onValueChange={(value) => handleMonthFilter(value)}>
+        <Select
+          value={selectedMonth || undefined}
+          onValueChange={(value) => handleMonthFilter(value)}
+        >
           <SelectTrigger className="w-max">
             <SelectValue placeholder="Pilih Bulan" />
           </SelectTrigger>

@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
       {
         hostname: "democms.byito.dev",
       },
+      {
+        hostname: "images.tokopedia.net",
+      },
     ],
   },
 };

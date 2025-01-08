@@ -146,8 +146,15 @@ export const Columns: ColumnDef<TypeTransaksi>[] = [
   {
     accessorKey: "createdAt",
     header: "Tanggal",
-    cell: ({ row }) => <p>{formatDate(row.getValue("createdAt"))}</p>,
+    cell: ({ row }) => formatDate(row.original.createdAt!),
+    filterFn: (row, columnId, filterValue) => {
+      if (!filterValue) return true; // Jika tidak ada filter, tampilkan semua data
+      const rowValue = row.getValue(columnId) as string; // Ambil nilai tanggal
+      const rowMonth = new Date(rowValue).getMonth() + 1; // Ambil bulan dari tanggal
+      return rowMonth.toString() === filterValue; // Bandingkan dengan bulan yang difilter
+    },
   },
+
   {
     accessorKey: "Action",
     header: "Action",

@@ -88,7 +88,7 @@ export const Cart = () => {
                     <div className="flex items-center gap-2">
                       <div className="w-16 h-16 rounded-xl overflow-hidden bg-primary shadow border">
                         <Image
-                          src={item.image ?? ""}
+                          src={item.image}
                           alt="products"
                           width={0}
                           height={0}
