@@ -1,4 +1,4 @@
-import structurOrganizationIMG from "@/assets/structureOrganization.jpg";
+import structurOrganizationIMG from "@/assets/structureOrganization.png";
 import Image from "next/image";
 
 export const StructureOrganitation = () => {

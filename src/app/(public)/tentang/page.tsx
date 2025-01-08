@@ -8,8 +8,8 @@ const page = () => {
   return (
     <>
       <Highlight
-        title="Kenal Lebih dalam KSM MM"
-        desc="sebanyak 31,13 juta ton sampah tertimbun di tahun 2021 dan sebanyak 19.45 juta ton sampah tertimbun di tahun 2022"
+        title="Kenal Lebih dalam KSM Kudu bisa"
+        desc="Kelompok Usaha Daur Ulang Barang Sisa"
       />
       <SambutanKetua />
       <VisiMisi />

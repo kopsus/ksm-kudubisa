@@ -13,8 +13,9 @@ export const VisiMisi = () => {
           <div className="relative w-full h-full flex flex-col gap-2 justify-end p-5 lg:p-10 text-white">
             <p className="titleSection">VISI</p>
             <p className="titleContent font-normal">
-              Menjadi pelopor dalam pengelolaan sampah berkelanjutan di [Nama
-              Wilayah] menuju lingkungan yang bersih, sehat, dan mandiri.
+              Mewujudkan Desa Sirau yang bersih, sehat, dan lestari melalui
+              pengelolaan sampah berbasis masyarakat website yang kreatif,
+              inovatif, dan berkelanjutan.
             </p>
           </div>
         </div>
@@ -25,10 +26,14 @@ export const VisiMisi = () => {
           <div className="absolute top-0 left-0 w-full h-full bg-black/50" />
           <div className="relative w-full h-full flex flex-col gap-2 justify-end p-5 lg:p-10 text-white">
             <p className="titleSection">MISI</p>
-            <p className="titleContent font-normal">
-              Kami mengajak masyarakat untuk berperan aktif dalam menjaga
-              kebersihan lingkungan melalui pengelolaan sampah yang baik.
-            </p>
+            <ul className="list-disc pl-5">
+              <li>Meningkatkan Kesadaran Masyarakat</li>
+              <li>Mengembangkan Sistem Pengelolaan Sampah</li>
+              <li>Mendorong Pemanfaatan Sampah</li>
+              <li>Memperkuat Kolaborasi dan Kemitraan</li>
+              <li>Menciptakan Peluang Ekonomi Baru</li>
+              <li>Menjaga Keberlanjutan Lingkungan</li>
+            </ul>
           </div>
         </div>
       </div>
