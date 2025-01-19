@@ -5,7 +5,7 @@ import bcrypt, { genSalt } from "bcrypt";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    let { username } = body;
+    let { username, password } = body;
 
     if (/\s/.test(username)) {
       return ResponseHandler.InvalidData(
@@ -15,6 +15,13 @@ export async function POST(req: Request) {
 
     if (!body) {
       ResponseHandler.InvalidData();
+    }
+
+    // Validasi password
+    if (!password || password.length < 8 || !/[a-zA-Z]/.test(password)) {
+      return ResponseHandler.InvalidData(
+        "Password harus minimal 8 karakter dan mengandung minimal 1 huruf."
+      );
     }
 
     const existingUser = await prisma.user.findUnique({
@@ -30,7 +37,7 @@ export async function POST(req: Request) {
     }
 
     const salt = await bcrypt.genSalt();
-    const hashedPassword = await bcrypt.hash(body.password, salt);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
     const newUser = await prisma.user.create({
       data: {

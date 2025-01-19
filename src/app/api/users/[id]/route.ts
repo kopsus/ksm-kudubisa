@@ -72,6 +72,17 @@ export async function PATCH(req: NextRequest, { params }: any) {
     if (body.password) {
       // Jika password baru, hash password tersebut
       if (body.password !== user.password) {
+        // Validasi password
+        if (
+          !body.password ||
+          body.password.length < 8 ||
+          !/[a-zA-Z]/.test(body.password)
+        ) {
+          return ResponseHandler.InvalidData(
+            "Password harus minimal 8 karakter dan mengandung minimal 1 huruf."
+          );
+        }
+
         const salt = await bcrypt.genSalt();
         hashedPassword = await bcrypt.hash(body.password, salt);
       } else {
