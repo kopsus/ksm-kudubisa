@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     // Validasi password
     if (!password || password.length < 8 || !/[a-zA-Z]/.test(password)) {
       return ResponseHandler.InvalidData(
-        "Password harus minimal 8 karakter dan mengandung minimal 1 huruf."
+        "Password harus minimal 8 huruf dan mengandung minimal 1 karakter."
       );
     }
 

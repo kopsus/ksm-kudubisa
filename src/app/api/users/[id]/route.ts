@@ -79,7 +79,7 @@ export async function PATCH(req: NextRequest, { params }: any) {
           !/[a-zA-Z]/.test(body.password)
         ) {
           return ResponseHandler.InvalidData(
-            "Password harus minimal 8 karakter dan mengandung minimal 1 huruf."
+            "Password harus minimal 8 huruf dan mengandung minimal 1 karakter."
           );
         }
 

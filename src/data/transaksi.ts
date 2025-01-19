@@ -1,19 +1,19 @@
 const statusesTransaksi = [
   {
     value: "Pending",
-    label: "Pending",
+    label: "Tertunda",
   },
   {
     value: "Process",
-    label: "Process",
+    label: "Proses",
   },
   {
     value: "Paid",
-    label: "Paid",
+    label: "Dibayar",
   },
   {
     value: "Failed",
-    label: "Failed",
+    label: "Gagal",
   },
 ];
 
