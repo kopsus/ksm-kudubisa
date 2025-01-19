@@ -41,10 +41,10 @@ model User {
 }
 
 enum EnumStatus {
-  Tertunda
-  Proses
-  Dibayar
-  Gagal
+  Pending
+  Process
+  Paid
+  Failed
 }
 
 model Transaksi {
