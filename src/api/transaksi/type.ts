@@ -2,7 +2,7 @@ import { TypeProducts } from "../produk/type";
 import { Role } from "../role/types";
 import { TypeUser } from "../users/type";
 
-type TypeStatus = "Pending" | "Process" | "Paid" | "Failed";
+type TypeStatus = "Tertunda" | "Proses" | "Dibayar" | "Gagal";
 
 type TypeUpdatedByAgen = {
   id?: string;
