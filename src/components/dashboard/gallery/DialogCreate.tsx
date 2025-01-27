@@ -37,6 +37,13 @@ export const DialogCreate = () => {
       return;
     }
 
+    const allowedTypes = ["image/png", "image/jpeg"];
+
+    if (!allowedTypes.includes(imageFile.type)) {
+      alert("Hanya file PNG dan JPG yang diperbolehkan.");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("file", imageFile);
 

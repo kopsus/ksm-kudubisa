@@ -61,6 +61,12 @@ export const DialogCreate = () => {
   const { dataJeniSampah } = useQueryJenisSampah();
 
   const handleUploadImage = async (file: File) => {
+    const allowedTypes = ["image/png", "image/jpeg"];
+
+    if (!allowedTypes.includes(file.type)) {
+      alert("Hanya file PNG dan JPG yang diperbolehkan.");
+    }
+
     const formData = new FormData();
     formData.append("file", file);
 
