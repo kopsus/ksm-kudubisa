@@ -71,6 +71,7 @@ export const DialogEdit = () => {
       noTlp: dialog.data?.noTlp ?? "",
       rt: dialog.data?.rt ?? "",
       rw: dialog.data?.rw ?? "",
+      password: dialog.data?.password ?? "",
     };
 
     await serviceUser({
@@ -159,6 +160,17 @@ export const DialogEdit = () => {
               </SelectContent>
             </Select>
           </div>
+        </div>
+        <div className="grid grid-cols-4 items-center gap-4">
+          <p>Password</p>
+          <Input
+            placeholder="Password"
+            type="text"
+            name="password"
+            className="col-span-3"
+            value={dialog.data?.password ?? ""}
+            onChange={onInputChange}
+          />
         </div>
         <div className="flex justify-end mt-5">
           <Button type="submit">Simpan Perubahan</Button>
