@@ -38,9 +38,15 @@ export const DialogCreate = () => {
     }
 
     const allowedTypes = ["image/png", "image/jpeg"];
+    const maxSize = 1 * 1024 * 1024;
 
     if (!allowedTypes.includes(imageFile.type)) {
       alert("Hanya file PNG dan JPG yang diperbolehkan.");
+      return;
+    }
+
+    if (imageFile.size > maxSize) {
+      alert("Ukuran file maksimal 1MB.");
       return;
     }
 

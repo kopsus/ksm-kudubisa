@@ -62,9 +62,15 @@ export const DialogCreate = () => {
 
   const handleUploadImage = async (file: File) => {
     const allowedTypes = ["image/png", "image/jpeg"];
+    const maxSize = 1 * 1024 * 1024;
 
     if (!allowedTypes.includes(file.type)) {
       alert("Hanya file PNG dan JPG yang diperbolehkan.");
+    }
+
+    if (file.size > maxSize) {
+      alert("Ukuran file maksimal 1MB.");
+      return;
     }
 
     const formData = new FormData();
