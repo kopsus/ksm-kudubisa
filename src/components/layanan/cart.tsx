@@ -51,15 +51,14 @@ export const Cart = () => {
       }[],
     };
 
-    await serviceTransaction({
+    const res = await serviceTransaction({
       type: "create",
       body: cartData,
     });
 
-    if (isLogin) {
+    if (res.status === 201) {
       setProducts({ data: [] });
       alert("anda berhasil menjual sampah");
-      router.push("/profile");
     }
 
     refetch();
