@@ -28,36 +28,26 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const res = await serviceAuth({
-      type: "login",
-      body: payload,
-    });
+    try {
+      const res = await serviceAuth({
+        type: "login",
+        body: payload,
+      });
 
-    if (res.status === 200) {
-      setIsLogin(true);
-      // Ambil token dari cookies
-      const cookies = getCookies() as { [key: string]: string };
-      const token = cookies.accessToken;
+      if (res.status === 200) {
+        setIsLogin(true);
+        refetch();
 
-      if (token) {
-        try {
-          // Decode token to check role
-          const decodedToken = JSON.parse(atob(token.split(".")[1])); // Decode JWT token (base64 encoded)
-          const role = decodedToken?.role;
-
-          // Redirect based on role
-          if (role === "Masyarakat") {
-            router.push("/"); // Redirect to main page if role is Masyarakat
-          } else {
-            router.push("/dashboard"); // Redirect to dashboard if role is not Masyarakat
-          }
-        } catch (error) {
-          console.error("Error decoding token", error);
-          alert("Error decoding token. Please try again.");
+        // Redirect berdasarkan URL dari backend
+        if (res.redirect) {
+          router.push(res.redirect);
+        } else {
+          router.push("/"); // fallback
         }
       }
+    } catch (error) {
+      console.error("Login gagal:", error);
     }
-    refetch();
   };
 
   return (

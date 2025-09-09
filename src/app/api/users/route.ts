@@ -4,9 +4,6 @@ import { ResponseHandler } from "@/lib/responseHandler";
 export async function GET(req: Request) {
   try {
     const users = await prisma.user.findMany({
-      include: {
-        role: true,
-      },
       orderBy: {
         createdAt: "desc",
       },

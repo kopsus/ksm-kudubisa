@@ -12,7 +12,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: "#2A9D8F",
+        primary: "#00aeed",
         danger: "#FF0000",
         current: "currentColor",
         transparent: "transparent",

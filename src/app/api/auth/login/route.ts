@@ -3,39 +3,60 @@ import { prisma } from "@/constants/variables";
 import { ResponseHandler } from "@/lib/responseHandler";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
     const { username, password } = await req.json();
 
     const user = await prisma.user.findFirst({
-      where: {
-        username,
-      },
-      include: {
-        role: true,
-      },
+      where: { username },
     });
-    if (!user) return ResponseHandler.InvalidData("Username Tidak Ditemukan!");
 
-    const passwordValidate = await bcrypt.compare(password, user.password);
-    if (!passwordValidate)
-      return ResponseHandler.InvalidData("Kata Sandi yang anda masukan salah!");
+    if (!user) return ResponseHandler.InvalidData("Username tidak ditemukan!");
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      return ResponseHandler.InvalidData("Password salah!");
+    }
 
     const payload = {
       id: user.id,
       username: user.username,
-      role: user.role.role,
+      role: user.role,
     };
 
-    const token = await jwt.sign(payload, process.env.JWT_SECRET!);
-
-    (await cookies()).set("accessToken", token, {
-      path: "/",
+    const token = await jwt.sign(payload, process.env.JWT_SECRET!, {
+      expiresIn: "1d",
     });
 
-    return ResponseHandler.get("Berhasil Login");
+    // Set token ke cookie
+    (
+      await // Set token ke cookie
+      cookies()
+    ).set("accessToken", token, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+    });
+
+    // Tentukan redirect URL berdasarkan role
+    let redirectUrl = "/";
+    if (user.role !== "Masyarakat") {
+      redirectUrl = "/dashboard";
+    }
+
+    return NextResponse.json(
+      {
+        status: 200,
+        message: "Berhasil login!",
+        redirect: redirectUrl,
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    return ResponseHandler.serverError();
+    console.error(error);
+    return ResponseHandler.serverError("Terjadi kesalahan server.");
   }
 }

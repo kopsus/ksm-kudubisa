@@ -28,9 +28,15 @@ const useMutationAuth = () => {
       }
     },
     onSuccess: (res) => {
-      if (res.status === 400) {
-        alert(res.message);
-      }
+      alert(res.message);
+    },
+    onError: (error: any) => {
+      // Tangani error response dengan aman
+      const message =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Terjadi kesalahan yang tidak diketahui.";
+      alert(message);
     },
   });
 

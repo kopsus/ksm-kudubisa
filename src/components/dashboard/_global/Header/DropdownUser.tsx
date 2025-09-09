@@ -40,7 +40,7 @@ const DropdownUser = () => {
             <span className="block text-sm font-medium text-black dark:text-white">
               {dataProfile?.username}
             </span>
-            <span className="block text-xs">{dataProfile?.role?.role}</span>
+            <span className="block text-xs">{dataProfile?.role}</span>
           </span>
         )}
 

@@ -1,7 +1,6 @@
 import { TypeGallery } from "@/api/gallery/type";
 import { useQueryJenisSampah } from "@/api/jenisSampah/queries";
 import { useMutationProduct } from "@/api/produk/mutations";
-import { uploadImage } from "@/api/upload/fetcher";
 import DialogLayout from "@/components/dashboard/_global/Layouts/Dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,8 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { imageURL } from "@/constants/variables";
 import useImagePreview from "@/hooks/useImagePreview";
+import { handleUploadImage } from "@/hooks/useUploadImage";
 import { storeDialog } from "@/store/dialog";
 import { useAtom } from "jotai";
 import Image from "next/image";
@@ -59,33 +58,6 @@ export const DialogCreate = () => {
 
   const { serviceProduct } = useMutationProduct();
   const { dataJeniSampah } = useQueryJenisSampah();
-
-  const handleUploadImage = async (file: File) => {
-    const allowedTypes = ["image/png", "image/jpeg"];
-    const maxSize = 1 * 1024 * 1024;
-
-    if (!allowedTypes.includes(file.type)) {
-      alert("Hanya file PNG dan JPG yang diperbolehkan.");
-    }
-
-    if (file.size > maxSize) {
-      alert("Ukuran file maksimal 1MB.");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-      const response = await uploadImage(formData);
-      const imageUrl = `${imageURL}/${response.data.id}`;
-
-      return imageUrl; // URL gambar yang berhasil di-upload
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      throw new Error("Failed to upload image");
-    }
-  };
 
   const mutationProduct = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

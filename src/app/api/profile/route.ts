@@ -25,7 +25,6 @@ export async function GET(req: Request) {
               },
             },
           },
-          role: true,
         },
       });
 

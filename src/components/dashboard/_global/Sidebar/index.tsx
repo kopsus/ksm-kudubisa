@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import SidebarItem from "./SidebarItem";
 import ClickOutside from "../ClickOutside";
 import useLocalStorage from "@/hooks/useLocalStorage";
@@ -98,9 +97,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
   const { dataProfile } = useQueryProfile();
 
-  const menuItems = dataProfile
-    ? getMenuGroups(dataProfile.role?.role as Role)
-    : [];
+  const menuItems = dataProfile ? getMenuGroups(dataProfile.role as Role) : [];
 
   return (
     <ClickOutside onClick={() => setSidebarOpen(false)}>

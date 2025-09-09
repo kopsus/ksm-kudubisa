@@ -5,9 +5,6 @@ import { verifyToken } from "../middleware/verifyToken";
 export async function GET() {
   try {
     const products = await prisma.produk.findMany({
-      include: {
-        jenis: true,
-      },
       orderBy: {
         createdAt: "desc",
       },

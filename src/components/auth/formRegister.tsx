@@ -113,13 +113,6 @@ export const FormRegister = () => {
         onChange={onInputChange}
         required
       />
-      <div className="flex items-start gap-2 my-3">
-        <input type="checkbox" required />
-        <p className="text-xs text-black/70">
-          Saya menyatakan bahwa sampah yang akan saya jual adalah milik saya
-          sendiri dan diperoleh secara legal.
-        </p>
-      </div>
       <Button type="submit">{isPending ? <LoaderCircle /> : "Daftar"}</Button>
       <p className="text-sm">
         Sudah Punya Akun?{" "}

@@ -15,14 +15,14 @@ const Dashboard = () => {
   const { dataTransactions } = useQueryTransaction();
   const { dataUsers } = useQueryUsers();
 
-  const role = dataProfile?.role?.role;
+  const role = dataProfile?.role;
 
   const filteredDataPengepul =
     dataTransactions?.filter((item) => {
       return (
         item.updatedByAgen?.role === "Agen" ||
         (item.updatedByAgen?.role === "Admin" &&
-          dataProfile?.role?.role === "Pengepul")
+          dataProfile?.role === "Pengepul")
       );
     }) || [];
 

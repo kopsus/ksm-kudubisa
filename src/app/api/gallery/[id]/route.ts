@@ -35,20 +35,38 @@ export async function PATCH(req: NextRequest, { params }: any) {
     const body = await req.json();
     const { id } = params;
 
-    const gallery = await prisma.gallery.findUnique({
+    // 1. Cari data gallery yang ada untuk mendapatkan path gambar lama
+    const existingGallery = await prisma.gallery.findUnique({
       where: {
         id,
       },
     });
 
-    if (!gallery) {
+    if (!existingGallery) {
       return ResponseHandler.InvalidData("Gallery not found");
     }
 
+    // Simpan path gambar lama sebelum diupdate
+    const oldImagePath = existingGallery.image;
+
+    // 2. Update data gallery di database dengan data baru
     const updatedGallery = await prisma.gallery.update({
       where: { id },
       data: body,
     });
+
+    // 3. Cek jika ada path gambar baru di body DAN path itu berbeda dari yang lama
+    if (body.image && body.image !== oldImagePath) {
+      try {
+        // Buat path lengkap ke file lama
+        const oldFilePath = path.join(process.cwd(), "public", oldImagePath);
+        // Hapus file lama
+        await unlink(oldFilePath);
+        console.log("Successfully deleted old image file:", oldImagePath);
+      } catch (err) {
+        console.error("Failed to delete old image file:", err);
+      }
+    }
 
     return ResponseHandler.updated(updatedGallery);
   } catch (error) {
@@ -63,7 +81,7 @@ export async function DELETE(req: NextRequest, { params }: any) {
   }
 
   try {
-    const { id } = await params;
+    const { id } = params;
 
     const gallery = await prisma.gallery.findUnique({
       where: {
@@ -75,18 +93,19 @@ export async function DELETE(req: NextRequest, { params }: any) {
       return ResponseHandler.InvalidData("Gallery not found");
     }
 
-    const filePath = path.join(
-      process.cwd(),
-      "public/assets",
-      path.basename(gallery.image)
-    );
+    // Path ke file yang akan dihapus (gallery.image harusnya seperti '/uploads/namafile.jpg')
+    const filePath = path.join(process.cwd(), "public", gallery.image);
 
-    // Menghapus gambar dari folder assets
-    await unlink(filePath).catch((err) => {
-      // Log error jika gagal menghapus file, namun lanjutkan untuk menghapus gallery dari database
-      console.error("Failed to delete image:", err);
-    });
+    // Hapus gambar dari folder uploads
+    try {
+      await unlink(filePath);
+      console.log("Successfully deleted image file:", filePath);
+    } catch (err) {
+      // Log error jika file tidak ada, tapi tetap lanjutkan proses
+      console.error("Failed to delete image file (may not exist):", err);
+    }
 
+    // Hapus data dari database
     const deletedGallery = await prisma.gallery.delete({
       where: { id },
     });

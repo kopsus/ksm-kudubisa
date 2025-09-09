@@ -25,9 +25,7 @@ export const DialogCreate = () => {
     setImageFile(null); // Reset file after closing dialog
   };
 
-  const imageSrc = previewUrl || dialog.data?.image || "";
-
-  const { serviceGallery } = useMutationGallery();
+  const { serviceGallery, isPending } = useMutationGallery();
 
   const mutationGallery = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -56,7 +54,7 @@ export const DialogCreate = () => {
     const uploadResponse = await uploadImage(formData);
 
     if (uploadResponse?.data) {
-      const imageUrl = `${imageURL}/${uploadResponse.data.id}`;
+      const imageUrl = `/uploads/${uploadResponse.data.id}`;
 
       const newGalleryData: TypeGallery = {
         image: imageUrl,
@@ -82,6 +80,8 @@ export const DialogCreate = () => {
       alert("Failed to upload image.");
     }
   };
+
+  const imageSrc = previewUrl || (dialog.data?.image ? dialog.data.image : "");
 
   return (
     <DialogLayout
@@ -113,7 +113,9 @@ export const DialogCreate = () => {
           }}
           className="max-w-72"
         />
-        <Button type="submit">Simpan</Button>
+        <Button disabled={isPending} type="submit">
+          {isPending ? "Loading..." : "Simpan"}
+        </Button>
       </form>
     </DialogLayout>
   );

@@ -3,7 +3,6 @@ import { TypeRole } from "../role/types";
 
 type TypeUser = {
   id: string;
-  roleId: string;
   role: TypeRole;
   username: string;
   namaLengkap: string;
@@ -16,7 +15,6 @@ type TypeUser = {
 };
 
 type TypeUserBody = {
-  roleId?: string;
   username: string;
   namaLengkap: string;
   noTlp: string;
