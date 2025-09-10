@@ -32,7 +32,7 @@ export const Columns: ColumnDef<TypeUser>[] = [
     accessorKey: "role",
     header: "Role",
     cell: ({ row }) => {
-      const role = row.original.role.role;
+      const role = row.original.role;
       return <p>{role}</p>;
     },
   },

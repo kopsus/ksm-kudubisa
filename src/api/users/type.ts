@@ -1,9 +1,9 @@
 import { TypeTransaksi } from "@/api/transaksi/type";
-import { TypeRole } from "../role/types";
+import { EnumRole } from "@prisma/client";
 
 type TypeUser = {
   id: string;
-  role: TypeRole;
+  role: EnumRole;
   username: string;
   namaLengkap: string;
   noTlp: string;

@@ -1,6 +1,7 @@
 import { prisma } from "@/constants/variables";
 import { ResponseHandler } from "@/lib/responseHandler";
 import { verifyToken } from "../middleware/verifyToken";
+import { NextRequest } from "next/server";
 
 export async function GET() {
   try {
@@ -15,7 +16,7 @@ export async function GET() {
   }
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   const decoded = await verifyToken(req);
   if (decoded instanceof Response) {
     return decoded;

@@ -1,7 +1,6 @@
 "use client";
 
 import { useMutationAuth } from "@/api/auth/mutation";
-import { useQueryRoles } from "@/api/role/queries";
 import { useMutationUser } from "@/api/users/mutations";
 import { useQueryUsers } from "@/api/users/queries";
 import { TypeUserBody } from "@/api/users/type";
@@ -17,12 +16,12 @@ import {
 } from "@/components/ui/select";
 import { dataRT, dataRW } from "@/data/user";
 import { storeDialog } from "@/store/dialog";
+import { EnumRole } from "@prisma/client";
 import { useAtom } from "jotai";
 import React from "react";
 
 export const DialogCreate = () => {
   const [dialog, setDialog] = useAtom(storeDialog);
-  const { dataRoles } = useQueryRoles();
 
   const closeDialog = () => {
     setDialog((prev) => ({
@@ -62,7 +61,6 @@ export const DialogCreate = () => {
     e.preventDefault();
 
     const payload: TypeUserBody = {
-      roleId: dialog.data?.roleId ?? "",
       username: dialog.data?.username ?? "",
       namaLengkap: dialog.data?.namaLengkap ?? "",
       noTlp: dialog.data?.noTlp ?? "",
@@ -180,11 +178,14 @@ export const DialogCreate = () => {
               <SelectValue placeholder="Role" />
             </SelectTrigger>
             <SelectContent>
-              {dataRoles?.map((item, index) => (
-                <SelectItem key={index} value={item.id ?? ""}>
-                  {item.role}
-                </SelectItem>
-              ))}
+              <SelectItem value={EnumRole.Admin}>{EnumRole.Admin}</SelectItem>
+              <SelectItem value={EnumRole.Agen}>{EnumRole.Agen}</SelectItem>
+              <SelectItem value={EnumRole.Masyarakat}>
+                {EnumRole.Masyarakat}
+              </SelectItem>
+              <SelectItem value={EnumRole.Pengepul}>
+                {EnumRole.Pengepul}
+              </SelectItem>
             </SelectContent>
           </Select>
         </div>

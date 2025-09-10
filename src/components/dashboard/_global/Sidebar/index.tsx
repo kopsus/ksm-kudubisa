@@ -13,7 +13,8 @@ import {
 } from "lucide-react";
 import { Logo } from "@/components/_global/logo";
 import React from "react";
-import { useQueryProfile } from "@/api/users/queries";
+import { useAtomValue } from "jotai";
+import { profileAtom } from "@/store/profile";
 
 // Define a MenuItem type
 interface MenuItem {
@@ -95,7 +96,7 @@ const getMenuGroups = (role: Role): MenuItem[] => {
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
-  const { dataProfile } = useQueryProfile();
+  const dataProfile = useAtomValue(profileAtom);
 
   const menuItems = dataProfile ? getMenuGroups(dataProfile.role as Role) : [];
 

@@ -5,11 +5,12 @@ import { DataTable } from "@/components/dashboard/transaksi/table/DataTable";
 import { Columns } from "@/components/dashboard/transaksi/table/Columns";
 import React from "react";
 import { useQueryTransaction } from "@/api/transaksi/queries";
-import { useQueryProfile } from "@/api/users/queries";
+import { useAtomValue } from "jotai";
+import { profileAtom } from "@/store/profile";
 
 const TransaksiAgen = () => {
   const { dataTransactions } = useQueryTransaction();
-  const { dataProfile } = useQueryProfile();
+  const dataProfile = useAtomValue(profileAtom);
 
   const filteredData =
     dataTransactions?.filter((item) => {
@@ -17,7 +18,7 @@ const TransaksiAgen = () => {
         item.updatedByAgen?.role === "Agen" ||
         (item.updatedByAgen?.role === "Admin" &&
           item.statusUser !== "Failed" &&
-          dataProfile?.role.role !== "Agen")
+          dataProfile?.role !== "Agen")
       );
     }) || [];
 

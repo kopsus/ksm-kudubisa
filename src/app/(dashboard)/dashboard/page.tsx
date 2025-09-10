@@ -3,13 +3,15 @@
 import { useQueryProducts } from "@/api/produk/queries";
 import { useQueryGalleries } from "@/api/gallery/queries";
 import { useQueryTransaction } from "@/api/transaksi/queries";
-import { useQueryProfile, useQueryUsers } from "@/api/users/queries";
+import { useQueryUsers } from "@/api/users/queries";
 import CardDataStats from "@/components/dashboard/_global/CardDataStats";
 import { Album, ShoppingCart, Users } from "lucide-react";
 import React from "react";
+import { useAtomValue } from "jotai";
+import { profileAtom } from "@/store/profile";
 
 const Dashboard = () => {
-  const { dataProfile } = useQueryProfile();
+  const dataProfile = useAtomValue(profileAtom);
   const { dataGallery } = useQueryGalleries();
   const { dataProduct } = useQueryProducts();
   const { dataTransactions } = useQueryTransaction();

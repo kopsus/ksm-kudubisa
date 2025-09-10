@@ -2,15 +2,15 @@ import { useState } from "react";
 import Link from "next/link";
 import ClickOutside from "../ClickOutside";
 import { ChevronDown, LoaderCircle, LogOut } from "lucide-react";
-import { useQueryProfile } from "@/api/users/queries";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { storeIsLogin } from "@/store/isLogin";
 import { useMutationAuth } from "@/api/auth/mutation";
 import { useRouter } from "next/navigation";
+import { profileAtom } from "@/store/profile";
 
 const DropdownUser = () => {
+  const dataProfile = useAtomValue(profileAtom);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const { dataProfile, isLoading } = useQueryProfile();
   const [_, setIsLogin] = useAtom(storeIsLogin);
   const router = useRouter();
 
@@ -33,17 +33,12 @@ const DropdownUser = () => {
         className="flex items-center gap-4"
         href="#"
       >
-        {isLoading ? (
-          <LoaderCircle />
-        ) : (
-          <span className="hidden text-right lg:block">
-            <span className="block text-sm font-medium text-black dark:text-white">
-              {dataProfile?.username}
-            </span>
-            <span className="block text-xs">{dataProfile?.role}</span>
+        <span className="hidden text-right lg:block">
+          <span className="block text-sm font-medium text-black dark:text-white">
+            {dataProfile?.username}
           </span>
-        )}
-
+          <span className="block text-xs">{dataProfile?.role}</span>
+        </span>
         <ChevronDown />
       </Link>
 

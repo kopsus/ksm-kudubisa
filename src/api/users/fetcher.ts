@@ -7,10 +7,6 @@ const getUsers = async () => {
   return res.data;
 };
 
-const getProfile = async () => {
-  const res = await AxiosInstance.get(`${baseURL}/profile`);
-  return res.data;
-};
 const createUsers = async (body: TypeUserBody) => {
   const res = await AxiosInstance.post(`${baseURL}/auth/register`, body);
   return res.data;
@@ -30,4 +26,4 @@ const deleteUsers = async (id: string) => {
   return res.data;
 };
 
-export { getUsers, getProfile, createUsers, updateUsers, deleteUsers };
+export { getUsers, createUsers, updateUsers, deleteUsers };

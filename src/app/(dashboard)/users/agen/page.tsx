@@ -13,8 +13,7 @@ import { useQueryUsers } from "@/api/users/queries";
 const UserAgen = () => {
   const setDialog = useSetAtom(storeDialog);
   const { dataUsers } = useQueryUsers();
-  const filteredData =
-    dataUsers?.filter((item) => item.role.role === "Agen") || [];
+  const filteredData = dataUsers?.filter((item) => item.role === "Agen") || [];
 
   return (
     <>

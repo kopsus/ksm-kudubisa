@@ -1,23 +1,24 @@
 "use client";
 
 import { useQueryTransaction } from "@/api/transaksi/queries";
-import { useQueryProfile } from "@/api/users/queries";
 import { DialogDelete } from "@/components/dashboard/transaksi/dialog/DialogDelete";
 import { Columns } from "@/components/dashboard/transaksi/table/Columns";
 import { DataTable } from "@/components/dashboard/transaksi/table/DataTable";
+import { profileAtom } from "@/store/profile";
+import { useAtomValue } from "jotai";
 
 const TransaksiMayarakat = () => {
-  const { dataProfile } = useQueryProfile();
+  const dataProfile = useAtomValue(profileAtom);
   const { dataTransactions } = useQueryTransaction();
 
   const filteredData =
     dataTransactions?.filter((item) => {
       // Jika role adalah 'Agen', tampilkan hanya transaksi dengan rt yang sesuai
-      if (dataProfile?.role.role === "Agen") {
+      if (dataProfile?.role === "Agen") {
         return item.user.rt === dataProfile?.rt;
       }
       // Jika role adalah 'Admin', tampilkan semua transaksi
-      if (dataProfile?.role.role !== "Pengepul") {
+      if (dataProfile?.role !== "Pengepul") {
         return item; // Menampilkan semua transaksi
       }
       return false; // Untuk kasus lain, bisa diatur sesuai kebutuhan

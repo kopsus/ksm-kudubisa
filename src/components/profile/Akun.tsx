@@ -1,13 +1,13 @@
 import React from "react";
 import { Card } from "../ui/card";
 import { Edit } from "lucide-react";
-import { useQueryProfile } from "@/api/users/queries";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { storeDialog } from "@/store/dialog";
+import { profileAtom } from "@/store/profile";
 
 export const Akun = () => {
   const [_, setDialog] = useAtom(storeDialog);
-  const { dataProfile } = useQueryProfile();
+  const dataProfile = useAtomValue(profileAtom);
 
   return (
     <Card className="sticky top-20">

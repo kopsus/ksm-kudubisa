@@ -5,15 +5,7 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import { Logo } from "./logo";
 import { usePathname, useRouter } from "next/navigation";
-import {
-  BookX,
-  Home,
-  LoaderCircle,
-  LogOut,
-  Store,
-  UserCircle,
-  UserCog,
-} from "lucide-react";
+import { BookX, Home, LogOut, Store, UserCircle, UserCog } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -32,12 +24,12 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useMutationAuth } from "@/api/auth/mutation";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { storeIsLogin } from "@/store/isLogin";
-import { useQueryProfile } from "@/api/users/queries";
+import { profileAtom } from "@/store/profile";
 
 export const Header = () => {
-  const { dataProfile, isLoading } = useQueryProfile();
+  const dataProfile = useAtomValue(profileAtom);
   const itemHeader = [
     {
       label: "Beranda",
@@ -120,7 +112,7 @@ export const Header = () => {
             <DropdownMenuLabel>
               <Link href={"/profile"} className="flex items-center gap-2">
                 <UserCircle />
-                {isLoading ? <LoaderCircle /> : dataProfile?.username}
+                {dataProfile?.username}
               </Link>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />

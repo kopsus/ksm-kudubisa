@@ -3,7 +3,6 @@
 import { useMutationTransaction } from "@/api/transaksi/mutations";
 import { useQueryTransactionDetail } from "@/api/transaksi/queries";
 import { TypeTransaksiBody } from "@/api/transaksi/type";
-import { useQueryProfile } from "@/api/users/queries";
 import { Cart } from "@/components/dashboard/transaksi/detailTransaksi/Cart";
 import { ListProducts } from "@/components/dashboard/transaksi/detailTransaksi/ListProducts";
 import { Badge } from "@/components/ui/badge";
@@ -16,8 +15,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { statusesTransaksi } from "@/data/transaksi";
+import { profileAtom } from "@/store/profile";
 import { storeTransaksi } from "@/store/transaksi";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -34,7 +34,7 @@ const TransactionDetail = () => {
   });
   const router = useRouter();
 
-  const { dataProfile } = useQueryProfile();
+  const dataProfile = useAtomValue(profileAtom);
 
   const onValueChange = (value: string, name: string) => {
     setPayload((prev) => ({
@@ -67,7 +67,7 @@ const TransactionDetail = () => {
       payload.statusUser &&
       payload.updatedByRoleAgen !== originalData?.updatedByRoleAgen
     ) {
-      cartData.updatedByRoleAgen = dataProfile?.role.id;
+      cartData.updatedByRoleAgen = dataProfile?.role;
     }
 
     // Periksa perubahan pada updatedByRolePengepul
@@ -76,7 +76,7 @@ const TransactionDetail = () => {
       String(payload.updatedByRolePengepul) !==
         String(originalData?.updatedByRolePengepul)
     ) {
-      cartData.updatedByRolePengepul = dataProfile?.role.id;
+      cartData.updatedByRolePengepul = dataProfile?.role;
     }
 
     // Pastikan TransaksiProduk tetap disertakan
@@ -152,7 +152,7 @@ const TransactionDetail = () => {
             <p>Status Transaksi User</p>
             <div className="col-span-2 flex gap-2">
               :
-              {dataProfile?.role.role === "Pengepul" ? (
+              {dataProfile?.role === "Pengepul" ? (
                 <Badge
                   variant={
                     detailTransaction?.statusUser === "Process"
@@ -196,7 +196,7 @@ const TransactionDetail = () => {
             <p>Status Transaksi Pengepul</p>
             <div className="col-span-2 flex gap-2">
               :
-              {dataProfile?.role.role === "Agen" ? (
+              {dataProfile?.role === "Agen" ? (
                 <Badge
                   variant={
                     detailTransaction?.statusAgen === "Process"

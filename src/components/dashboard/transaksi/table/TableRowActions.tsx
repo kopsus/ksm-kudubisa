@@ -11,16 +11,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { storeDialog } from "@/store/dialog";
-import { useSetAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { useRouter } from "next/navigation";
-import { useQueryProfile } from "@/api/users/queries";
+import { profileAtom } from "@/store/profile";
 
 interface ITableRowActions {
   itemId: string;
 }
 
 export function DataTableRowActions({ itemId }: ITableRowActions) {
-  const { dataProfile } = useQueryProfile();
+  const dataProfile = useAtomValue(profileAtom);
   const setDialog = useSetAtom(storeDialog);
   const router = useRouter();
 
@@ -55,7 +55,7 @@ export function DataTableRowActions({ itemId }: ITableRowActions) {
             <Eye size={16} />
           </DropdownMenuShortcut>
         </DropdownMenuItem>
-        {dataProfile?.role.role === "Admin" && (
+        {dataProfile?.role === "Admin" && (
           <DropdownMenuItem onClick={handleDelete}>
             Delete
             <DropdownMenuShortcut>

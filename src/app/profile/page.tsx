@@ -5,11 +5,12 @@ import React from "react";
 import highlightIMG from "@/assets/highlight.jpg";
 import { DataTable } from "@/components/profile/table/DataTable";
 import { Columns } from "@/components/profile/table/Columns";
-import { useQueryProfile } from "@/api/users/queries";
 import { DialogEdit } from "@/components/profile/DialogEdit";
+import { useAtomValue } from "jotai";
+import { profileAtom } from "@/store/profile";
 
 const Profile = () => {
-  const { dataProfile } = useQueryProfile();
+  const dataProfile = useAtomValue(profileAtom);
 
   return (
     <div

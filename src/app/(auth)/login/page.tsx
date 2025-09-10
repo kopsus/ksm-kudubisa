@@ -2,12 +2,10 @@
 
 import { useMutationAuth } from "@/api/auth/mutation";
 import { TypeLogin } from "@/api/auth/type";
-import { useQueryProfile } from "@/api/users/queries";
 import highlightIMG from "@/assets/highlight.jpg";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { storeIsLogin } from "@/store/isLogin";
-import { getCookies } from "cookies-next";
 import { useAtom } from "jotai";
 import { LoaderCircle } from "lucide-react";
 import Link from "next/link";
@@ -21,7 +19,6 @@ const Login = () => {
     password: "",
   });
 
-  const { refetch } = useQueryProfile();
   const { serviceAuth, isPending } = useMutationAuth();
   const [_, setIsLogin] = useAtom(storeIsLogin);
 
@@ -36,7 +33,6 @@ const Login = () => {
 
       if (res.status === 200) {
         setIsLogin(true);
-        refetch();
 
         // Redirect berdasarkan URL dari backend
         if (res.redirect) {

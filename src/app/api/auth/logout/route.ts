@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "../../middleware/verifyToken";
 
-export async function DELETE(req: Request) {
+export async function DELETE(req: NextRequest) {
   const decoded = await verifyToken(req);
   if (decoded instanceof Response) {
     return decoded;

@@ -8,16 +8,16 @@ import { storeProducts } from "@/store/products";
 import { formatIDR } from "@/lib/formated";
 import { useMutationTransaction } from "@/api/transaksi/mutations";
 import { TypeTransaksiBody } from "@/api/transaksi/type";
-import { useQueryProfile } from "@/api/users/queries";
 import { storeIsLogin } from "@/store/isLogin";
 import { useRouter } from "next/navigation";
 import { LoaderCircle } from "lucide-react";
+import { profileAtom } from "@/store/profile";
 
 export const Cart = () => {
   const dataThead = ["Barang", "Jumlah"];
   const [products, setProducts] = useAtom(storeProducts);
   const isLogin = useAtomValue(storeIsLogin);
-  const { refetch } = useQueryProfile();
+  const dataProfile = useAtomValue(profileAtom);
   const router = useRouter();
 
   const { serviceTransaction, isPending } = useMutationTransaction();
@@ -60,8 +60,6 @@ export const Cart = () => {
       setProducts({ data: [] });
       alert("anda berhasil menjual sampah");
     }
-
-    refetch();
   };
 
   return (

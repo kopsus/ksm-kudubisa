@@ -14,7 +14,7 @@ const UserPengepul = () => {
   const setDialog = useSetAtom(storeDialog);
   const { dataUsers } = useQueryUsers();
   const filteredData =
-    dataUsers?.filter((item) => item.role.role === "Pengepul") || [];
+    dataUsers?.filter((item) => item.role === "Pengepul") || [];
   return (
     <>
       <Breadcrumb

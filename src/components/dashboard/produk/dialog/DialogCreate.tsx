@@ -1,5 +1,3 @@
-import { TypeGallery } from "@/api/gallery/type";
-import { useQueryJenisSampah } from "@/api/jenisSampah/queries";
 import { useMutationProduct } from "@/api/produk/mutations";
 import DialogLayout from "@/components/dashboard/_global/Layouts/Dialog";
 import { Button } from "@/components/ui/button";
@@ -14,6 +12,7 @@ import {
 import useImagePreview from "@/hooks/useImagePreview";
 import { handleUploadImage } from "@/hooks/useUploadImage";
 import { storeDialog } from "@/store/dialog";
+import { EnumJenisSampah } from "@prisma/client";
 import { useAtom } from "jotai";
 import Image from "next/image";
 import React from "react";
@@ -57,7 +56,6 @@ export const DialogCreate = () => {
   };
 
   const { serviceProduct } = useMutationProduct();
-  const { dataJeniSampah } = useQueryJenisSampah();
 
   const mutationProduct = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -154,11 +152,12 @@ export const DialogCreate = () => {
                 <SelectValue placeholder="Jenis Penjualan" />
               </SelectTrigger>
               <SelectContent>
-                {dataJeniSampah?.map((item) => (
-                  <SelectItem key={item.id} value={item.id}>
-                    {item.jenisSampah}
-                  </SelectItem>
-                ))}
+                <SelectItem value={EnumJenisSampah.BelumDiPilah}>
+                  {EnumJenisSampah.BelumDiPilah}
+                </SelectItem>
+                <SelectItem value={EnumJenisSampah.SudahDiPilah}>
+                  {EnumJenisSampah.SudahDiPilah}
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>

@@ -30,8 +30,6 @@ export async function GET(req: NextRequest, { params }: any) {
             noTlp: true,
           },
         },
-        updatedByAgen: true,
-        updatedByPengepul: true,
       },
     });
 

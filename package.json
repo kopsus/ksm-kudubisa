@@ -28,6 +28,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
     "cookies-next": "^5.0.2",
+    "jose": "^6.1.0",
     "jotai": "^2.10.3",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.468.0",

@@ -1,8 +1,9 @@
 import { ResponseHandler } from "@/lib/responseHandler";
 import { verifyToken } from "../middleware/verifyToken";
 import { prisma } from "@/constants/variables";
+import { NextRequest } from "next/server";
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   const decoded = await verifyToken(req);
   if (decoded instanceof Response) {
     return decoded;
