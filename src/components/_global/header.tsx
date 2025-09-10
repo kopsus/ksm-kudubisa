@@ -24,12 +24,12 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useMutationAuth } from "@/api/auth/mutation";
-import { useAtom, useAtomValue } from "jotai";
-import { storeIsLogin } from "@/store/isLogin";
+import { useAtomValue } from "jotai";
 import { profileAtom } from "@/store/profile";
 
 export const Header = () => {
   const dataProfile = useAtomValue(profileAtom);
+
   const itemHeader = [
     {
       label: "Beranda",
@@ -68,8 +68,6 @@ export const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const [isLogin, setIsLogin] = useAtom(storeIsLogin);
-
   const { serviceAuth } = useMutationAuth();
 
   const handleLogout = async () => {
@@ -78,8 +76,10 @@ export const Header = () => {
       body: "",
     });
 
-    setIsLogin(false);
     router.push("/");
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
   };
 
   return (
@@ -103,7 +103,7 @@ export const Header = () => {
           </Link>
         ))}
       </div>
-      {isLogin ? (
+      {dataProfile ? (
         <DropdownMenu>
           <DropdownMenuTrigger className="outline-none">
             <UserCircle className="w-7 h-7 text-white" />

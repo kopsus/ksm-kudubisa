@@ -8,7 +8,6 @@ import { storeProducts } from "@/store/products";
 import { formatIDR } from "@/lib/formated";
 import { useMutationTransaction } from "@/api/transaksi/mutations";
 import { TypeTransaksiBody } from "@/api/transaksi/type";
-import { storeIsLogin } from "@/store/isLogin";
 import { useRouter } from "next/navigation";
 import { LoaderCircle } from "lucide-react";
 import { profileAtom } from "@/store/profile";
@@ -16,7 +15,6 @@ import { profileAtom } from "@/store/profile";
 export const Cart = () => {
   const dataThead = ["Barang", "Jumlah"];
   const [products, setProducts] = useAtom(storeProducts);
-  const isLogin = useAtomValue(storeIsLogin);
   const dataProfile = useAtomValue(profileAtom);
   const router = useRouter();
 
@@ -25,7 +23,7 @@ export const Cart = () => {
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    if (!isLogin) {
+    if (!dataProfile) {
       alert("login terlebih dahulu");
       router.push("/login");
       return;

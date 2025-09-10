@@ -1,9 +1,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import ClickOutside from "../ClickOutside";
-import { ChevronDown, LoaderCircle, LogOut } from "lucide-react";
-import { useAtom, useAtomValue } from "jotai";
-import { storeIsLogin } from "@/store/isLogin";
+import { ChevronDown, LogOut } from "lucide-react";
+import { useAtomValue } from "jotai";
 import { useMutationAuth } from "@/api/auth/mutation";
 import { useRouter } from "next/navigation";
 import { profileAtom } from "@/store/profile";
@@ -11,7 +10,6 @@ import { profileAtom } from "@/store/profile";
 const DropdownUser = () => {
   const dataProfile = useAtomValue(profileAtom);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [_, setIsLogin] = useAtom(storeIsLogin);
   const router = useRouter();
 
   const { serviceAuth } = useMutationAuth();
@@ -22,8 +20,10 @@ const DropdownUser = () => {
       body: "",
     });
 
-    setIsLogin(false);
     router.push("/");
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
   };
 
   return (

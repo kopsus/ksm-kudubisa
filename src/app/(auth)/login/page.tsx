@@ -5,7 +5,6 @@ import { TypeLogin } from "@/api/auth/type";
 import highlightIMG from "@/assets/highlight.jpg";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { storeIsLogin } from "@/store/isLogin";
 import { useAtom } from "jotai";
 import { LoaderCircle } from "lucide-react";
 import Link from "next/link";
@@ -20,7 +19,6 @@ const Login = () => {
   });
 
   const { serviceAuth, isPending } = useMutationAuth();
-  const [_, setIsLogin] = useAtom(storeIsLogin);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,14 +30,14 @@ const Login = () => {
       });
 
       if (res.status === 200) {
-        setIsLogin(true);
-
         // Redirect berdasarkan URL dari backend
         if (res.redirect) {
           router.push(res.redirect);
         } else {
           router.push("/"); // fallback
         }
+
+        router.refresh();
       }
     } catch (error) {
       console.error("Login gagal:", error);

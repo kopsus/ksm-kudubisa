@@ -8,6 +8,7 @@ import { profileAtom } from "@/store/profile";
 export const Akun = () => {
   const [_, setDialog] = useAtom(storeDialog);
   const dataProfile = useAtomValue(profileAtom);
+  console.log("Data profile", dataProfile);
 
   return (
     <Card className="sticky top-20">
