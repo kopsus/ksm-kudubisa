@@ -4,7 +4,7 @@ import React from "react";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { Logo } from "./logo";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { BookX, Home, LogOut, Store, UserCircle, UserCog } from "lucide-react";
 
 import {
@@ -53,7 +53,6 @@ export const Header = () => {
     },
   ];
 
-  const router = useRouter();
   const pathname = usePathname();
   const isActiveLink = (href: string) => pathname === href;
 
@@ -71,15 +70,10 @@ export const Header = () => {
   const { serviceAuth } = useMutationAuth();
 
   const handleLogout = async () => {
-    await serviceAuth({
+    serviceAuth({
       type: "logout",
       body: "",
     });
-
-    router.push("/");
-    setTimeout(() => {
-      router.refresh();
-    }, 100);
   };
 
   return (

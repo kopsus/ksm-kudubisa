@@ -5,14 +5,11 @@ import { TypeLogin } from "@/api/auth/type";
 import highlightIMG from "@/assets/highlight.jpg";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useAtom } from "jotai";
 import { LoaderCircle } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React from "react";
 
 const Login = () => {
-  const router = useRouter();
   const [payload, setPayload] = React.useState<TypeLogin>({
     username: "",
     password: "",
@@ -24,21 +21,10 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await serviceAuth({
+      serviceAuth({
         type: "login",
         body: payload,
       });
-
-      if (res.status === 200) {
-        // Redirect berdasarkan URL dari backend
-        if (res.redirect) {
-          router.push(res.redirect);
-        } else {
-          router.push("/"); // fallback
-        }
-
-        router.refresh();
-      }
     } catch (error) {
       console.error("Login gagal:", error);
     }

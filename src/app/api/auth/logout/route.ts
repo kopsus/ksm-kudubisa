@@ -9,5 +9,9 @@ export async function DELETE(req: NextRequest) {
   }
   const cookieStore = await cookies();
   cookieStore.delete("accessToken");
-  return NextResponse.json({ message: "anda berhasil logout!!" });
+  return NextResponse.json({
+    status: 200,
+    message: "Anda berhasil logout!",
+    redirect: "/",
+  });
 }

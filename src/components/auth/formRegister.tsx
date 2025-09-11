@@ -10,17 +10,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { roleId } from "@/constants/variables";
 import { dataRT, dataRW } from "@/data/user";
+import { EnumRole } from "@prisma/client";
 import { LoaderCircle } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React from "react";
 
 export const FormRegister = () => {
-  const router = useRouter();
   const [payload, setPayload] = React.useState({
-    roleId: roleId!,
+    role: EnumRole.Masyarakat,
     username: "",
     namaLengkap: "",
     noTlp: "",
@@ -50,13 +48,12 @@ export const FormRegister = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const res = await serviceAuth({
+    serviceAuth({
       type: "register",
       body: payload,
     });
-    if (res.message === "Created") {
-      router.push("/login");
-    }
+
+    window.location.reload();
   };
 
   return (

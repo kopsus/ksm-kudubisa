@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { TypeLogin } from "./type";
 import { fetchLogout, mutationAuth } from "./fetcher";
 import { TypeUserBody } from "../users/type";
+import { useRouter } from "next/navigation";
 
 type MUTATION_TYPE =
   | { type: "login"; body: TypeLogin }
@@ -9,6 +10,7 @@ type MUTATION_TYPE =
   | { type: "logout"; body: string };
 
 const useMutationAuth = () => {
+  const router = useRouter();
   const mutation = useMutation({
     mutationKey: ["auth"],
     mutationFn: ({ type, body }: MUTATION_TYPE) => {
@@ -29,6 +31,12 @@ const useMutationAuth = () => {
     },
     onSuccess: (res) => {
       alert(res.message);
+
+      if (res.redirect) {
+        window.location.href = res.redirect;
+      } else {
+        window.location.href = "/";
+      }
     },
     onError: (error: any) => {
       // Tangani error response dengan aman
@@ -42,7 +50,7 @@ const useMutationAuth = () => {
 
   return {
     ...mutation,
-    serviceAuth: mutation.mutateAsync,
+    serviceAuth: mutation.mutate,
   };
 };
 

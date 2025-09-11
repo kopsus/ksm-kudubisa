@@ -3,9 +3,9 @@ import { prisma } from "@/constants/variables";
 import { ResponseHandler } from "@/lib/responseHandler";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const { username, password } = await req.json();
 
@@ -23,6 +23,8 @@ export async function POST(req: Request) {
     const payload = {
       id: user.id,
       username: user.username,
+      role: user.role,
+      rt: user.rt,
     };
 
     const token = await jwt.sign(payload, process.env.JWT_SECRET!, {

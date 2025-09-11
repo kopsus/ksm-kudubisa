@@ -13,6 +13,8 @@ export async function GET(request: NextRequest) {
     const userProfile = decoded;
 
     const { id: userId, role, rt: userRt } = userProfile;
+    console.log("Data profile", userProfile);
+
     // 2. Siapkan klausa 'where' untuk query Prisma
     let whereClause = {};
 

@@ -15,15 +15,12 @@ const DropdownUser = () => {
   const { serviceAuth } = useMutationAuth();
 
   const handleLogout = async () => {
-    await serviceAuth({
+    serviceAuth({
       type: "logout",
       body: "",
     });
 
-    router.push("/");
-    setTimeout(() => {
-      window.location.reload();
-    }, 100);
+    window.location.reload();
   };
 
   return (

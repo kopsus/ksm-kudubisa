@@ -1,5 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
-import { useQueryUsers } from "./queries";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createUsers, updateUsers, deleteUsers } from "./fetcher";
 import { TypeUserBody } from "./type";
 
@@ -10,7 +9,7 @@ interface MUTATION_TYPE {
 }
 
 const useMutationUser = () => {
-  const { refetch } = useQueryUsers();
+  const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationKey: ["user mutation"],
     mutationFn: ({ body, type, id }: MUTATION_TYPE) => {
@@ -25,7 +24,7 @@ const useMutationUser = () => {
       }
     },
     onSuccess: () => {
-      refetch();
+      queryClient.invalidateQueries({ queryKey: ["users"] });
     },
   });
   return {
