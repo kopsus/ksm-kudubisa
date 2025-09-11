@@ -16,17 +16,6 @@ export async function GET(req: NextRequest) {
         where: {
           id,
         },
-        include: {
-          transaksi: {
-            include: {
-              TransaksiProduk: {
-                include: {
-                  produk: true,
-                },
-              },
-            },
-          },
-        },
       });
 
       if (!user) {

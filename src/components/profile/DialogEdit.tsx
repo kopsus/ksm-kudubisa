@@ -1,13 +1,3 @@
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import {
@@ -24,6 +14,7 @@ import React from "react";
 import { useMutationUser } from "@/api/users/mutations";
 import { dataRT, dataRW } from "@/data/user";
 import DialogLayout from "../dashboard/_global/Layouts/Dialog";
+import { useQueryProfile } from "@/api/users/queries";
 
 export const DialogEdit = () => {
   const [dialog, setDialog] = useAtom(storeDialog);
@@ -59,6 +50,8 @@ export const DialogEdit = () => {
   };
 
   const { serviceUser } = useMutationUser();
+  const { refetch } = useQueryProfile();
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -77,6 +70,7 @@ export const DialogEdit = () => {
       id: dialog.data?.id,
     });
 
+    refetch();
     closeDialog();
   };
 

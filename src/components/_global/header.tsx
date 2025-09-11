@@ -78,7 +78,7 @@ export const Header = () => {
 
     router.push("/");
     setTimeout(() => {
-      window.location.reload();
+      router.refresh();
     }, 100);
   };
 
