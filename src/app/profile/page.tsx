@@ -6,11 +6,10 @@ import highlightIMG from "@/assets/highlight.jpg";
 import { DataTable } from "@/components/profile/table/DataTable";
 import { Columns } from "@/components/profile/table/Columns";
 import { DialogEdit } from "@/components/profile/DialogEdit";
-import { useAtomValue } from "jotai";
-import { profileAtom } from "@/store/profile";
+import { useQueryTransaction } from "@/api/transaksi/queries";
 
 const Profile = () => {
-  const dataProfile = useAtomValue(profileAtom);
+  const { dataTransactions } = useQueryTransaction();
 
   return (
     <div
@@ -25,7 +24,7 @@ const Profile = () => {
           </div>
 
           <div className="lg:col-span-2">
-            <DataTable columns={Columns} data={dataProfile?.transaksi || []} />
+            <DataTable columns={Columns} data={dataTransactions || []} />
           </div>
         </div>
       </div>

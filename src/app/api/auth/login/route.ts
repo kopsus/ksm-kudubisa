@@ -4,7 +4,6 @@ import { ResponseHandler } from "@/lib/responseHandler";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { TypeUser } from "@/api/users/type";
 
 export async function POST(req: Request) {
   try {
@@ -21,14 +20,9 @@ export async function POST(req: Request) {
       return ResponseHandler.InvalidData("Password salah!");
     }
 
-    const payload: TypeUser = {
+    const payload = {
       id: user.id,
       username: user.username,
-      role: user.role,
-      namaLengkap: user.namaLengkap,
-      noTlp: user.noTlp,
-      rt: user.rt ?? "",
-      rw: user.rw ?? "",
     };
 
     const token = await jwt.sign(payload, process.env.JWT_SECRET!, {

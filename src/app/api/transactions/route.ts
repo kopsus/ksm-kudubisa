@@ -3,9 +3,59 @@ import { ResponseHandler } from "@/lib/responseHandler";
 import { verifyToken } from "../middleware/verifyToken";
 import { NextRequest } from "next/server";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const decoded = await verifyToken(request);
+    if (decoded instanceof Response) {
+      return decoded;
+    }
+
+    const userProfile = decoded;
+
+    const { id: userId, role, rt: userRt } = userProfile;
+    // 2. Siapkan klausa 'where' untuk query Prisma
+    let whereClause = {};
+
+    // 3. Terapkan logika filter berdasarkan role
+    switch (role) {
+      case "Masyarakat":
+        // Hanya tampilkan transaksi yang dibuat oleh user ini
+        whereClause = {
+          userId: userId,
+        };
+        break;
+
+      case "Agen":
+        // Tampilkan transaksi dari user yang punya RT sama dengan Agen
+        // Pastikan Agen punya RT
+        if (!userRt) {
+          return ResponseHandler.notFound("Agen tidak memiliki data RT.");
+        }
+        whereClause = {
+          user: {
+            rt: userRt,
+          },
+        };
+        break;
+
+      case "Pengepul":
+        // Tampilkan transaksi yang sudah di-update oleh Agen
+        whereClause = {
+          updatedByRoleAgen: {
+            not: null,
+          },
+        };
+        break;
+
+      case "Admin":
+        // Tidak ada filter, tampilkan semua
+        whereClause = {};
+        break;
+    }
+
+    // 4. Eksekusi query dengan filter yang sudah dibuat
     const transactions = await prisma.transaksi.findMany({
+      where: whereClause, // Terapkan filter di sini
       include: {
         user: {
           select: {
@@ -35,6 +85,7 @@ export async function GET() {
 
     return ResponseHandler.get(transactions);
   } catch (error) {
+    console.error("Error fetching transactions:", error);
     return ResponseHandler.serverError();
   }
 }

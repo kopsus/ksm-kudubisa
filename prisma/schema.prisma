@@ -14,7 +14,6 @@ enum EnumRole {
   Admin
 }
 
-
 model User {
   id                  String       @id @default(cuid())
   username            String       @unique
