@@ -17,7 +17,7 @@ export const SampahBelumDipilah = () => {
       <div className="grid lg:grid-cols-2 gap-5 w-full">
         {dataProduct?.map(
           (item, index) =>
-            item.jenis?.jenisSampah === "BelumDiPilah" && (
+            item.jenis === "BelumDiPilah" && (
               <CardSampah
                 key={index}
                 id={item.id!}

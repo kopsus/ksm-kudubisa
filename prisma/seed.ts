@@ -68,7 +68,6 @@ async function main() {
       price: 3000,
       image: "/images/produk/botol-pet.jpg",
       jenis: EnumJenisSampah.SudahDiPilah,
-      jenisId: "1", // jenisId bisa disesuaikan atau dihapus
     },
   });
 
@@ -78,7 +77,6 @@ async function main() {
       price: 1500,
       image: "/images/produk/kardus.jpg",
       jenis: EnumJenisSampah.SudahDiPilah,
-      jenisId: "1",
     },
   });
 
@@ -88,7 +86,6 @@ async function main() {
       price: 500,
       image: "/images/produk/sampah-campur.jpg",
       jenis: EnumJenisSampah.BelumDiPilah,
-      jenisId: "2",
     },
   });
   console.log("Produk created.");

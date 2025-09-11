@@ -77,7 +77,6 @@ model Produk {
   product_name  String       @unique
   price         Float
   image         String
-  jenisId       String
   jenis         EnumJenisSampah
   transaksi     TransaksiProduk[] // Relasi balik ke TransaksiProduk
 

@@ -17,7 +17,7 @@ export const SampahSudahDipilah = () => {
       >
         {dataProduct?.map(
           (item, index) =>
-            item.jenis?.jenisSampah === "SudahDiPilah" && (
+            item.jenis === "SudahDiPilah" && (
               <CardSampah
                 key={index}
                 id={item.id!}

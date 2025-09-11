@@ -38,13 +38,12 @@ export const columns: ColumnDef<TypeProducts>[] = [
     accessorKey: "jenis",
     header: "Penjualan",
     cell: ({ row }) => {
-      const jenisSampah = row.original.jenis?.jenisSampah; // Mengakses jenisSampah
+      const jenisSampah = row.original.jenis; // Mengakses jenisSampah
       return <p>{jenisSampah}</p>;
     },
     filterFn: (row, id, value) => {
       // Memeriksa apakah jenis.jenisSampah termasuk dalam filter value
-      const jenisSampah = (row.getValue(id) as TypeProducts["jenis"])
-        ?.jenisSampah;
+      const jenisSampah = row.getValue(id) as TypeProducts["jenis"];
       return value.includes(jenisSampah); // Mencocokkan dengan nilai filter
     },
   },

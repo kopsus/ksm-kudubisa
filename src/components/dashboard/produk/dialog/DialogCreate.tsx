@@ -1,4 +1,6 @@
 import { useMutationProduct } from "@/api/produk/mutations";
+import { TypeProducts } from "@/api/produk/type";
+import { uploadImage } from "@/api/upload/fetcher";
 import DialogLayout from "@/components/dashboard/_global/Layouts/Dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,8 +33,6 @@ export const DialogCreate = () => {
     setImageFile(null);
   };
 
-  const imageSrc = (previewUrl || dialog.data?.image) ?? "";
-
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -50,7 +50,7 @@ export const DialogCreate = () => {
       ...prev,
       data: {
         ...prev.data!,
-        jenisId: value,
+        jenis: value,
       },
     }));
   };
@@ -59,38 +59,70 @@ export const DialogCreate = () => {
 
   const mutationProduct = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const imageUrl = imageFile
-      ? await handleUploadImage(imageFile)
-      : dialog.data?.image;
 
-    const payloadProduct = {
-      image: imageUrl,
-      product_name: dialog.data?.product_name ?? "",
-      price: dialog.data?.price ?? 0,
-      jenisId: dialog.data?.jenisId ?? "",
-    };
+    if (!imageFile) {
+      alert("Tolong pilih image yang akan di-upload.");
+      return;
+    }
+
+    // Validasi file
+    const allowedTypes = ["image/png", "image/jpeg"];
+    const maxSize = 1 * 1024 * 1024;
+
+    if (!allowedTypes.includes(imageFile.type)) {
+      alert("Hanya file PNG dan JPG yang diperbolehkan.");
+      return;
+    }
+
+    if (imageFile.size > maxSize) {
+      alert("Ukuran file maksimal 1MB.");
+      return;
+    }
+
+    // Membuat FormData untuk upload
+    const formData = new FormData();
+    formData.append("file", imageFile);
 
     try {
-      if (dialog.type === "CREATE") {
-        // Call create gallery API
-        await serviceProduct({
-          type: "create",
-          body: payloadProduct,
-        });
-        closeDialog();
+      // Upload gambar ke server
+      const uploadResponse = await uploadImage(formData);
+
+      if (uploadResponse?.data) {
+        const imageUrl = `/uploads/${uploadResponse.data.id}`; // Mengambil URL gambar dari response API
+
+        // Payload untuk produk
+        const payloadProduct = {
+          image: imageUrl, // URL gambar
+          product_name: dialog.data?.product_name ?? "",
+          price: dialog.data?.price ?? 0,
+          jenis: dialog.data?.jenis ?? EnumJenisSampah.SudahDiPilah, // Default ke "SudahDiPilah"
+        };
+
+        // Memanggil API untuk create/update produk
+        if (dialog.type === "CREATE") {
+          await serviceProduct({
+            type: "create",
+            body: payloadProduct,
+          });
+          closeDialog();
+        } else {
+          await serviceProduct({
+            type: "update",
+            body: payloadProduct,
+            id: dialog.data?.id,
+          });
+          closeDialog();
+        }
       } else {
-        // Call update gallery API
-        await serviceProduct({
-          type: "update",
-          body: payloadProduct,
-          id: dialog.data?.id,
-        });
-        closeDialog();
+        alert("Failed to upload image.");
       }
     } catch (error) {
-      console.error(error);
+      console.error("Error uploading image:", error);
+      alert("Terjadi kesalahan saat meng-upload gambar.");
     }
   };
+
+  const imageSrc = previewUrl || (dialog.data?.image ? dialog.data.image : "");
 
   return (
     <DialogLayout
@@ -102,7 +134,13 @@ export const DialogCreate = () => {
         <div className="flex flex-col items-center gap-3">
           <div className="w-40 h-40 rounded-xl border bg-white shadow-1 overflow-hidden">
             {previewUrl || dialog.data?.image ? (
-              <Image src={imageSrc} alt="" width={0} height={0} sizes="100vw" />
+              <Image
+                src={imageSrc}
+                alt="Preview"
+                width={0}
+                height={0}
+                sizes="100vw"
+              />
             ) : null}
           </div>
           <Input
@@ -144,8 +182,8 @@ export const DialogCreate = () => {
           <div className="col-span-3">
             <Select
               onValueChange={onValueChange}
-              name="jenisId"
-              value={dialog.data?.jenisId ?? ""} // Pastikan ini merujuk ke ID
+              name="jenis"
+              value={dialog.data?.jenis ?? EnumJenisSampah.SudahDiPilah}
               required
             >
               <SelectTrigger>

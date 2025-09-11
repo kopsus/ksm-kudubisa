@@ -27,7 +27,7 @@ export const SampahDipilah = ({ handleAdd, handleMin }: ISampahDipilah) => {
       >
         {dataProduct?.map(
           (item, index) =>
-            item.jenis?.jenisSampah === "SudahDiPilah" && (
+            item.jenis === "SudahDiPilah" && (
               <div
                 key={index}
                 className="grid grid-cols-2 items-start justify-start gap-5"
