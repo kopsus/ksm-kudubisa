@@ -148,6 +148,5 @@ main()
     process.exit(1);
   })
   .finally(async () => {
-    // Tutup koneksi Prisma
     await prisma.$disconnect();
   });
