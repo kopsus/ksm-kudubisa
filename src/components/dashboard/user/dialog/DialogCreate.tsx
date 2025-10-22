@@ -70,8 +70,8 @@ export const DialogCreate = () => {
     };
 
     if (dialog.type === "CREATE") {
-      const res = await serviceAuth({
-        type: "register",
+      const res = await serviceUser({
+        type: "create",
         body: payload,
       });
       if (res.status !== 400) {

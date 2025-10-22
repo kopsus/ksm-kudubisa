@@ -19,14 +19,11 @@ export const POST = async (req: Request) => {
     const filename = file.name;
     const timestamp = Date.now();
     const uniqueName = `${timestamp}_${filename}`.replace(/\s+/g, "_");
+    const uploadDir = "/var/www/uploads";
 
     // Tetap simpan file dengan path lengkap
-    await writeFile(
-      path.join(process.cwd(), "/public/uploads", uniqueName),
-      buffer
-    );
+    await writeFile(path.join(process.cwd(), uploadDir, uniqueName), buffer);
 
-    // 🔥 PERUBAHAN: Kembalikan objek dengan properti 'id' yang berisi nama unik file
     return ResponseHandler.created({ id: uniqueName });
   } catch (error) {
     return ResponseHandler.serverError();

@@ -49,7 +49,6 @@ CREATE TABLE `Produk` (
     `product_name` VARCHAR(191) NOT NULL,
     `price` DOUBLE NOT NULL,
     `image` VARCHAR(191) NOT NULL,
-    `jenisId` VARCHAR(191) NOT NULL,
     `jenis` ENUM('SudahDiPilah', 'BelumDiPilah') NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,

@@ -2,7 +2,6 @@ import { useMutation } from "@tanstack/react-query";
 import { TypeLogin } from "./type";
 import { fetchLogout, mutationAuth } from "./fetcher";
 import { TypeUserBody } from "../users/type";
-import { useRouter } from "next/navigation";
 
 type MUTATION_TYPE =
   | { type: "login"; body: TypeLogin }
@@ -10,7 +9,6 @@ type MUTATION_TYPE =
   | { type: "logout"; body: string };
 
 const useMutationAuth = () => {
-  const router = useRouter();
   const mutation = useMutation({
     mutationKey: ["auth"],
     mutationFn: ({ type, body }: MUTATION_TYPE) => {

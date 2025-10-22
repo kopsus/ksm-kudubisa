@@ -1,11 +1,11 @@
 import { prisma } from "@/constants/variables";
 import { ResponseHandler } from "@/lib/responseHandler";
 import bcrypt from "bcrypt";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 
-export async function POST(req: NextResponse) {
+export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     let { username, password } = body;
@@ -29,7 +29,6 @@ export async function POST(req: NextResponse) {
         `Username ${existingUser.username} sudah terdaftar`
       );
     }
-    // ... (Akhir dari validasi)
 
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -52,8 +51,6 @@ export async function POST(req: NextResponse) {
         rw: true,
       },
     });
-
-    // ----- BAGIAN BARU: LOGIKA AUTO-LOGIN DIMULAI DI SINI -----
 
     // 2. Buat payload untuk token (sama seperti di fungsi login)
     const payload = {

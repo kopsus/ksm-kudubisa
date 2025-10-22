@@ -1,5 +1,4 @@
 import { useMutationProduct } from "@/api/produk/mutations";
-import { TypeProducts } from "@/api/produk/type";
 import { uploadImage } from "@/api/upload/fetcher";
 import DialogLayout from "@/components/dashboard/_global/Layouts/Dialog";
 import { Button } from "@/components/ui/button";
@@ -12,7 +11,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import useImagePreview from "@/hooks/useImagePreview";
-import { handleUploadImage } from "@/hooks/useUploadImage";
 import { storeDialog } from "@/store/dialog";
 import { EnumJenisSampah } from "@prisma/client";
 import { useAtom } from "jotai";
