@@ -3,7 +3,7 @@ name: Deploy Frontend ke VPS
 on:
   push:
     branches:
-      - main # Jalankan hanya saat ada perubahan di branch "main"
+      - main
 
 jobs:
   deploy:
@@ -18,7 +18,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SERVER_IP: ${{ secrets.SERVER_IP }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
-          PROJECT_DIR: "full-stack-web-pos" # Sesuaikan dengan path proyek di VPS
+          PROJECT_DIR: "ksm-kudubisa"
         run: |
           # Setup SSH agar bisa login ke VPS
           mkdir -p ~/.ssh
