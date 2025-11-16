@@ -3,6 +3,7 @@
 import React from "react";
 import { CardSampah } from "./cardSampah";
 import { useQueryProducts } from "@/api/produk/queries";
+import { baseURL } from "@/constants/variables";
 
 export const SampahBelumDipilah = () => {
   const { dataProduct } = useQueryProducts();
@@ -21,7 +22,7 @@ export const SampahBelumDipilah = () => {
               <CardSampah
                 key={index}
                 id={item.id!}
-                img={item.image}
+                img={baseURL + item.image}
                 name={item.product_name}
                 price={item.price}
               />

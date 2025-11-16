@@ -11,6 +11,7 @@ import { TypeTransaksiBody } from "@/api/transaksi/type";
 import { useRouter } from "next/navigation";
 import { LoaderCircle } from "lucide-react";
 import { profileAtom } from "@/store/profile";
+import { baseURL } from "@/constants/variables";
 
 export const Cart = () => {
   const dataThead = ["Barang", "Jumlah"];
@@ -83,7 +84,7 @@ export const Cart = () => {
                     <div className="flex items-center gap-2">
                       <div className="w-16 h-16 rounded-xl overflow-hidden bg-primary shadow border">
                         <Image
-                          src={item.image}
+                          src={baseURL + item.image}
                           alt="products"
                           width={0}
                           height={0}
