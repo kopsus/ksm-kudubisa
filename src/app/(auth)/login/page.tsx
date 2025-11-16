@@ -37,7 +37,7 @@ const Login = () => {
     >
       <div className="absolute top-0 left-0 w-full h-full bg-black/70" />
       <div className="relative bg-white shadow-md rounded-3xl w-11/12 md:w-96 flex flex-col gap-8 p-5 md:py-5 md:px-10 text-center">
-        <p className="titleSection">Selamat Datang Di KSM KMM Banyumas</p>
+        <p className="titleSection">Selamat Datang Di KSM KuduBisa Banyumas</p>
         <p>“ciptakan dunia yang lebih bersih dan hijau”</p>
         <form onSubmit={handleSubmit} className="w-full flex flex-col gap-3">
           <Input
