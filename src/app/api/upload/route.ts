@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import path from "path";
-import { writeFile } from "fs/promises";
+import { writeFile, mkdir } from "fs/promises";
 import { ResponseHandler } from "@/lib/responseHandler";
 
 export const POST = async (req: Request) => {
@@ -20,12 +20,22 @@ export const POST = async (req: Request) => {
     const timestamp = Date.now();
     const uniqueName = `${timestamp}_${filename}`.replace(/\s+/g, "_");
     const uploadDir = "/var/www/uploads";
+    const uploadPath = path.join(uploadDir, uniqueName);
 
-    // Tetap simpan file dengan path lengkap
-    await writeFile(path.join(process.cwd(), uploadDir, uniqueName), buffer);
+    try {
+      // Pastikan direktori tujuan ada, buat jika belum ada.
+      await mkdir(uploadDir, { recursive: true });
+    } catch (e: any) {
+      // Abaikan error jika direktori sudah ada
+      if (e.code !== "EEXIST") throw e;
+    }
+
+    // Simpan file ke path yang benar
+    await writeFile(uploadPath, buffer);
 
     return ResponseHandler.created({ id: uniqueName });
   } catch (error) {
+    console.error("Upload API Error:", error); // Tambahkan log untuk debugging
     return ResponseHandler.serverError();
   }
 };
