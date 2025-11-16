@@ -58,62 +58,65 @@ export const DialogCreate = () => {
   const mutationProduct = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!imageFile) {
-      alert("Tolong pilih image yang akan di-upload.");
+    // Jika mode CREATE dan tidak ada gambar, hentikan proses.
+    if (dialog.type === "CREATE" && !imageFile) {
+      alert("Tolong pilih gambar untuk produk baru.");
       return;
     }
-
-    // Validasi file
-    const allowedTypes = ["image/png", "image/jpeg"];
-    const maxSize = 1 * 1024 * 1024;
-
-    if (!allowedTypes.includes(imageFile.type)) {
-      alert("Hanya file PNG dan JPG yang diperbolehkan.");
-      return;
-    }
-
-    if (imageFile.size > maxSize) {
-      alert("Ukuran file maksimal 1MB.");
-      return;
-    }
-
-    // Membuat FormData untuk upload
-    const formData = new FormData();
-    formData.append("file", imageFile);
 
     try {
-      // Upload gambar ke server
-      const uploadResponse = await uploadImage(formData);
+      let imageUrl = dialog.data?.image ?? ""; // Gunakan gambar yang sudah ada sebagai default
 
-      if (uploadResponse?.data) {
-        const imageUrl = `/uploads/${uploadResponse.data.id}`; // Mengambil URL gambar dari response API
+      // Jika ada file gambar baru yang dipilih, upload gambar tersebut.
+      if (imageFile) {
+        // Validasi file
+        const allowedTypes = ["image/png", "image/jpeg"];
+        const maxSize = 1 * 1024 * 1024; // 1MB
 
-        // Payload untuk produk
-        const payloadProduct = {
-          image: imageUrl, // URL gambar
-          product_name: dialog.data?.product_name ?? "",
-          price: dialog.data?.price ?? 0,
-          jenis: dialog.data?.jenis ?? EnumJenisSampah.SudahDiPilah, // Default ke "SudahDiPilah"
-        };
-
-        // Memanggil API untuk create/update produk
-        if (dialog.type === "CREATE") {
-          await serviceProduct({
-            type: "create",
-            body: payloadProduct,
-          });
-          closeDialog();
-        } else {
-          await serviceProduct({
-            type: "update",
-            body: payloadProduct,
-            id: dialog.data?.id,
-          });
-          closeDialog();
+        if (!allowedTypes.includes(imageFile.type)) {
+          alert("Hanya file PNG dan JPG yang diperbolehkan.");
+          return;
         }
-      } else {
-        alert("Failed to upload image.");
+
+        if (imageFile.size > maxSize) {
+          alert("Ukuran file maksimal 1MB.");
+          return;
+        }
+
+        // Membuat FormData untuk upload
+        const formData = new FormData();
+        formData.append("file", imageFile);
+
+        // Upload gambar ke server
+        const uploadResponse = await uploadImage(formData);
+
+        if (uploadResponse?.data?.id) {
+          // SARAN: Gunakan URL absolut ke VPS Anda.
+          // Contoh: const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://your-vps-ip";
+          // imageUrl = `${baseUrl}/uploads/${uploadResponse.data.id}`;
+          imageUrl = `/uploads/${uploadResponse.data.id}`; // Mengambil URL gambar dari response API
+        } else {
+          alert("Gagal meng-upload gambar.");
+          return; // Hentikan proses jika upload gagal
+        }
       }
+
+      // Payload untuk produk
+      const payloadProduct = {
+        image: imageUrl,
+        product_name: dialog.data?.product_name ?? "",
+        price: dialog.data?.price ?? 0,
+        jenis: dialog.data?.jenis ?? EnumJenisSampah.SudahDiPilah,
+      };
+
+      const serviceType = dialog.type === "CREATE" ? "create" : "update";
+      await serviceProduct({
+        type: serviceType,
+        body: payloadProduct,
+        id: dialog.data?.id,
+      });
+
+      closeDialog();
     } catch (error) {
       console.error("Error uploading image:", error);
       alert("Terjadi kesalahan saat meng-upload gambar.");
