@@ -16,6 +16,9 @@ const nextConfig: NextConfig = {
       {
         hostname: "ksm-kudubisa.cloud",
       },
+      {
+        hostname: "ksm-kudubisa.cloudhttps",
+      },
     ],
   },
   experimental: {
