@@ -10,6 +10,7 @@ import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useQueryProducts } from "@/api/produk/queries";
 import Link from "next/link";
+import { baseURL } from "@/constants/variables";
 
 export const ListSampah = () => {
   const { dataProduct } = useQueryProducts();
@@ -42,7 +43,9 @@ export const ListSampah = () => {
               className="relative h-40 md:h-52 rounded-[20px] overflow-hidden bg-center bg-cover bg-no-repeat"
               style={{
                 backgroundImage: `url(${
-                  typeof item.image === "string" ? item.image : item.image
+                  typeof item.image === "string"
+                    ? baseURL + item.image
+                    : item.image
                 })`,
               }}
             >

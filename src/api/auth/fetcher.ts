@@ -1,13 +1,13 @@
-import { baseURL } from "@/constants/variables";
+import { baseURLAPI } from "@/constants/variables";
 import axios from "axios";
 
 const mutationAuth = async ({ body, params }: any) => {
-  const res = await axios.post(`${baseURL}/auth/${params}`, body);
+  const res = await axios.post(`${baseURLAPI}/auth/${params}`, body);
   return res.data;
 };
 
 const fetchLogout = async () => {
-  const res = await axios.delete(`${baseURL}/auth/logout`);
+  const res = await axios.delete(`${baseURLAPI}/auth/logout`);
   return res.data;
 };
 

@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useQueryGalleries } from "@/api/gallery/queries";
 import { useLightbox } from "@/hooks/useLightbox";
 import { NextLightbox } from "../_global/lightbox/Lightbox";
+import { baseURL } from "@/constants/variables";
 
 export const Gallery = () => {
   const { dataGallery } = useQueryGalleries();
@@ -34,7 +35,7 @@ export const Gallery = () => {
             className="h-40 md:h-52 lg:h-72 bg-white shadow border rounded-[20px] overflow-hidden"
           >
             <Image
-              src={item.image}
+              src={baseURL + item.image}
               alt={item.id!}
               width={0}
               height={0}

@@ -1,5 +1,5 @@
 // src/_global/AxiosInstance.ts
-import { baseURL } from "@/constants/variables";
+import { baseURLAPI as baseURL } from "@/constants/variables";
 import axios, {
   AxiosInstance as AxiosInstanceType,
   InternalAxiosRequestConfig,

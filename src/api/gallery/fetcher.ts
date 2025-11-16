@@ -1,24 +1,24 @@
-import { baseURL } from "@/constants/variables";
+import { baseURLAPI } from "@/constants/variables";
 import axios from "axios";
 import { AxiosInstance } from "../_global/AxiosInstance";
 
 const getGallery = async () => {
-  const res = await axios.get(`${baseURL}/gallery`);
+  const res = await axios.get(`${baseURLAPI}/gallery`);
   return res.data;
 };
 
 const createGallery = async (body: any) => {
-  const res = await AxiosInstance.post(`${baseURL}/gallery`, body);
+  const res = await AxiosInstance.post(`${baseURLAPI}/gallery`, body);
   return res.data;
 };
 
 const updateGallery = async ({ body, id }: any) => {
-  const res = await AxiosInstance.patch(`${baseURL}/gallery/${id}`, body);
+  const res = await AxiosInstance.patch(`${baseURLAPI}/gallery/${id}`, body);
   return res.data;
 };
 
 const deleteGallery = async (id: any) => {
-  const res = await AxiosInstance.delete(`${baseURL}/gallery/${id}`);
+  const res = await AxiosInstance.delete(`${baseURLAPI}/gallery/${id}`);
   return res.data;
 };
 

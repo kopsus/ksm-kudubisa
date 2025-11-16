@@ -5,6 +5,7 @@ import { formatIDR } from "@/lib/formated";
 import ActionButtons from "./ActionButtons";
 import { ColumnDef } from "@tanstack/react-table";
 import { TypeProducts } from "@/api/produk/type";
+import { baseURL } from "@/constants/variables";
 
 export const columns: ColumnDef<TypeProducts>[] = [
   {
@@ -12,13 +13,12 @@ export const columns: ColumnDef<TypeProducts>[] = [
     header: "Barang",
     cell: ({ row }) => {
       const data = row.original;
-      const baseURL = "https://ksm-kudubisa.cloud";
 
       return (
         <div className="flex items-center gap-2">
           <div className="min-w-16 max-w-16 h-16 rounded-xl overflow-hidden bg-primary shadow border">
             <Image
-              src={`${baseURL}${data.image}`} // Ensure that a valid URL is always passed
+              src={baseURL + data.image} // Ensure that a valid URL is always passed
               alt={row.getValue("product_name")}
               width={64}
               height={64}

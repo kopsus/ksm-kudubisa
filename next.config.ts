@@ -13,6 +13,9 @@ const nextConfig: NextConfig = {
       {
         hostname: "greeneration.org",
       },
+      {
+        hostname: "ksm-kudubisa.cloud",
+      },
     ],
   },
   experimental: {

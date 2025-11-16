@@ -4,6 +4,7 @@ import { useQueryGalleries } from "@/api/gallery/queries";
 import Breadcrumb from "@/components/dashboard/_global/Breadcrumb";
 import { DialogCreate } from "@/components/dashboard/gallery/DialogCreate";
 import { DialogDelete } from "@/components/dashboard/gallery/DialogDelete";
+import { baseURL } from "@/constants/variables";
 import { storeDialog } from "@/store/dialog";
 import { useSetAtom } from "jotai";
 import { Edit, Trash } from "lucide-react";
@@ -57,7 +58,7 @@ const GalleryPage = () => {
               />
             </div>
             <Image
-              src={item.image}
+              src={baseURL + item.image}
               alt={item.id!}
               width={0}
               height={0}
