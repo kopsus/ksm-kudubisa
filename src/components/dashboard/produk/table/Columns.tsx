@@ -13,6 +13,7 @@ export const columns: ColumnDef<TypeProducts>[] = [
     cell: ({ row }) => {
       const data = row.original;
       const baseURL = process.env.NEXT_PUBLIC_API_URL;
+      console.log("url", baseURL);
 
       return (
         <div className="flex items-center gap-2">
