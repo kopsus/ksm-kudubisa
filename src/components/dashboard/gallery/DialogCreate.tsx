@@ -29,54 +29,61 @@ export const DialogCreate = () => {
   const mutationGallery = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!imageFile) {
-      alert("Tolong pilih image yang akan dijadikan gallery");
+    // Jika mode CREATE dan tidak ada gambar, hentikan proses.
+    if (dialog.type === "CREATE" && !imageFile) {
+      alert("Tolong pilih gambar untuk galeri baru.");
       return;
     }
 
-    const allowedTypes = ["image/png", "image/jpeg"];
-    const maxSize = 1 * 1024 * 1024;
+    try {
+      let imageUrl = dialog.data?.image ?? ""; // Gunakan gambar yang sudah ada sebagai default
 
-    if (!allowedTypes.includes(imageFile.type)) {
-      alert("Hanya file PNG dan JPG yang diperbolehkan.");
-      return;
-    }
+      // Jika ada file gambar baru yang dipilih, upload gambar tersebut.
+      if (imageFile) {
+        // Validasi file
+        const allowedTypes = ["image/png", "image/jpeg"];
+        const maxSize = 1 * 1024 * 1024; // 1MB
 
-    if (imageFile.size > maxSize) {
-      alert("Ukuran file maksimal 1MB.");
-      return;
-    }
+        if (!allowedTypes.includes(imageFile.type)) {
+          alert("Hanya file PNG dan JPG yang diperbolehkan.");
+          return;
+        }
 
-    const formData = new FormData();
-    formData.append("file", imageFile);
+        if (imageFile.size > maxSize) {
+          alert("Ukuran file maksimal 1MB.");
+          return;
+        }
 
-    const uploadResponse = await uploadImage(formData);
+        // Membuat FormData untuk upload
+        const formData = new FormData();
+        formData.append("file", imageFile);
 
-    if (uploadResponse?.data) {
-      const imageUrl = `/uploads/${uploadResponse.data.id}`;
+        // Upload gambar ke server
+        const uploadResponse = await uploadImage(formData);
 
-      const newGalleryData: TypeGallery = {
+        if (uploadResponse?.data?.id) {
+          imageUrl = `/uploads/${uploadResponse.data.id}`;
+        } else {
+          alert("Gagal meng-upload gambar.");
+          return; // Hentikan proses jika upload gagal
+        }
+      }
+
+      const payloadGallery: TypeGallery = {
         image: imageUrl,
       };
 
-      if (dialog.type === "CREATE") {
-        // Call create gallery API
-        await serviceGallery({
-          type: "create",
-          body: newGalleryData,
-        });
-        closeDialog();
-      } else {
-        // Call update gallery API
-        await serviceGallery({
-          type: "update",
-          body: newGalleryData,
-          id: dialog.data?.id,
-        });
-        closeDialog();
-      }
-    } else {
-      alert("Failed to upload image.");
+      const serviceType = dialog.type === "CREATE" ? "create" : "update";
+      await serviceGallery({
+        type: serviceType,
+        body: payloadGallery,
+        id: dialog.data?.id,
+      });
+
+      closeDialog();
+    } catch (error) {
+      console.error("Error during gallery mutation:", error);
+      alert("Terjadi kesalahan saat menyimpan galeri.");
     }
   };
 
