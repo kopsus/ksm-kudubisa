@@ -6,6 +6,7 @@ import React from "react";
 import { Button } from "../ui/button";
 import { useAtom } from "jotai";
 import { storeProducts } from "@/store/products";
+import { baseURL } from "@/constants/variables";
 
 interface ICardSampah {
   id: string;
@@ -57,7 +58,7 @@ export const CardSampah = ({ id, img, name, price }: ICardSampah) => {
             ...(prevProducts.data || []),
             {
               id,
-              image: img,
+              image: baseURL + img,
               product_name: name,
               price,
               quantity: 1,
