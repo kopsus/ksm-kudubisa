@@ -1,5 +1,31 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Security Hardening (RBAC, IDOR, Validation)
+
+RBAC, IDOR protections, and input/file validation have been added:
+
+- RBAC on API
+  - Users list: Admin only (`GET /api/users`).
+  - Users detail/update: self or Admin; delete: Admin only.
+  - Products create/update/delete: Admin only. Public read.
+  - Gallery create/update/delete: Admin only. Public read.
+  - Transactions detail/update/delete: Admin; owner (Masyarakat); Agen with same RT; Pengepul after Agen update.
+
+- IDOR fixes
+  - Sensitive endpoints verify JWT cookie `accessToken` and enforce authorization server‑side.
+
+- Input validation
+  - Products: whitelist fields, positive price, image path must start with `/uploads/`.
+  - Transactions: validate `TransaksiProduk` items (string `produkId`, positive integer `quantity`).
+  - Users: prevent role escalation on registration and non‑admin updates, trim inputs.
+
+- Uploads
+  - `POST /api/upload` requires Admin.
+  - Accepts only PNG/JPEG/GIF/WebP up to 1MB with magic‑byte checks.
+  - Random filenames stored under `public/uploads`; response includes `{ data: { id, url } }`.
+
+Set `JWT_SECRET` in env and ensure `public/uploads` is served statically.
+
 ## Getting Started
 
 First, run the development server:

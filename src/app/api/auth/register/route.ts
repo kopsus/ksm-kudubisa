@@ -35,7 +35,11 @@ export async function POST(req: NextRequest) {
 
     const newUser = await prisma.user.create({
       data: {
-        ...body,
+        username: String(body.username).trim(),
+        namaLengkap: String(body.namaLengkap || "").trim(),
+        noTlp: String(body.noTlp || "").trim(),
+        // Prevent privilege escalation during registration
+        role: "Masyarakat",
         password: hashedPassword,
         rt: body.rt ?? null,
         rw: body.rw ?? null,

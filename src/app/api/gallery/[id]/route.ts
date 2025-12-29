@@ -2,6 +2,7 @@ import { prisma } from "@/constants/variables";
 import { ResponseHandler } from "@/lib/responseHandler";
 import { NextRequest } from "next/server";
 import { verifyToken } from "../../middleware/verifyToken";
+import { requireRole } from "../../middleware/authorize";
 import { unlink } from "fs/promises";
 import path from "path";
 
@@ -32,6 +33,9 @@ export async function PATCH(req: NextRequest, { params }: any) {
     return decoded;
   }
   try {
+    const roleGuard = requireRole(decoded as any, ["Admin"]);
+    if (roleGuard) return roleGuard;
+
     const body = await req.json();
     const { id } = params;
 
@@ -50,10 +54,12 @@ export async function PATCH(req: NextRequest, { params }: any) {
     const oldImagePath = existingGallery.image;
 
     // 2. Update data gallery di database dengan data baru
-    const updatedGallery = await prisma.gallery.update({
-      where: { id },
-      data: body,
-    });
+    const newImage = typeof body.image === "string" ? body.image : existingGallery.image;
+    if (newImage && !newImage.startsWith("/uploads/")) {
+      return ResponseHandler.InvalidData("Invalid image path");
+    }
+
+    const updatedGallery = await prisma.gallery.update({ where: { id }, data: { image: newImage } });
 
     // 3. Cek jika ada path gambar baru di body DAN path itu berbeda dari yang lama
     if (body.image && body.image !== oldImagePath) {
@@ -81,6 +87,9 @@ export async function DELETE(req: NextRequest, { params }: any) {
   }
 
   try {
+    const roleGuard = requireRole(decoded as any, ["Admin"]);
+    if (roleGuard) return roleGuard;
+
     const { id } = params;
 
     const gallery = await prisma.gallery.findUnique({

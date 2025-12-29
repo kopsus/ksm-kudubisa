@@ -7,7 +7,12 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const { username, password } = await req.json();
+    const body = await req.json();
+    const username = typeof body.username === "string" ? body.username.trim() : "";
+    const password = typeof body.password === "string" ? body.password : "";
+    if (!username || !password) {
+      return ResponseHandler.InvalidData("Username dan password wajib diisi.");
+    }
 
     const user = await prisma.user.findFirst({
       where: { username },

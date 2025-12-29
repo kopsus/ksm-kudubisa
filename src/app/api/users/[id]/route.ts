@@ -3,39 +3,31 @@ import { prisma } from "@/constants/variables";
 import { ResponseHandler } from "@/lib/responseHandler";
 import { NextRequest } from "next/server";
 import { verifyToken } from "../../middleware/verifyToken";
+import { requireOwnershipOrAdmin, requireRole } from "../../middleware/authorize";
 
 export async function GET(req: NextRequest, { params }: any) {
   try {
     const decoded = await verifyToken(req);
-    if (decoded instanceof Response) {
-      return decoded;
-    }
+    if (decoded instanceof Response) return decoded;
 
-    const { id } = await params;
+    const { id } = params;
+
+    // Only self or admin can view user details
+    const guard = requireOwnershipOrAdmin(decoded as any, id);
+    if (guard) return guard;
 
     const user = await prisma.user.findUnique({
-      where: {
-        id,
-      },
+      where: { id },
       include: {
         transaksi: {
           include: {
-            TransaksiProduk: {
-              include: {
-                produk: true,
-              },
-            },
+            TransaksiProduk: { include: { produk: true } },
           },
         },
       },
     });
-
-    if (!user) {
-      return ResponseHandler.InvalidData("User not found");
-    }
-
+    if (!user) return ResponseHandler.InvalidData("User not found");
     const { password, ...userWithoutPassword } = user;
-
     return ResponseHandler.get(userWithoutPassword);
   } catch (error) {
     console.error(error);
@@ -50,18 +42,19 @@ export async function PATCH(req: NextRequest, { params }: any) {
   }
   try {
     const body = await req.json();
-    const { id } = await params;
+    const { id } = params;
 
-    if (/\s/.test(body.username)) {
-      return ResponseHandler.InvalidData(
-        "Username tidak boleh mengandung spasi."
-      );
+    // Only self or admin can update
+    const guard = requireOwnershipOrAdmin(decoded as any, id);
+    if (guard) return guard;
+
+    // Basic field-level validation/whitelist
+    if (typeof body.username === "string" && /\s/.test(body.username)) {
+      return ResponseHandler.InvalidData("Username tidak boleh mengandung spasi.");
     }
 
     const user = await prisma.user.findUnique({
-      where: {
-        id,
-      },
+      where: { id },
     });
 
     if (!user) {
@@ -94,18 +87,25 @@ export async function PATCH(req: NextRequest, { params }: any) {
       hashedPassword = user.password;
     }
 
+    // Prevent non-admin privilege escalation (role changes)
+    const dataToUpdate: any = {
+      namaLengkap: typeof body.namaLengkap === "string" ? body.namaLengkap.trim() : user.namaLengkap,
+      noTlp: typeof body.noTlp === "string" ? body.noTlp.trim() : user.noTlp,
+      rt: typeof body.rt === "string" || body.rt === null ? body.rt : user.rt,
+      rw: typeof body.rw === "string" || body.rw === null ? body.rw : user.rw,
+      username: typeof body.username === "string" ? body.username.trim() : user.username,
+      password: hashedPassword,
+    };
+
+    // Admin can change role, others cannot
+    if ((decoded as any).role === "Admin") {
+      if (typeof body.role === "string") dataToUpdate.role = body.role;
+    }
+
     const updateUser = await prisma.user.update({
       where: { id },
-      data: {
-        ...body,
-        password: hashedPassword,
-      },
-      select: {
-        namaLengkap: true,
-        username: true,
-        rt: true,
-        rw: true,
-      },
+      data: dataToUpdate,
+      select: { namaLengkap: true, username: true, rt: true, rw: true },
     });
 
     return ResponseHandler.updated(updateUser, "Berhasil update data user");
@@ -121,12 +121,14 @@ export async function DELETE(req: NextRequest, { params }: any) {
     return decoded;
   }
   try {
-    const { id } = await params;
+    const { id } = params;
+
+    // Only admin can delete users
+    const roleGuard = requireRole(decoded as any, ["Admin"]);
+    if (roleGuard) return roleGuard;
 
     const user = await prisma.user.findUnique({
-      where: {
-        id,
-      },
+      where: { id },
       include: {
         transaksi: true, // Memastikan kita mendapatkan transaksi yang terkait dengan user
       },

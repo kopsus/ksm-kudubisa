@@ -6,6 +6,8 @@ import { NextRequest } from "next/server";
 interface DecodedToken extends JWTPayload {
   id?: string;
   role?: string;
+  rt?: string | null;
+  username?: string;
 }
 
 export async function verifyToken(

@@ -99,10 +99,29 @@ export async function POST(req: NextRequest) {
   }
   try {
     const body = await req.json();
-    const { TransaksiProduk } = body;
+    const { TransaksiProduk } = body || {};
 
     if (!decoded.id) {
       return ResponseHandler.InvalidData("ID pengguna tidak ditemukan.");
+    }
+
+    // Validate TransaksiProduk payload
+    if (!Array.isArray(TransaksiProduk) || TransaksiProduk.length === 0) {
+      return ResponseHandler.InvalidData("TransaksiProduk tidak valid.");
+    }
+    const sanitizedItems = [] as { produkId: string; quantity: number }[];
+    for (const item of TransaksiProduk) {
+      if (
+        !item ||
+        typeof item.produkId !== "string" ||
+        item.produkId.trim() === "" ||
+        typeof item.quantity !== "number" ||
+        !Number.isInteger(item.quantity) ||
+        item.quantity <= 0
+      ) {
+        return ResponseHandler.InvalidData("Item transaksi tidak valid.");
+      }
+      sanitizedItems.push({ produkId: item.produkId, quantity: item.quantity });
     }
 
     const newTransaksi = await prisma.transaksi.create({
@@ -110,10 +129,7 @@ export async function POST(req: NextRequest) {
         statusUser: "Pending",
         userId: decoded.id,
         TransaksiProduk: {
-          create: TransaksiProduk.map((item: any) => ({
-            produkId: item.produkId,
-            quantity: item.quantity,
-          })),
+          create: sanitizedItems,
         },
       },
       include: {

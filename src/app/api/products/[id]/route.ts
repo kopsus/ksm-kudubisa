@@ -2,6 +2,7 @@ import { prisma } from "@/constants/variables";
 import { ResponseHandler } from "@/lib/responseHandler";
 import { NextRequest } from "next/server";
 import { verifyToken } from "../../middleware/verifyToken";
+import { requireRole } from "../../middleware/authorize";
 import path from "path";
 import { unlink } from "fs/promises";
 import fs from "fs";
@@ -33,6 +34,9 @@ export async function PATCH(req: NextRequest, { params }: any) {
     return decoded;
   }
   try {
+    const roleGuard = requireRole(decoded as any, ["Admin"]);
+    if (roleGuard) return roleGuard;
+
     const body = await req.json();
     const { id } = await params;
 
@@ -56,12 +60,23 @@ export async function PATCH(req: NextRequest, { params }: any) {
       }
     }
 
+    // Basic input validation/whitelist
+    const name = typeof body.product_name === "string" ? body.product_name.trim() : product.product_name;
+    const price = typeof body.price === "number" && body.price >= 0 ? body.price : product.price;
+    const jenis = typeof body.jenis === "string" ? body.jenis : product.jenis;
+    const newImage = typeof body.image === "string" ? body.image : product.image;
+    if (newImage && !newImage.startsWith("/uploads/")) {
+      return ResponseHandler.InvalidData("Invalid image path");
+    }
+
     // Update data produk dengan gambar baru (jika ada)
     const updatedProduct = await prisma.produk.update({
       where: { id },
       data: {
-        ...body, // update semua data yang ada pada body
-        image: body.image ?? product.image, // pastikan gambar baru diterapkan jika ada
+        product_name: name,
+        price,
+        jenis,
+        image: newImage ?? product.image, // pastikan gambar baru diterapkan jika ada
       },
     });
 
@@ -79,6 +94,9 @@ export async function DELETE(req: NextRequest, { params }: any) {
   }
 
   try {
+    const roleGuard = requireRole(decoded as any, ["Admin"]);
+    if (roleGuard) return roleGuard;
+
     const { id } = await params;
 
     const product = await prisma.produk.findUnique({

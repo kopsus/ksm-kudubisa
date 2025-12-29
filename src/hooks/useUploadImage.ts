@@ -19,7 +19,7 @@ export const handleUploadImage = async (file: File) => {
 
   try {
     const response = await uploadImage(formData);
-    const imageUrl = response.url; // langsung dari API
+    const imageUrl = response?.data?.url; // URL dari API (dibungkus di data)
     return imageUrl;
   } catch (error) {
     console.error("Error uploading image:", error);
