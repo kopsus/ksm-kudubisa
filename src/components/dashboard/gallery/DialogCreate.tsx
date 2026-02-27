@@ -21,7 +21,7 @@ export const DialogCreate = () => {
       show: false,
     }));
     setPreviewUrl("");
-    setImageFile(null); // Reset file after closing dialog
+    setImageFile(null);
   };
 
   const { serviceGallery, isPending } = useMutationGallery();
@@ -29,18 +29,15 @@ export const DialogCreate = () => {
   const mutationGallery = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Jika mode CREATE dan tidak ada gambar, hentikan proses.
     if (dialog.type === "CREATE" && !imageFile) {
       alert("Tolong pilih gambar untuk galeri baru.");
       return;
     }
 
     try {
-      let imageUrl = dialog.data?.image ?? ""; // Gunakan gambar yang sudah ada sebagai default
+      let imageUrl = dialog.data?.image ?? "";
 
-      // Jika ada file gambar baru yang dipilih, upload gambar tersebut.
       if (imageFile) {
-        // Validasi file
         const allowedTypes = ["image/png", "image/jpeg"];
         const maxSize = 1 * 1024 * 1024; // 1MB
 
@@ -54,18 +51,16 @@ export const DialogCreate = () => {
           return;
         }
 
-        // Membuat FormData untuk upload
         const formData = new FormData();
         formData.append("file", imageFile);
 
-        // Upload gambar ke server
         const uploadResponse = await uploadImage(formData);
 
         if (uploadResponse?.data?.id) {
           imageUrl = `/uploads/${uploadResponse.data.id}`;
         } else {
           alert("Gagal meng-upload gambar.");
-          return; // Hentikan proses jika upload gagal
+          return;
         }
       }
 
@@ -113,9 +108,9 @@ export const DialogCreate = () => {
         <Input
           type="file"
           onChange={(e) => {
-            handleImageChange(e); // Preview gambar
+            handleImageChange(e);
             const file = e.target.files?.[0];
-            setImageFile(file ?? null); // Set image file in state
+            setImageFile(file ?? null);
           }}
           className="max-w-72"
         />

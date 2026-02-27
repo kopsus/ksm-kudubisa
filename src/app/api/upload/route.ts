@@ -11,7 +11,7 @@ export const POST = async (req: Request) => {
     if (!file || !(file instanceof File)) {
       return NextResponse.json(
         { error: "No file received or incorrect file type." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -19,7 +19,7 @@ export const POST = async (req: Request) => {
     const filename = file.name;
     const timestamp = Date.now();
     const uniqueName = `${timestamp}_${filename}`.replace(/\s+/g, "_");
-    const uploadDir = "/var/www/uploads";
+    const uploadDir = process.env.UPLOAD_PATH!;
     const uploadPath = path.join(uploadDir, uniqueName);
 
     try {
