@@ -1,76 +1,12 @@
-"use client";
+import GalleryView, {
+  TypeGallery,
+} from "@/components/dashboard/gallery/GalleryView";
+import { getGalleries } from "@/lib/action/galleryActions";
 
-import { useQueryGalleries } from "@/api/gallery/queries";
-import Breadcrumb from "@/components/dashboard/_global/Breadcrumb";
-import { DialogCreate } from "@/components/dashboard/gallery/DialogCreate";
-import { DialogDelete } from "@/components/dashboard/gallery/DialogDelete";
-import { baseURL } from "@/constants/variables";
-import { storeDialog } from "@/store/dialog";
-import { useSetAtom } from "jotai";
-import { Edit, Trash } from "lucide-react";
-import Image from "next/image";
-import React from "react";
+export default async function GalleryPage() {
+  const response = await getGalleries();
 
-const GalleryPage = () => {
-  const setDialog = useSetAtom(storeDialog);
-  const { dataGallery } = useQueryGalleries();
+  const dataGallery = (response.success ? response.data : []) as TypeGallery[];
 
-  return (
-    <>
-      <Breadcrumb
-        pageName="Gallery"
-        onClick={() => {
-          setDialog({
-            type: "CREATE",
-            show: true,
-            data: null,
-          });
-        }}
-      />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-        {dataGallery?.map((item, index) => (
-          <div
-            key={index}
-            className="h-52 w-full rounded-lg shadow-1 overflow-hidden border relative group"
-          >
-            <div className="hidden group-hover:flex justify-center items-center gap-5 absolute top-0 left-0 w-full h-full bg-black/50">
-              <Edit
-                color="white"
-                className="cursor-pointer"
-                onClick={() => {
-                  setDialog({
-                    type: "UPDATE",
-                    show: true,
-                    data: item,
-                  });
-                }}
-              />
-              <Trash
-                color="red"
-                className="cursor-pointer"
-                onClick={() => {
-                  setDialog({
-                    type: "DELETE",
-                    show: true,
-                    data: item.id,
-                  });
-                }}
-              />
-            </div>
-            <Image
-              src={baseURL + item.image}
-              alt={item.id!}
-              width={0}
-              height={0}
-              sizes="100vw"
-            />
-          </div>
-        ))}
-      </div>
-      <DialogDelete />
-      <DialogCreate />
-    </>
-  );
-};
-
-export default GalleryPage;
+  return <GalleryView dataGallery={dataGallery} />;
+}

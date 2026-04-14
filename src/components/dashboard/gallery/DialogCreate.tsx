@@ -1,19 +1,26 @@
-import { useMutationGallery } from "@/api/gallery/mutations";
-import { TypeGallery } from "@/api/gallery/type";
-import { uploadImage } from "@/api/upload/fetcher";
-import DialogLayout from "@/components/dashboard/_global/Layouts/Dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import useImagePreview from "@/hooks/useImagePreview";
-import { storeDialog } from "@/store/dialog";
+import React, { useState } from "react";
 import { useAtom } from "jotai";
+import { storeDialog } from "@/store/dialog";
+import useImagePreview from "@/hooks/useImagePreview";
+import { uploadFileAction } from "@/lib/action/uploadActions";
+import { createGallery, updateGallery } from "@/lib/action/galleryActions";
+import DialogLayout from "../_global/Layouts/Dialog";
 import Image from "next/image";
-import React from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { DialogState } from "./GalleryView";
 
-export const DialogCreate = () => {
-  const [dialog, setDialog] = useAtom(storeDialog);
+export interface DialogProps {
+  dialog: DialogState;
+  setDialog: React.Dispatch<React.SetStateAction<DialogState>>;
+}
+
+export const DialogCreate = ({ dialog, setDialog }: DialogProps) => {
   const { previewUrl, setPreviewUrl, handleImageChange } = useImagePreview();
-  const [imageFile, setImageFile] = React.useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+
+  // Tambahkan state untuk loading manual karena kita tidak pakai useMutationGallery lagi
+  const [isPending, setIsPending] = useState(false);
 
   const closeDialog = () => {
     setDialog((prev) => ({
@@ -24,8 +31,6 @@ export const DialogCreate = () => {
     setImageFile(null);
   };
 
-  const { serviceGallery, isPending } = useMutationGallery();
-
   const mutationGallery = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -34,51 +39,73 @@ export const DialogCreate = () => {
       return;
     }
 
+    setIsPending(true); // Mulai loading
+
     try {
       let imageUrl = dialog.data?.image ?? "";
 
+      // 1. PROSES UPLOAD GAMBAR DENGAN SERVER ACTION
       if (imageFile) {
-        const allowedTypes = ["image/png", "image/jpeg"];
+        const allowedTypes = [
+          "image/png",
+          "image/jpeg",
+          "image/jpg",
+          "image/webp",
+        ];
         const maxSize = 1 * 1024 * 1024; // 1MB
 
         if (!allowedTypes.includes(imageFile.type)) {
-          alert("Hanya file PNG dan JPG yang diperbolehkan.");
+          alert("Hanya file PNG, JPG, dan WEBP yang diperbolehkan.");
+          setIsPending(false);
           return;
         }
 
         if (imageFile.size > maxSize) {
           alert("Ukuran file maksimal 1MB.");
+          setIsPending(false);
           return;
         }
 
         const formData = new FormData();
         formData.append("file", imageFile);
 
-        const uploadResponse = await uploadImage(formData);
+        // Panggil Server Action Upload
+        const uploadResponse = await uploadFileAction(formData);
 
-        if (uploadResponse?.data?.id) {
+        if (uploadResponse.success && uploadResponse.data?.id) {
           imageUrl = `/uploads/${uploadResponse.data.id}`;
         } else {
-          alert("Gagal meng-upload gambar.");
+          alert(uploadResponse.message || "Gagal meng-upload gambar.");
+          setIsPending(false);
           return;
         }
       }
 
-      const payloadGallery: TypeGallery = {
+      const payloadGallery = {
         image: imageUrl,
       };
 
-      const serviceType = dialog.type === "CREATE" ? "create" : "update";
-      await serviceGallery({
-        type: serviceType,
-        body: payloadGallery,
-        id: dialog.data?.id,
-      });
+      // 2. PROSES CREATE / UPDATE KE DATABASE DENGAN SERVER ACTION
+      let result;
+      if (dialog.type === "CREATE") {
+        result = await createGallery(payloadGallery);
+      } else {
+        result = await updateGallery(dialog.data?.id, payloadGallery);
+      }
 
-      closeDialog();
+      // 3. HANDLE RESPONSE
+      if (result.success) {
+        closeDialog();
+        // Berhasil! Halaman akan otomatis terre-render jika menggunakan App Router standar
+        // karena kita sudah memasang revalidatePath di Server Action
+      } else {
+        alert(result.message);
+      }
     } catch (error) {
       console.error("Error during gallery mutation:", error);
       alert("Terjadi kesalahan saat menyimpan galeri.");
+    } finally {
+      setIsPending(false); // Matikan loading
     }
   };
 
@@ -102,6 +129,8 @@ export const DialogCreate = () => {
               width={0}
               height={0}
               sizes="100vw"
+              // Pastikan ada class object-cover agar gambar tidak gepeng
+              className="w-full h-full object-cover"
             />
           ) : null}
         </div>

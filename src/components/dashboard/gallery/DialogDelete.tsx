@@ -1,12 +1,11 @@
-import { useMutationGallery } from "@/api/gallery/mutations";
-import DialogLayout from "@/components/dashboard/_global/Layouts/Dialog";
+import { deleteGallery } from "@/lib/action/galleryActions";
+import React, { useState } from "react";
+import DialogLayout from "../_global/Layouts/Dialog";
 import { Button } from "@/components/ui/button";
-import { storeDialog } from "@/store/dialog";
-import { useAtom } from "jotai";
-import React from "react";
+import { DialogProps } from "./DialogCreate";
 
-export const DialogDelete = () => {
-  const [dialog, setDialog] = useAtom(storeDialog);
+export const DialogDelete = ({ dialog, setDialog }: DialogProps) => {
+  const [isPending, setIsPending] = useState(false);
 
   const closeDialog = () => {
     setDialog((prev) => ({
@@ -15,14 +14,19 @@ export const DialogDelete = () => {
     }));
   };
 
-  const { serviceGallery } = useMutationGallery();
+  const handleDeleteGallery = async () => {
+    setIsPending(true); // Mulai loading
 
-  const deleteGallery = async () => {
-    await serviceGallery({
-      type: "delete",
-      id: dialog.data,
-    });
-    closeDialog();
+    // dialog.data berisi ID dari item yang diklik
+    const result = await deleteGallery(dialog.data);
+
+    setIsPending(false); // Matikan loading
+
+    if (result.success) {
+      closeDialog();
+    } else {
+      alert(result.message);
+    }
   };
 
   return (
@@ -32,11 +36,15 @@ export const DialogDelete = () => {
       titleDelete="Hapus Image ini dari Gallery"
     >
       <div className="flex items-center justify-center gap-5">
-        <Button variant={"outline"} onClick={closeDialog}>
+        <Button disabled={isPending} variant={"outline"} onClick={closeDialog}>
           Cancel
         </Button>
-        <Button variant={"danger"} onClick={deleteGallery}>
-          Delete
+        <Button
+          disabled={isPending}
+          variant={"danger"}
+          onClick={handleDeleteGallery}
+        >
+          {isPending ? "Menghapus..." : "Delete"}
         </Button>
       </div>
     </DialogLayout>
