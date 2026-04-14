@@ -5,14 +5,8 @@ import { Button } from "../ui/button";
 import Image from "next/image";
 import { useLightbox } from "@/hooks/useLightbox";
 import { NextLightbox } from "../_global/lightbox/Lightbox";
+import { TypeGallery } from "@/api/gallery/type";
 
-// Kita export tipe ini agar bisa dipakai di Server Component
-export interface TypeGallery {
-  id: string;
-  image: string;
-}
-
-// Komponen sekarang menerima props
 interface GalleryProps {
   dataGallery: TypeGallery[];
 }
@@ -25,7 +19,6 @@ export const Gallery = ({ dataGallery }: GalleryProps) => {
     setVisibleItems((prev) => prev + 3);
   };
 
-  // Pengecekan aman jika dataGallery kosong/undefined
   const isAllItemsVisible = visibleItems >= (dataGallery?.length || 0);
 
   return (
@@ -43,17 +36,15 @@ export const Gallery = ({ dataGallery }: GalleryProps) => {
             onClick={() =>
               lightbox.open(
                 index,
-                // Pastikan format map ini sesuai dengan yang diminta lightbox milikmu
                 dataGallery.map((d) => d.image),
               )
             }
-            // Tambahkan "relative" dan "cursor-pointer" di sini
             className="h-40 md:h-52 lg:h-72 bg-white shadow border rounded-[20px] overflow-hidden relative cursor-pointer group"
           >
             <Image
-              src={item.image} // baseURL sudah dihapus (langsung path bawaan /uploads/...)
+              src={item.image}
               alt={`Gallery ${item.id}`}
-              fill // Gunakan fill menggantikan width & height
+              fill
               sizes="(max-width: 768px) 50vw, 33vw"
               className="object-cover hover:scale-105 transition-transform duration-300"
             />

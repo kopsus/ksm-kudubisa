@@ -1,7 +1,10 @@
-import { useMutationProduct } from "@/api/produk/mutations";
-import { uploadImage } from "@/api/upload/fetcher";
-import DialogLayout from "@/components/dashboard/_global/Layouts/Dialog";
-import { Button } from "@/components/ui/button";
+import useImagePreview from "@/hooks/useImagePreview";
+import { DialogState, EnumJenisSampah } from "../ProductView";
+import { useState } from "react";
+import { uploadFileAction } from "@/lib/action/uploadActions";
+import { createProduct, updateProduct } from "@/lib/action/productAction";
+import DialogLayout from "../../_global/Layouts/Dialog";
+import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -10,34 +13,30 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import useImagePreview from "@/hooks/useImagePreview";
-import { storeDialog } from "@/store/dialog";
-import { EnumJenisSampah } from "@prisma/client";
-import { useAtom } from "jotai";
-import Image from "next/image";
-import React from "react";
+import { Button } from "@/components/ui/button";
 
-export const DialogCreate = () => {
-  const [dialog, setDialog] = useAtom(storeDialog);
+export interface DialogProductProps {
+  dialog: DialogState;
+  setDialog: React.Dispatch<React.SetStateAction<DialogState>>;
+}
+
+export const DialogCreate = ({ dialog, setDialog }: DialogProductProps) => {
   const { previewUrl, setPreviewUrl, handleImageChange } = useImagePreview();
-  const [imageFile, setImageFile] = React.useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [isPending, setIsPending] = useState(false);
 
   const closeDialog = () => {
-    setDialog((prev) => ({
-      ...prev,
-      show: false,
-    }));
+    setDialog({ type: null, show: false, data: null });
     setPreviewUrl("");
     setImageFile(null);
   };
 
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-
     setDialog((prev) => ({
       ...prev,
       data: {
-        ...prev.data!,
+        ...prev.data,
         [name]: name === "price" ? parseFloat(value) || 0 : value,
       },
     }));
@@ -46,62 +45,57 @@ export const DialogCreate = () => {
   const onValueChange = (value: string) => {
     setDialog((prev) => ({
       ...prev,
-      data: {
-        ...prev.data!,
-        jenis: value,
-      },
+      data: { ...prev.data, jenis: value },
     }));
   };
-
-  const { serviceProduct } = useMutationProduct();
 
   const mutationProduct = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Jika mode CREATE dan tidak ada gambar, hentikan proses.
     if (dialog.type === "CREATE" && !imageFile) {
       alert("Tolong pilih gambar untuk produk baru.");
       return;
     }
 
-    try {
-      let imageUrl = dialog.data?.image ?? ""; // Gunakan gambar yang sudah ada sebagai default
+    setIsPending(true);
 
-      // Jika ada file gambar baru yang dipilih, upload gambar tersebut.
+    try {
+      let imageUrl = dialog.data?.image ?? "";
+
       if (imageFile) {
-        // Validasi file
-        const allowedTypes = ["image/png", "image/jpeg"];
-        const maxSize = 1 * 1024 * 1024; // 1MB
+        const allowedTypes = [
+          "image/png",
+          "image/jpeg",
+          "image/jpg",
+          "image/webp",
+        ];
+        const maxSize = 1 * 1024 * 1024;
 
         if (!allowedTypes.includes(imageFile.type)) {
-          alert("Hanya file PNG dan JPG yang diperbolehkan.");
+          alert("Hanya file PNG, JPG, dan WEBP yang diperbolehkan.");
+          setIsPending(false);
           return;
         }
-
         if (imageFile.size > maxSize) {
           alert("Ukuran file maksimal 1MB.");
+          setIsPending(false);
           return;
         }
 
-        // Membuat FormData untuk upload
         const formData = new FormData();
         formData.append("file", imageFile);
 
-        // Upload gambar ke server
-        const uploadResponse = await uploadImage(formData);
+        const uploadResponse = await uploadFileAction(formData);
 
-        if (uploadResponse?.data?.id) {
-          // SARAN: Gunakan URL absolut ke VPS Anda.
-          // Contoh: const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://your-vps-ip";
-          // imageUrl = `${baseUrl}/uploads/${uploadResponse.data.id}`;
-          imageUrl = `/uploads/${uploadResponse.data.id}`; // Mengambil URL gambar dari response API
+        if (uploadResponse.success && uploadResponse.data?.id) {
+          imageUrl = `/uploads/${uploadResponse.data.id}`;
         } else {
           alert("Gagal meng-upload gambar.");
-          return; // Hentikan proses jika upload gagal
+          setIsPending(false);
+          return;
         }
       }
 
-      // Payload untuk produk
       const payloadProduct = {
         image: imageUrl,
         product_name: dialog.data?.product_name ?? "",
@@ -109,17 +103,23 @@ export const DialogCreate = () => {
         jenis: dialog.data?.jenis ?? EnumJenisSampah.SudahDiPilah,
       };
 
-      const serviceType = dialog.type === "CREATE" ? "create" : "update";
-      await serviceProduct({
-        type: serviceType,
-        body: payloadProduct,
-        id: dialog.data?.id,
-      });
+      let result;
+      if (dialog.type === "CREATE") {
+        result = await createProduct(payloadProduct);
+      } else {
+        result = await updateProduct(dialog.data?.id, payloadProduct);
+      }
 
-      closeDialog();
+      if (result.success) {
+        closeDialog();
+      } else {
+        alert(result.message);
+      }
     } catch (error) {
-      console.error("Error uploading image:", error);
-      alert("Terjadi kesalahan saat meng-upload gambar.");
+      console.error("Error during mutation:", error);
+      alert("Terjadi kesalahan saat menyimpan produk.");
+    } finally {
+      setIsPending(false);
     }
   };
 
@@ -127,7 +127,9 @@ export const DialogCreate = () => {
 
   return (
     <DialogLayout
-      show={dialog.type !== "DELETE" && dialog.show}
+      show={
+        (dialog.type === "CREATE" || dialog.type === "UPDATE") && dialog.show
+      }
       onHide={closeDialog}
       title={`${dialog.type === "CREATE" ? "Tambah Produk" : "Edit Produk"}`}
     >
@@ -141,6 +143,7 @@ export const DialogCreate = () => {
                 width={0}
                 height={0}
                 sizes="100vw"
+                className="w-full h-full object-cover"
               />
             ) : null}
           </div>
@@ -148,13 +151,14 @@ export const DialogCreate = () => {
             type="file"
             name="image"
             onChange={(e) => {
-              handleImageChange(e); // Update preview
+              handleImageChange(e);
               const file = e.target.files?.[0];
-              setImageFile(file ?? null); // Set file for upload
+              setImageFile(file ?? null);
             }}
             className="max-w-72"
           />
         </div>
+
         <div className="grid grid-cols-4 items-center">
           <p>Nama Barang</p>
           <Input
@@ -166,6 +170,7 @@ export const DialogCreate = () => {
             value={dialog.data?.product_name ?? ""}
           />
         </div>
+
         <div className="grid grid-cols-4 items-center">
           <p>Harga</p>
           <Input
@@ -178,6 +183,7 @@ export const DialogCreate = () => {
             value={dialog.data?.price !== 0 ? dialog.data?.price || "" : ""}
           />
         </div>
+
         <div className="grid grid-cols-4 items-center">
           <p>Jenis Penjualan</p>
           <div className="col-span-3">
@@ -192,17 +198,20 @@ export const DialogCreate = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value={EnumJenisSampah.BelumDiPilah}>
-                  {EnumJenisSampah.BelumDiPilah}
+                  Belum Di Pilah
                 </SelectItem>
                 <SelectItem value={EnumJenisSampah.SudahDiPilah}>
-                  {EnumJenisSampah.SudahDiPilah}
+                  Sudah Di Pilah
                 </SelectItem>
               </SelectContent>
             </Select>
           </div>
         </div>
+
         <div className="flex justify-end">
-          <Button type="submit">Simpan</Button>
+          <Button disabled={isPending} type="submit">
+            {isPending ? "Menyimpan..." : "Simpan"}
+          </Button>
         </div>
       </form>
     </DialogLayout>
