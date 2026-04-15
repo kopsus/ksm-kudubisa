@@ -1,30 +1,22 @@
-"use client";
-
-import { useMutationUser } from "@/api/users/mutations";
-import DialogLayout from "@/components/dashboard/_global/Layouts/Dialog";
+import { useState } from "react";
+import { DialogUserProps } from "../AgenView";
+import { deleteUser } from "@/lib/action/userAction";
+import DialogLayout from "../../_global/Layouts/Dialog";
 import { Button } from "@/components/ui/button";
-import { storeDialog } from "@/store/dialog";
-import { useAtom } from "jotai";
-import React from "react";
 
-export const DialogDelete = () => {
-  const [dialog, setDialog] = useAtom(storeDialog);
+export const DialogDelete = ({ dialog, setDialog }: DialogUserProps) => {
+  const [isPending, setIsPending] = useState(false);
 
-  const closeDialog = () => {
-    setDialog((prev) => ({
-      ...prev,
-      show: false,
-    }));
-  };
-
-  const { serviceUser } = useMutationUser();
+  const closeDialog = () => setDialog({ type: null, show: false, data: null });
 
   const handleDelete = async () => {
-    await serviceUser({
-      type: "delete",
-      id: dialog.data,
-    });
-    closeDialog();
+    setIsPending(true);
+    // Menggunakan Server Action
+    const result = await deleteUser(dialog.data?.id);
+    setIsPending(false);
+
+    if (result.success) closeDialog();
+    else alert(result.message);
   };
 
   return (
@@ -34,11 +26,11 @@ export const DialogDelete = () => {
       titleDelete="Hapus User ?"
     >
       <div className="flex items-center justify-center gap-5">
-        <Button variant={"outline"} onClick={closeDialog}>
+        <Button disabled={isPending} variant={"outline"} onClick={closeDialog}>
           Cancel
         </Button>
-        <Button variant={"danger"} onClick={handleDelete}>
-          Delete
+        <Button disabled={isPending} variant={"danger"} onClick={handleDelete}>
+          {isPending ? "Menghapus..." : "Delete"}
         </Button>
       </div>
     </DialogLayout>

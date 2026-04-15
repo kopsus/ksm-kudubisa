@@ -1,11 +1,7 @@
-"use client";
-
-import { useMutationAuth } from "@/api/auth/mutation";
-import { useMutationUser } from "@/api/users/mutations";
-import { useQueryUsers } from "@/api/users/queries";
-import { TypeUserBody } from "@/api/users/type";
-import DialogLayout from "@/components/dashboard/_global/Layouts/Dialog";
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { DialogStateUser, DialogUserProps, EnumRole } from "../AgenView";
+import { createUser, updateUser } from "@/lib/action/userAction";
+import DialogLayout from "../../_global/Layouts/Dialog";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -15,90 +11,79 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { dataRT, dataRW } from "@/data/user";
-import { storeDialog } from "@/store/dialog";
-import { EnumRole } from "@prisma/client";
-import { useAtom } from "jotai";
-import React from "react";
+import { Button } from "@/components/ui/button";
+import { TypeUser } from "@/api/users/type";
 
-export const DialogCreate = () => {
-  const [dialog, setDialog] = useAtom(storeDialog);
+export const DialogCreate = ({ dialog, setDialog }: DialogUserProps) => {
+  const [isPending, setIsPending] = useState(false);
 
   const closeDialog = () => {
-    setDialog((prev) => ({
-      ...prev,
-      show: false,
-    }));
+    setDialog({ type: null, show: false, data: null });
   };
 
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const { name, value } = e.target;
-
     setDialog((prev) => ({
       ...prev,
-      data: {
-        ...prev.data,
-        [name]: value,
-      },
+      data: { ...prev.data, [name]: value },
     }));
   };
 
   const onValueChange = (value: string, name: string) => {
     setDialog((prev) => ({
       ...prev,
-      data: {
-        ...prev.data,
-        [name]: value,
-      },
+      data: { ...prev.data, [name]: value },
     }));
   };
 
-  const { serviceUser } = useMutationUser();
-  const { serviceAuth } = useMutationAuth();
-  const { refetch } = useQueryUsers();
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsPending(true); // Mulai status loading
 
-    const payload: TypeUserBody = {
+    // Ambil data dari state dialog, gunakan nilai default jika kosong
+    const payload: Partial<TypeUser> = {
       username: dialog.data?.username ?? "",
       namaLengkap: dialog.data?.namaLengkap ?? "",
       noTlp: dialog.data?.noTlp ?? "",
       rt: dialog.data?.rt ?? "",
       rw: dialog.data?.rw ?? "",
-      password: dialog.data?.password ?? "",
+      role: dialog.data?.role ?? EnumRole.Agen, // Saya ubah 'roleId' menjadi 'role'
     };
 
+    // Tambahkan password jika ada isinya
+    if (dialog.data?.password) {
+      payload.password = dialog.data.password;
+    }
+
+    let result;
     if (dialog.type === "CREATE") {
-      const res = await serviceUser({
-        type: "create",
-        body: payload,
-      });
-      if (res.status !== 400) {
-        closeDialog();
-        refetch();
-      }
-    } else {
-      const res = await serviceUser({
-        type: "update",
-        body: payload,
-        id: dialog.data?.id,
-      });
-      if (res.status !== 400) {
-        closeDialog();
-        refetch();
-      }
-      alert(res.message);
+      result = await createUser(payload);
+    } else if (dialog.type === "UPDATE") {
+      result = await updateUser(dialog.data?.id, payload);
+    }
+
+    setIsPending(false); // Selesai status loading
+
+    if (result && result.success) {
+      closeDialog();
+      // Tidak perlu refetch() React Query karena revalidatePath di Server Action
+      // otomatis me-refresh data komponen server!
+    } else if (result) {
+      alert(result.message); // Tampilkan pesan error (misal: password kurang kuat)
     }
   };
 
   return (
     <DialogLayout
-      show={dialog.type !== "DELETE" && dialog.show}
+      show={
+        (dialog.type === "CREATE" || dialog.type === "UPDATE") && dialog.show
+      }
       onHide={closeDialog}
       title={`${dialog.type === "CREATE" ? "Tambah User" : "Edit User"}`}
     >
       <form onSubmit={handleSubmit} className="grid gap-4 py-4">
+        {/* Username */}
         <div className="grid grid-cols-4 items-center gap-4">
           <p>Username</p>
           <Input
@@ -108,8 +93,11 @@ export const DialogCreate = () => {
             value={dialog.data?.username ?? ""}
             onChange={onInputChange}
             required
+            disabled={dialog.type === "UPDATE"} // Opsional: biasanya username tidak boleh diubah setelah dibuat
           />
         </div>
+
+        {/* Nama Lengkap */}
         <div className="grid grid-cols-4 items-center gap-4">
           <p>Nama Lengkap</p>
           <Input
@@ -121,6 +109,8 @@ export const DialogCreate = () => {
             required
           />
         </div>
+
+        {/* No Telephone */}
         <div className="grid grid-cols-4 items-center gap-4">
           <p>No Telephone</p>
           <Input
@@ -133,9 +123,11 @@ export const DialogCreate = () => {
             required
           />
         </div>
+
+        {/* RT / RW */}
         <div className="grid grid-cols-4 items-center gap-4">
           <p>RT / RW</p>
-          <div className="flex gap-5 justify-between">
+          <div className="flex gap-5 justify-between col-span-3">
             <Select
               onValueChange={(value) => onValueChange(value, "rt")}
               value={dialog.data?.rt ?? ""}
@@ -168,13 +160,15 @@ export const DialogCreate = () => {
             </Select>
           </div>
         </div>
+
+        {/* Role */}
         <div className="grid grid-cols-4 items-center gap-4">
           <p>Role</p>
           <Select
-            onValueChange={(value) => onValueChange(value, "roleId")}
-            value={dialog.data?.roleId ?? ""}
+            onValueChange={(value) => onValueChange(value, "role")}
+            value={dialog.data?.role ?? EnumRole.Agen}
           >
-            <SelectTrigger className="w-full col-span-3">
+            <SelectTrigger className="col-span-3">
               <SelectValue placeholder="Role" />
             </SelectTrigger>
             <SelectContent>
@@ -189,19 +183,31 @@ export const DialogCreate = () => {
             </SelectContent>
           </Select>
         </div>
+
+        {/* Password */}
         <div className="grid grid-cols-4 items-center gap-4">
           <p>Password</p>
           <Input
-            placeholder="Password"
+            placeholder={
+              dialog.type === "UPDATE"
+                ? "Biarkan kosong jika tidak diubah"
+                : "Password (min 8 karakter)"
+            }
             name="password"
+            type="password"
             className="col-span-3"
             value={dialog.data?.password ?? ""}
             onChange={onInputChange}
-            required={dialog.type === "CREATE" && true}
+            required={dialog.type === "CREATE"} // Wajib saat tambah, opsional saat edit
           />
         </div>
-        <Button type="submit" className="mt-5">
-          {dialog.type === "CREATE" ? "Tambah" : "Simpan Perubahan"}
+
+        <Button disabled={isPending} type="submit" className="mt-5">
+          {isPending
+            ? "Menyimpan..."
+            : dialog.type === "CREATE"
+              ? "Tambah User"
+              : "Simpan Perubahan"}
         </Button>
       </form>
     </DialogLayout>

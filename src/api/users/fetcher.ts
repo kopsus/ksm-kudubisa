@@ -1,19 +1,25 @@
-import { baseURLAPI } from "@/constants/variables";
 import { AxiosInstance } from "../_global/AxiosInstance";
 import { TypeUserBody } from "./type";
 
 const getProfile = async () => {
-  const res = await AxiosInstance.get(`${baseURLAPI}/profile`);
+  const res = await AxiosInstance.get(
+    `${process.env.NEXT_PUBLIC_API_URL}/profile`,
+  );
   return res.data;
 };
 
 const getUsers = async () => {
-  const res = await AxiosInstance.get(`${baseURLAPI}/users`);
+  const res = await AxiosInstance.get(
+    `${process.env.NEXT_PUBLIC_API_URL}/users`,
+  );
   return res.data;
 };
 
 const createUsers = async (body: TypeUserBody) => {
-  const res = await AxiosInstance.post(`${baseURLAPI}/auth/register`, body);
+  const res = await AxiosInstance.post(
+    `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
+    body,
+  );
   return res.data;
 };
 
@@ -24,12 +30,17 @@ const updateUsers = async ({
   body: TypeUserBody;
   id: string;
 }) => {
-  const res = await AxiosInstance.patch(`${baseURLAPI}/users/${id}`, body);
+  const res = await AxiosInstance.patch(
+    `${process.env.NEXT_PUBLIC_API_URL}/users/${id}`,
+    body,
+  );
   return res.data;
 };
 
 const deleteUsers = async (id: string) => {
-  const res = await AxiosInstance.delete(`${baseURLAPI}/users/${id}`);
+  const res = await AxiosInstance.delete(
+    `${process.env.NEXT_PUBLIC_API_URL}/users/${id}`,
+  );
   return res.data;
 };
 

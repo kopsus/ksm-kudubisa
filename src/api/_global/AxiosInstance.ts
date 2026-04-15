@@ -1,5 +1,3 @@
-// src/_global/AxiosInstance.ts
-import { baseURLAPI as baseURL } from "@/constants/variables";
 import axios, {
   AxiosInstance as AxiosInstanceType,
   InternalAxiosRequestConfig,
@@ -8,7 +6,7 @@ import { getCookie } from "cookies-next";
 
 // Membuat instance Axios
 const AxiosInstance: AxiosInstanceType = axios.create({
-  baseURL,
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api",
   withCredentials: true, // Mengirim cookie bersama permintaan
 });
 
@@ -26,7 +24,7 @@ AxiosInstance.interceptors.request.use(
   (error) => {
     // Menangani error saat konfigurasi request
     return Promise.reject(error);
-  }
+  },
 );
 
 export { AxiosInstance };

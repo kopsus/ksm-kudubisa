@@ -1,37 +1,13 @@
-"use client";
+import { TypeUser } from "@/api/users/type";
+import UserAgenView from "@/components/dashboard/user/AgenView";
+import { getUsers } from "@/lib/action/userAction";
 
-import Breadcrumb from "@/components/dashboard/_global/Breadcrumb";
-import { DataTable } from "@/components/dashboard/user/table/DataTable";
-import { Columns } from "@/components/dashboard/user/table/Columns";
-import { storeDialog } from "@/store/dialog";
-import { useSetAtom } from "jotai";
-import React from "react";
-import { DialogDelete } from "@/components/dashboard/user/dialog/DialogDelete";
-import { DialogCreate } from "@/components/dashboard/user/dialog/DialogCreate";
-import { useQueryUsers } from "@/api/users/queries";
+export default async function UserAgenPage() {
+  const response = await getUsers();
 
-const UserAgen = () => {
-  const setDialog = useSetAtom(storeDialog);
-  const { dataUsers } = useQueryUsers();
-  const filteredData = dataUsers?.filter((item) => item.role === "Agen") || [];
+  let dataUsers = (response.success ? response.data : []) as TypeUser[];
 
-  return (
-    <>
-      <Breadcrumb
-        pageName="Agen"
-        onClick={() => {
-          setDialog({
-            type: "CREATE",
-            show: true,
-            data: null,
-          });
-        }}
-      />
-      <DataTable columns={Columns} data={filteredData} />
-      <DialogDelete />
-      <DialogCreate />
-    </>
-  );
-};
+  const filteredData = dataUsers.filter((item) => item.role === "Agen");
 
-export default UserAgen;
+  return <UserAgenView dataUsers={filteredData} />;
+}

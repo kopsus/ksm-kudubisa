@@ -9,6 +9,7 @@ type TypeUser = {
   noTlp: string;
   rt: string;
   rw: string;
+  password?: string;
   created_at?: string;
   updated_at?: string;
   transaksi?: TypeTransaksi[];

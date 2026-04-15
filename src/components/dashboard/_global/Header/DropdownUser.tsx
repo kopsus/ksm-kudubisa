@@ -4,13 +4,11 @@ import ClickOutside from "../ClickOutside";
 import { ChevronDown, LogOut } from "lucide-react";
 import { useAtomValue } from "jotai";
 import { useMutationAuth } from "@/api/auth/mutation";
-import { useRouter } from "next/navigation";
 import { profileAtom } from "@/store/profile";
 
 const DropdownUser = () => {
   const dataProfile = useAtomValue(profileAtom);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const router = useRouter();
 
   const { serviceAuth } = useMutationAuth();
 

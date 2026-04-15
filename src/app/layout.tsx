@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-
 import { Poppins } from "next/font/google";
 import { Query } from "@/providers/component";
-import { JotaiProviderInitializer } from "@/components/jotai/JotaiProviderInitializer";
-import { getProfileFromCookie } from "@/lib/aut";
 
 const poppins = Poppins({
   weight: ["400"],
@@ -21,14 +18,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const profile = await getProfileFromCookie();
   return (
     <html lang="en">
       <body className={`${poppins.className}`}>
-        <Query>
-          <JotaiProviderInitializer profile={profile} />
-          {children}
-        </Query>
+        <Query>{children}</Query>
       </body>
     </html>
   );
