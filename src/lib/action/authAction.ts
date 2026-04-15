@@ -1,3 +1,4 @@
+// app/actions/authActions.ts
 "use server";
 
 import pool from "@/lib/db";
@@ -6,19 +7,18 @@ import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { randomUUID } from "crypto";
 
-export async function registerUser(body: any) {
+// 1. REGISTER USER (PUBLIK)
+export async function registerUserAction(body: any) {
   try {
-    let { username, password, role, namaLengkap, noTlp, rt, rw } = body;
+    const { username, password, namaLengkap, noTlp, rt, rw } = body;
 
-    // 1. Validasi Username (Tidak boleh ada spasi)
+    // 1. Validasi Input
     if (/\s/.test(username)) {
       return {
         success: false,
         message: "Username tidak boleh mengandung spasi.",
       };
     }
-
-    // 2. Validasi Password
     if (!password || password.length < 8 || !/[a-zA-Z]/.test(password)) {
       return {
         success: false,
@@ -27,9 +27,9 @@ export async function registerUser(body: any) {
       };
     }
 
-    // 3. Cek ketersediaan Username di Database
+    // 2. Cek apakah username sudah ada
     const [existing]: any = await pool.query(
-      "SELECT id FROM user WHERE username = ?",
+      "SELECT id, username FROM user WHERE username = ?",
       [username],
     );
 
@@ -40,77 +40,142 @@ export async function registerUser(body: any) {
       };
     }
 
-    // 4. Hash Password
+    // 3. Hash Password & Siapkan ID
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
-
-    // 5. Siapkan data untuk di-insert
     const newId = randomUUID();
+    const role = "Masyarakat"; // Default role untuk registrasi publik
 
-    // Asumsi database menangani created_at dan updated_at secara otomatis
+    // 4. Insert ke Database
     const insertQuery = `
       INSERT INTO user (id, username, password, role, namaLengkap, noTlp, rt, rw)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `;
-    const values = [
+    await pool.query(insertQuery, [
       newId,
       username,
       hashedPassword,
-      role || "Masyarakat", // Default role jika tidak dikirim
+      role,
       namaLengkap,
       noTlp,
       rt ?? null,
       rw ?? null,
-    ];
+    ]);
 
-    // Eksekusi Insert
-    await pool.query(insertQuery, values);
-
-    // 6. Buat payload untuk JWT Token
+    // 5. Buat payload JWT
     const payload = {
       id: newId,
       username: username,
-      role: role || "Masyarakat",
+      role: role,
       rt: rt ?? null,
     };
 
-    // 7. Buat JWT
-    const secret = process.env.JWT_SECRET;
-    if (!secret) {
-      throw new Error("JWT_SECRET belum disetting di .env");
-    }
-
-    const token = jwt.sign(payload, secret, {
+    // 6. Sign Token
+    const token = jwt.sign(payload, process.env.JWT_SECRET!, {
       expiresIn: "1d",
     });
 
-    // 8. Set token ke dalam cookie (Menggunakan Next.js cookies API)
+    // 7. Set Token ke Cookie
     const cookieStore = await cookies();
     cookieStore.set("accessToken", token, {
       path: "/",
       httpOnly: true,
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
-      maxAge: 60 * 60 * 24, // 1 hari dalam detik
+      maxAge: 60 * 60 * 24, // 1 hari
     });
 
-    // 9. Tentukan URL redirect berdasarkan role
-    let redirectUrl = "/";
-    if (payload.role !== "Masyarakat") {
-      redirectUrl = "/dashboard";
-    }
-
-    // 10. Kembalikan response sukses
     return {
       success: true,
       message: "Registrasi berhasil! Anda akan dialihkan...",
+      redirect: "/", // Masyarakat langsung ke home
+    };
+  } catch (error) {
+    console.error("Error registerUserAction:", error);
+    return {
+      success: false,
+      message: "Terjadi kesalahan server saat registrasi.",
+    };
+  }
+}
+
+// 2. LOGIN USER
+export async function loginUserAction(body: any) {
+  try {
+    const { username, password } = body;
+
+    // 1. Cari user berdasarkan username
+    const [rows]: any = await pool.query(
+      "SELECT id, username, password, role, rt FROM user WHERE username = ?",
+      [username],
+    );
+
+    if (rows.length === 0) {
+      return { success: false, message: "Username tidak ditemukan!" };
+    }
+
+    const user = rows[0];
+
+    // 2. Verifikasi Password
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      return { success: false, message: "Password salah!" };
+    }
+
+    // 3. Buat Payload JWT
+    const payload = {
+      id: user.id,
+      username: user.username,
+      role: user.role,
+      rt: user.rt,
+    };
+
+    // 4. Sign Token
+    const token = jwt.sign(payload, process.env.JWT_SECRET!, {
+      expiresIn: "1d",
+    });
+
+    // 5. Set Token ke Cookie
+    const cookieStore = await cookies();
+    cookieStore.set("accessToken", token, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 60 * 60 * 24, // 1 hari
+    });
+
+    // 6. Tentukan URL Redirect
+    let redirectUrl = "/";
+    if (user.role !== "Masyarakat") {
+      redirectUrl = "/dashboard";
+    }
+
+    return {
+      success: true,
+      message: "Berhasil login!",
       redirect: redirectUrl,
     };
   } catch (error) {
-    console.error("Error registerUser:", error);
+    console.error("Error loginUserAction:", error);
+    return { success: false, message: "Terjadi kesalahan server saat login." };
+  }
+}
+
+// 3. LOGOUT USER
+export async function logoutUserAction() {
+  try {
+    const cookieStore = await cookies();
+    // Hapus cookie dengan men-delete namanya
+    cookieStore.delete("accessToken");
+
     return {
-      success: false,
-      message: "Terjadi kesalahan pada server saat registrasi",
+      success: true,
+      message: "Berhasil logout",
+      redirect: "/auth/login",
     };
+  } catch (error) {
+    console.error("Error logoutUserAction:", error);
+    return { success: false, message: "Gagal memproses logout." };
   }
 }

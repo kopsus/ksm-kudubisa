@@ -1,8 +1,10 @@
 "use client";
 
-import { useMutationAuth } from "@/api/auth/mutation";
-import { Button } from "@/components/ui/button";
+import React, { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -10,14 +12,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { dataRT, dataRW } from "@/data/user";
-import { EnumRole } from "@prisma/client";
 import { LoaderCircle } from "lucide-react";
-import Link from "next/link";
-import React from "react";
+import { EnumRole } from "../dashboard/user/AgenView";
+import { dataRT, dataRW } from "@/data/user";
+import { registerUserAction } from "@/lib/action/authAction";
 
 export const FormRegister = () => {
-  const [payload, setPayload] = React.useState({
+  const router = useRouter();
+
+  const [isPending, setIsPending] = useState(false);
+
+  const [payload, setPayload] = useState({
     role: EnumRole.Masyarakat,
     username: "",
     namaLengkap: "",
@@ -44,16 +49,20 @@ export const FormRegister = () => {
     }));
   };
 
-  const { serviceAuth, isPending } = useMutationAuth();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsPending(true);
 
-    serviceAuth({
-      type: "register",
-      body: payload,
-    });
+    const result = await registerUserAction(payload);
 
-    window.location.reload();
+    setIsPending(false);
+
+    if (result.success) {
+      alert(result.message);
+      router.push(result.redirect || "/");
+    } else {
+      alert(result.message);
+    }
   };
 
   return (
@@ -110,7 +119,9 @@ export const FormRegister = () => {
         onChange={onInputChange}
         required
       />
-      <Button type="submit">{isPending ? <LoaderCircle /> : "Daftar"}</Button>
+      <Button type="submit" disabled={isPending}>
+        {isPending ? <LoaderCircle className="animate-spin" /> : "Daftar"}
+      </Button>
       <p className="text-sm">
         Sudah Punya Akun?{" "}
         <Link href="/login" className="font-bold text-primary">

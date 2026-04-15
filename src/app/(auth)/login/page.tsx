@@ -1,32 +1,37 @@
 "use client";
 
-import { useMutationAuth } from "@/api/auth/mutation";
-import { TypeLogin } from "@/api/auth/type";
-import highlightIMG from "@/assets/highlight.jpg";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { LoaderCircle } from "lucide-react";
+import React, { useState } from "react";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/navigation";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { LoaderCircle } from "lucide-react";
+import { loginUserAction } from "@/lib/action/authAction";
+import highlightIMG from "@/assets/highlight.jpg";
 
-const Login = () => {
-  const [payload, setPayload] = React.useState<TypeLogin>({
+export const Login = () => {
+  const router = useRouter();
+
+  const [isPending, setIsPending] = useState(false);
+
+  const [payload, setPayload] = useState({
     username: "",
     password: "",
   });
 
-  const { serviceAuth, isPending } = useMutationAuth();
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsPending(true);
 
-    try {
-      serviceAuth({
-        type: "login",
-        body: payload,
-      });
-    } catch (error) {
-      console.error("Login gagal:", error);
+    const result = await loginUserAction(payload);
+
+    setIsPending(false);
+
+    if (result.success) {
+      alert(result.message);
+      router.push(result.redirect || "/");
+    } else {
+      alert(result.message);
     }
   };
 
@@ -36,9 +41,11 @@ const Login = () => {
       style={{ backgroundImage: `url(${highlightIMG.src})` }}
     >
       <div className="absolute top-0 left-0 w-full h-full bg-black/70" />
+
       <div className="relative bg-white shadow-md rounded-3xl w-11/12 md:w-96 flex flex-col gap-8 p-5 md:py-5 md:px-10 text-center">
         <p className="titleSection">Selamat Datang Di KSM KuduBisa Banyumas</p>
         <p>“ciptakan dunia yang lebih bersih dan hijau”</p>
+
         <form onSubmit={handleSubmit} className="w-full flex flex-col gap-3">
           <Input
             placeholder="Username"
@@ -54,7 +61,7 @@ const Login = () => {
           <Input
             placeholder="Password"
             type="password"
-            name="passowrd"
+            name="password"
             required
             onChange={(e) =>
               setPayload((prev) => ({
@@ -63,10 +70,11 @@ const Login = () => {
               }))
             }
           />
-          <Button type="submit">
-            {isPending ? <LoaderCircle /> : "Masuk"}
+          <Button type="submit" disabled={isPending}>
+            {isPending ? <LoaderCircle className="animate-spin" /> : "Masuk"}
           </Button>
         </form>
+
         <p>
           Belum punya akun?{" "}
           <Link href={"/register"} className="text-primary font-bold">
