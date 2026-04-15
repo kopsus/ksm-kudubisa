@@ -1,7 +1,6 @@
 "use client";
 
-import { Edit, Eye, MoreHorizontal, Trash } from "lucide-react";
-
+import { Eye, MoreHorizontal, Trash } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,30 +9,33 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { storeDialog } from "@/store/dialog";
-import { useAtomValue, useSetAtom } from "jotai";
 import { useRouter } from "next/navigation";
-import { profileAtom } from "@/store/profile";
 
+// Sesuaikan interface untuk menerima setDialog dan userRole
 interface ITableRowActions {
-  itemId: string;
+  item: any; // Kita butuh data lengkap (termasuk id) untuk dikirim ke Dialog
+  setDialog: React.Dispatch<React.SetStateAction<any>>;
+  userRole: string; // Role user yang sedang login
 }
 
-export function DataTableRowActions({ itemId }: ITableRowActions) {
-  const dataProfile = useAtomValue(profileAtom);
-  const setDialog = useSetAtom(storeDialog);
+export function DataTableRowActions({
+  item,
+  setDialog,
+  userRole,
+}: ITableRowActions) {
   const router = useRouter();
 
   const handleDelete = () => {
     setDialog({
       type: "DELETE",
       show: true,
-      data: itemId,
+      data: item.id, // Sesuai dengan yang dibutuhkan oleh DialogDelete kamu
     });
   };
 
   const handleDetail = () => {
-    router.push(itemId);
+    // Pastikan base path-nya sesuai dengan folder routing kamu
+    router.push(`/transaksi/${item.id}`);
   };
 
   return (
@@ -55,7 +57,9 @@ export function DataTableRowActions({ itemId }: ITableRowActions) {
             <Eye size={16} />
           </DropdownMenuShortcut>
         </DropdownMenuItem>
-        {dataProfile?.role === "Admin" && (
+
+        {/* Validasi role sekarang menggunakan prop userRole */}
+        {userRole === "Admin" && (
           <DropdownMenuItem onClick={handleDelete}>
             Delete
             <DropdownMenuShortcut>

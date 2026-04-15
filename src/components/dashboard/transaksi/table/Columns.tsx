@@ -7,7 +7,10 @@ import { formatDate, formatIDR } from "@/lib/formated";
 import { TypeProducts } from "@/api/produk/type";
 import { DataTableRowActions } from "./TableRowActions";
 
-export const Columns: ColumnDef<TypeTransaksi>[] = [
+export const getColumnsTransaction = (
+  setDialog: any,
+  userRole: string,
+): ColumnDef<any>[] => [
   {
     accessorKey: "user",
     header: "Nama",
@@ -59,7 +62,7 @@ export const Columns: ColumnDef<TypeTransaksi>[] = [
     header: "Total",
     cell: ({ row }) => {
       const barangList = row.getValue(
-        "TransaksiProduk"
+        "TransaksiProduk",
       ) as TypeTransaksiProduk[];
 
       if (!barangList || barangList.length === 0) {
@@ -69,7 +72,7 @@ export const Columns: ColumnDef<TypeTransaksi>[] = [
       // Hitung total harga semua barang
       const total = barangList.reduce(
         (sum, barang) => sum + (barang.quantity ?? 0) * barang.produk.price,
-        0
+        0,
       );
 
       return (
@@ -85,7 +88,7 @@ export const Columns: ColumnDef<TypeTransaksi>[] = [
     cell: ({ row }) => {
       const status = row.getValue("statusUser") as TypeTransaksi["statusUser"];
       const item = statusesTransaksi.find(
-        (status) => status.value === row.getValue("statusUser")
+        (status) => status.value === row.getValue("statusUser"),
       );
 
       if (!item) {
@@ -96,10 +99,10 @@ export const Columns: ColumnDef<TypeTransaksi>[] = [
         status === "Paid"
           ? "default"
           : status === "Process"
-          ? "process"
-          : status === "Failed"
-          ? "failed"
-          : "pending";
+            ? "process"
+            : status === "Failed"
+              ? "failed"
+              : "pending";
 
       return (
         <Badge variant={variant}>
@@ -117,7 +120,7 @@ export const Columns: ColumnDef<TypeTransaksi>[] = [
     cell: ({ row }) => {
       const status = row.getValue("statusAgen") as TypeTransaksi["statusAgen"];
       const item = statusesTransaksi.find(
-        (status) => status.value === row.getValue("statusAgen")
+        (status) => status.value === row.getValue("statusAgen"),
       );
 
       if (!item) {
@@ -128,10 +131,10 @@ export const Columns: ColumnDef<TypeTransaksi>[] = [
         status === "Paid"
           ? "default"
           : status === "Process"
-          ? "process"
-          : status === "Failed"
-          ? "failed"
-          : "pending";
+            ? "process"
+            : status === "Failed"
+              ? "failed"
+              : "pending";
 
       return (
         <Badge variant={variant}>
@@ -144,9 +147,9 @@ export const Columns: ColumnDef<TypeTransaksi>[] = [
     },
   },
   {
-    accessorKey: "createdAt",
+    accessorKey: "created_at",
     header: "Tanggal",
-    cell: ({ row }) => formatDate(row.original.createdAt!),
+    cell: ({ row }) => formatDate(row.original.created_at!),
     filterFn: (row, columnId, filterValue) => {
       if (!filterValue) return true; // Jika tidak ada filter, tampilkan semua data
       const rowValue = row.getValue(columnId) as string; // Ambil nilai tanggal
@@ -154,13 +157,17 @@ export const Columns: ColumnDef<TypeTransaksi>[] = [
       return rowMonth.toString() === filterValue; // Bandingkan dengan bulan yang difilter
     },
   },
-
   {
-    accessorKey: "Action",
-    header: "Action",
+    id: "actions",
+    header: "Aksi",
     cell: ({ row }) => {
-      const itemId = row.original.id;
-      return <DataTableRowActions itemId={itemId} />;
+      return (
+        <DataTableRowActions
+          item={row.original}
+          setDialog={setDialog}
+          userRole={userRole}
+        />
+      );
     },
   },
 ];

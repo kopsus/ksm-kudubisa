@@ -34,8 +34,8 @@ type TypeTransaksi = {
   updatedByRolePengepul?: TypeupdatedByPengepul;
   updatedByAgen?: TypeUpdatedByAgen;
   updatedByPengepul?: TypeupdatedByPengepul;
-  createdAt?: string;
-  updatedAt?: string;
+  created_at?: string;
+  updated_at?: string;
   TransaksiProduk: TypeTransaksiProduk[];
 };
 

@@ -1,30 +1,29 @@
-"use client";
-
-import { useMutationTransaction } from "@/api/transaksi/mutations";
-import DialogLayout from "@/components/dashboard/_global/Layouts/Dialog";
+import { useState } from "react";
+import { DialogProps } from "../TransaksiMasyarakatView";
+import { deleteTransaction } from "@/lib/action/transactionAction";
+import DialogLayout from "../../_global/Layouts/Dialog";
 import { Button } from "@/components/ui/button";
-import { storeDialog } from "@/store/dialog";
-import { useAtom } from "jotai";
-import React from "react";
 
-export const DialogDelete = () => {
-  const [dialog, setDialog] = useAtom(storeDialog);
+export const DialogDeleteTransaction = ({ dialog, setDialog }: DialogProps) => {
+  const [isPending, setIsPending] = useState(false);
 
   const closeDialog = () => {
-    setDialog((prev) => ({
-      ...prev,
-      show: false,
-    }));
+    setDialog({ type: null, show: false, data: null });
   };
 
-  const { serviceTransaction } = useMutationTransaction();
-
   const handleDelete = async () => {
-    await serviceTransaction({
-      type: "delete",
-      id: dialog.data,
-    });
-    closeDialog();
+    setIsPending(true);
+
+    const transactionId = dialog.data?.id || dialog.data;
+    const result = await deleteTransaction(transactionId);
+
+    setIsPending(false);
+
+    if (result.success) {
+      closeDialog();
+    } else {
+      alert(result.message);
+    }
   };
 
   return (
@@ -34,11 +33,11 @@ export const DialogDelete = () => {
       titleDelete="Hapus item ini dari Transaksi ?"
     >
       <div className="flex items-center justify-center gap-5">
-        <Button variant={"outline"} onClick={closeDialog}>
+        <Button disabled={isPending} variant={"outline"} onClick={closeDialog}>
           Cancel
         </Button>
-        <Button variant={"danger"} onClick={handleDelete}>
-          Delete
+        <Button disabled={isPending} variant={"danger"} onClick={handleDelete}>
+          {isPending ? "Menghapus..." : "Delete"}
         </Button>
       </div>
     </DialogLayout>
