@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DialogStateUser, DialogUserProps, EnumRole } from "../AgenView";
+import { DialogStateUser, DialogUserProps, EnumRole } from "../UserView";
 import { createUser, updateUser } from "@/lib/action/userAction";
 import DialogLayout from "../../_global/Layouts/Dialog";
 import { Input } from "@/components/ui/input";

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DialogUserProps } from "../AgenView";
+import { DialogUserProps } from "../UserView";
 import { deleteUser } from "@/lib/action/userAction";
 import DialogLayout from "../../_global/Layouts/Dialog";
 import { Button } from "@/components/ui/button";

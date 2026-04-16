@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { LoaderCircle } from "lucide-react";
-import { EnumRole } from "../dashboard/user/AgenView";
+import { EnumRole } from "../dashboard/user/UserView";
 import { dataRT, dataRW } from "@/data/user";
 import { registerUserAction } from "@/lib/action/authAction";
 

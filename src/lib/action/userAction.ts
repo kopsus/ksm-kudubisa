@@ -5,13 +5,26 @@ import bcrypt from "bcrypt";
 import { randomUUID } from "crypto";
 import { revalidatePath } from "next/cache";
 
-export async function getUsers() {
+export async function getUsers(role?: string) {
   try {
-    const query = `
-      SELECT * FROM user 
-      ORDER BY created_at DESC
+    // Siapkan query dasar
+    let query = `
+      SELECT id, namaLengkap, username, rt, rw, role, created_at, updated_at 
+      FROM user 
     `;
-    const [rows] = await pool.query(query);
+    const queryParams: any[] = [];
+
+    // Jika parameter role dikirim, tambahkan filter WHERE
+    if (role) {
+      query += ` WHERE role = ? `;
+      queryParams.push(role);
+    }
+
+    // Tambahkan urutan
+    query += ` ORDER BY created_at DESC `;
+
+    // Eksekusi query dengan parameter (aman dari SQL Injection)
+    const [rows] = await pool.query(query, queryParams);
 
     return { success: true, data: rows };
   } catch (error) {
