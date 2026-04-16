@@ -2,7 +2,7 @@
 
 import Breadcrumb from "@/components/dashboard/_global/Breadcrumb";
 import { DataTable } from "@/components/dashboard/user/table/DataTable";
-import { Columns } from "@/components/dashboard/user/table/Columns";
+// import { Columns } from "@/components/dashboard/user/table/Columns";
 import { storeDialog } from "@/store/dialog";
 import { useSetAtom } from "jotai";
 import React from "react";
@@ -27,9 +27,9 @@ const UserPengepul = () => {
           });
         }}
       />
-      <DataTable columns={Columns} data={filteredData} />
+      {/* <DataTable columns={Columns} data={filteredData} />
       <DialogDelete />
-      <DialogCreate />
+      <DialogCreate /> */}
     </>
   );
 };

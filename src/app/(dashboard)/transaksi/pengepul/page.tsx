@@ -1,23 +1,27 @@
-"use client";
+import TransaksiPengepulView from "@/components/dashboard/transaksi/TransaksiPengepulView";
+import { getTransactions } from "@/lib/action/transactionAction";
+import jwt from "jsonwebtoken";
+import { cookies } from "next/headers";
 
-import { DialogDelete } from "@/components/dashboard/transaksi/dialog/DialogDelete";
-import { DataTable } from "@/components/dashboard/transaksi/table/DataTable";
-import { Columns } from "@/components/dashboard/transaksi/table/Columns";
-import React from "react";
-import { useQueryTransaction } from "@/api/transaksi/queries";
+export default async function TransaksiPengepulPage() {
+  const res = await getTransactions();
+  const dataTransactions = res.success ? (res.data as any[]) : [];
 
-const TransaksiAgen = () => {
-  const { dataTransactions } = useQueryTransaction();
+  const cookieStore = await cookies();
+  const token = cookieStore.get("accessToken")?.value;
+  let userRole = "";
+
+  if (token) {
+    try {
+      const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
+      userRole = decoded.role;
+    } catch (err) {}
+  }
 
   return (
-    <>
-      <h2 className="text-title-md2 font-semibold text-black mb-5 dark:text-white">
-        Transaksi Pengepul
-      </h2>
-      <DataTable columns={Columns} data={dataTransactions ?? []} />
-      <DialogDelete />
-    </>
+    <TransaksiPengepulView
+      dataTransactions={dataTransactions}
+      userRole={userRole}
+    />
   );
-};
-
-export default TransaksiAgen;
+}

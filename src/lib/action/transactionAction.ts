@@ -193,9 +193,6 @@ export async function getTransactionById(id: string) {
 // 4. UPDATE TRANSACTION (PATCH)
 export async function updateTransaction(id: string, body: any) {
   try {
-    const userProfile = await getUserFromToken(); // Pengecekan sesi
-
-    // Asumsi: body bisa berisi statusUser, statusAgen, dll.
     const { TransaksiProduk, ...updateData } = body;
 
     // 1. Update data Transaksi Induk

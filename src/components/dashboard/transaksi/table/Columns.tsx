@@ -41,9 +41,7 @@ export const getColumnsTransaction = (
     accessorKey: "TransaksiProduk",
     header: "Barang",
     cell: ({ row }) => {
-      const barangList = row.getValue("TransaksiProduk") as {
-        produk: TypeProducts; // We specify that produk is of type TypeProducts
-      }[];
+      const barangList = row.getValue("TransaksiProduk") as any[];
 
       if (!barangList || barangList.length === 0) {
         return <p>Belum ada barang</p>;
@@ -51,9 +49,18 @@ export const getColumnsTransaction = (
 
       return (
         <ul className="flex flex-col gap-2">
-          {barangList.map((barang, index) => (
-            <li key={index}>{barang.produk?.product_name}</li>
-          ))}
+          {barangList.map((barang, index) => {
+            const namaBarang =
+              barang.produk?.product_name ?? barang.product_name ?? "-";
+
+            const qty = barang.quantity ?? 0;
+
+            return (
+              <li key={index} className="list-disc ml-4">
+                {namaBarang} ({qty} kg)
+              </li>
+            );
+          })}
         </ul>
       );
     },
@@ -61,22 +68,19 @@ export const getColumnsTransaction = (
   {
     header: "Total",
     cell: ({ row }) => {
-      const barangList = row.getValue(
-        "TransaksiProduk",
-      ) as TypeTransaksiProduk[];
-
+      const barangList = row.getValue("TransaksiProduk") as any[];
       if (!barangList || barangList.length === 0) {
         return <p>Rp 0</p>;
       }
 
-      // Hitung total harga semua barang
-      const total = barangList.reduce(
-        (sum, barang) => sum + (barang.quantity ?? 0) * barang.produk.price,
-        0,
-      );
+      const total = barangList.reduce((sum, barang) => {
+        const itemPrice = barang.produk?.price ?? barang.price ?? 0;
+
+        return sum + (barang.quantity ?? 0) * itemPrice;
+      }, 0);
 
       return (
-        <Button variant={"outline"} size={"sm"}>
+        <Button variant={"outline"} size={"sm"} disabled>
           {formatIDR(total)}
         </Button>
       );

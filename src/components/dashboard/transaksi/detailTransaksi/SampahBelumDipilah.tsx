@@ -1,46 +1,36 @@
-import { useQueryProducts } from "@/api/produk/queries";
-import { TypeProducts } from "@/api/produk/type";
 import { Button } from "@/components/ui/button";
 import { formatIDR } from "@/lib/formated";
-import { storeTransaksi } from "@/store/transaksi";
-import { useAtomValue } from "jotai";
 import Image from "next/image";
-import React from "react";
-
-interface ISampahBelumDipilah {
-  handleAdd: (produk: TypeProducts) => void;
-  handleMin: (produkId: string) => void;
-}
+import { ISampahProps } from "./SampahDipilah";
 
 export const SampahBelumDipilah = ({
+  products,
+  cartItems,
   handleAdd,
   handleMin,
-}: ISampahBelumDipilah) => {
-  const { dataProduct } = useQueryProducts();
-  const transaksi = useAtomValue(storeTransaksi);
-
+}: ISampahProps) => {
   return (
     <div>
       <p className="titleContent w-max border-b-2 border-primary pb-2 mb-5">
-        Sampah Sudah Dipilah
+        Sampah Belum Dipilah
       </p>
       <div
         className="grid lg:grid-cols-2 gap-5 w-full min-h-40 max-h-96 overflow-y-auto"
         style={{ scrollbarWidth: "none" }}
       >
-        {dataProduct?.map(
+        {products?.map(
           (item, index) =>
             item.jenis === "BelumDiPilah" && (
               <div
                 key={index}
                 className="grid grid-cols-2 items-start justify-start gap-5"
               >
-                <div className="rounded-xl overflow-hidden shadow-md border w-full h-32">
+                <div className="rounded-xl overflow-hidden shadow-md border w-full h-32 relative">
                   <Image
                     src={item.image}
                     alt={item.product_name}
-                    width={0}
-                    height={0}
+                    fill
+                    className="object-cover"
                     sizes="100vw"
                   />
                 </div>
@@ -58,9 +48,9 @@ export const SampahBelumDipilah = ({
                       -
                     </Button>
                     <Button variant="outline" disabled>
-                      {transaksi.data?.TransaksiProduk.find(
-                        (product) => product.produkId === item.id
-                      )?.quantity || 0}
+                      {/* Cari quantity dari cartItems yang dilempar dari ListProducts */}
+                      {cartItems.find((product) => product.produkId === item.id)
+                        ?.quantity || 0}
                     </Button>
                     <Button
                       onClick={() => handleAdd(item)}
@@ -72,7 +62,7 @@ export const SampahBelumDipilah = ({
                   </div>
                 </div>
               </div>
-            )
+            ),
         )}
       </div>
     </div>
