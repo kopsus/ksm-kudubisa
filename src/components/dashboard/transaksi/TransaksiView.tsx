@@ -16,15 +16,12 @@ export type DialogStateTransaksi = {
   data: any | null;
 };
 
-interface TransaksiPengepulViewProps {
+interface TransaksiViewProps {
   dataTransactions: any[];
   userRole: string;
 }
 
-const TransaksiPengepulView = ({
-  dataTransactions,
-  userRole,
-}: TransaksiPengepulViewProps) => {
+const TransaksiView = ({ dataTransactions, userRole }: TransaksiViewProps) => {
   // Ganti Jotai storeDialog dengan useState lokal
   const [dialog, setDialog] = useState<DialogStateTransaksi>({
     type: null,
@@ -39,7 +36,7 @@ const TransaksiPengepulView = ({
     <>
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-title-md2 font-semibold text-black dark:text-white">
-          Transaksi Pengepul
+          Transaksi Agen
         </h2>
       </div>
 
@@ -51,4 +48,4 @@ const TransaksiPengepulView = ({
   );
 };
 
-export default TransaksiPengepulView;
+export default TransaksiView;

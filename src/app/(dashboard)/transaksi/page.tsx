@@ -1,9 +1,9 @@
-import TransaksiPengepulView from "@/components/dashboard/transaksi/TransaksiPengepulView";
+import TransaksiView from "@/components/dashboard/transaksi/TransaksiView";
 import { getTransactions } from "@/lib/action/transactionAction";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 
-export default async function TransaksiPengepulPage() {
+export default async function TransaksiMasyarakatPage() {
   const res = await getTransactions();
   const dataTransactions = res.success ? (res.data as any[]) : [];
 
@@ -19,9 +19,6 @@ export default async function TransaksiPengepulPage() {
   }
 
   return (
-    <TransaksiPengepulView
-      dataTransactions={dataTransactions}
-      userRole={userRole}
-    />
+    <TransaksiView dataTransactions={dataTransactions} userRole={userRole} />
   );
 }

@@ -1,4 +1,3 @@
-// app/actions/transactionActions.ts
 "use server";
 
 import pool from "@/lib/db";
@@ -7,7 +6,6 @@ import { randomUUID } from "crypto";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 
-// HELPER: Ambil & Verifikasi Token
 async function getUserFromToken() {
   const cookieStore = await cookies();
   const token = cookieStore.get("accessToken")?.value;
