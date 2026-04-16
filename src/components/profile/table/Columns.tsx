@@ -13,9 +13,7 @@ export const Columns: ColumnDef<TypeTransaksi>[] = [
     accessorKey: "TransaksiProduk",
     header: "Barang",
     cell: ({ row }) => {
-      const barangList = row.getValue("TransaksiProduk") as {
-        produk: TypeProducts; // We specify that produk is of type TypeProducts
-      }[];
+      const barangList = row.getValue("TransaksiProduk") as TypeProducts[];
 
       if (!barangList || barangList.length === 0) {
         return <p>Belum ada barang</p>;
@@ -24,7 +22,7 @@ export const Columns: ColumnDef<TypeTransaksi>[] = [
       return (
         <ul className="flex flex-col gap-2">
           {barangList.map((barang, index) => (
-            <li key={index}>{barang.produk?.product_name}</li>
+            <li key={index}>{barang?.product_name}</li>
           ))}
         </ul>
       );
@@ -34,7 +32,7 @@ export const Columns: ColumnDef<TypeTransaksi>[] = [
     header: "Berat",
     cell: ({ row }) => {
       const barangList = row.getValue(
-        "TransaksiProduk"
+        "TransaksiProduk",
       ) as TypeTransaksiProduk[];
 
       if (!barangList || barangList.length === 0) {
@@ -53,9 +51,7 @@ export const Columns: ColumnDef<TypeTransaksi>[] = [
   {
     header: "Harga / kg",
     cell: ({ row }) => {
-      const barangList = row.getValue(
-        "TransaksiProduk"
-      ) as TypeTransaksiProduk[];
+      const barangList = row.getValue("TransaksiProduk") as any[];
 
       if (!barangList || barangList.length === 0) {
         return <p>Belum ada barang</p>;
@@ -64,7 +60,7 @@ export const Columns: ColumnDef<TypeTransaksi>[] = [
       return (
         <ul className="flex flex-col gap-2">
           {barangList.map((barang, index) => (
-            <li key={index}>{formatIDR(barang.produk?.price)}</li>
+            <li key={index}>{formatIDR(barang?.price)}</li>
           ))}
         </ul>
       );
@@ -73,9 +69,7 @@ export const Columns: ColumnDef<TypeTransaksi>[] = [
   {
     header: "Subtotal",
     cell: ({ row }) => {
-      const barangList = row.getValue(
-        "TransaksiProduk"
-      ) as TypeTransaksiProduk[];
+      const barangList = row.getValue("TransaksiProduk") as any[];
 
       if (!barangList || barangList.length === 0) {
         return <p>Belum ada barang</p>;
@@ -85,7 +79,7 @@ export const Columns: ColumnDef<TypeTransaksi>[] = [
         <ul className="flex flex-col gap-2">
           {barangList.map((barang, index) => {
             // Menghitung subtotal per produk
-            const subtotalPerProduk = barang.quantity * barang.produk?.price;
+            const subtotalPerProduk = barang.quantity * barang?.price;
 
             return <li key={index}>{formatIDR(subtotalPerProduk)}</li>;
           })}
@@ -96,9 +90,7 @@ export const Columns: ColumnDef<TypeTransaksi>[] = [
   {
     header: "Total",
     cell: ({ row }) => {
-      const barangList = row.getValue(
-        "TransaksiProduk"
-      ) as TypeTransaksiProduk[];
+      const barangList = row.getValue("TransaksiProduk") as any[];
 
       if (!barangList || barangList.length === 0) {
         return <p>Rp 0</p>;
@@ -106,8 +98,8 @@ export const Columns: ColumnDef<TypeTransaksi>[] = [
 
       // Hitung total harga semua barang
       const total = barangList.reduce(
-        (sum, barang) => sum + (barang.quantity ?? 0) * barang.produk?.price,
-        0
+        (sum, barang) => sum + (barang.quantity ?? 0) * barang?.price,
+        0,
       );
 
       return (
@@ -123,7 +115,7 @@ export const Columns: ColumnDef<TypeTransaksi>[] = [
     cell: ({ row }) => {
       const status = row.getValue("statusUser") as TypeTransaksi["statusUser"];
       const item = statusesTransaksi.find(
-        (status) => status.value === row.getValue("statusUser")
+        (status) => status.value === row.getValue("statusUser"),
       );
 
       if (!item) {
@@ -134,10 +126,10 @@ export const Columns: ColumnDef<TypeTransaksi>[] = [
         status === "Paid"
           ? "default"
           : status === "Process"
-          ? "process"
-          : status === "Failed"
-          ? "failed"
-          : "pending";
+            ? "process"
+            : status === "Failed"
+              ? "failed"
+              : "pending";
 
       return (
         <Badge variant={variant}>

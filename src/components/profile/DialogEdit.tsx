@@ -1,26 +1,33 @@
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+"use client";
+
+import React, { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
-import { useAtom } from "jotai";
-import { storeDialog } from "@/store/dialog";
-import { TypeUserBody } from "@/api/users/type";
-import React from "react";
-import { useMutationUser } from "@/api/users/mutations";
-import { dataRT, dataRW } from "@/data/user";
+} from "@/components/ui/select";
+import { LoaderCircle } from "lucide-react";
+import { updateUser } from "@/lib/action/userAction";
 import DialogLayout from "../dashboard/_global/Layouts/Dialog";
-import { useQueryProfile } from "@/api/users/queries";
+import { dataRT, dataRW } from "@/data/user";
 
-export const DialogEdit = () => {
-  const [dialog, setDialog] = useAtom(storeDialog);
+interface DialogEditProps {
+  dialog: {
+    show: boolean;
+    data: any;
+  };
+  setDialog: React.Dispatch<React.SetStateAction<any>>;
+}
+
+export const DialogEdit = ({ dialog, setDialog }: DialogEditProps) => {
+  const [isPending, setIsPending] = useState(false);
 
   const closeDialog = () => {
-    setDialog((prev) => ({
+    setDialog((prev: any) => ({
       ...prev,
       show: false,
     }));
@@ -30,7 +37,7 @@ export const DialogEdit = () => {
     e.preventDefault();
     const { name, value } = e.target;
 
-    setDialog((prev) => ({
+    setDialog((prev: any) => ({
       ...prev,
       data: {
         ...prev.data,
@@ -40,7 +47,7 @@ export const DialogEdit = () => {
   };
 
   const onValueChange = (value: string, name: string) => {
-    setDialog((prev) => ({
+    setDialog((prev: any) => ({
       ...prev,
       data: {
         ...prev.data,
@@ -49,36 +56,38 @@ export const DialogEdit = () => {
     }));
   };
 
-  const { serviceUser } = useMutationUser();
-  const { refetch } = useQueryProfile();
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsPending(true); // Mulai loading
 
-    const payload: TypeUserBody = {
+    const payload = {
       username: dialog.data?.username ?? "",
       namaLengkap: dialog.data?.namaLengkap ?? "",
       noTlp: dialog.data?.noTlp ?? "",
       rt: dialog.data?.rt ?? "",
       rw: dialog.data?.rw ?? "",
-      password: dialog.data?.password ?? "",
+      ...(dialog.data?.password && { password: dialog.data.password }),
     };
 
-    await serviceUser({
-      type: "update",
-      body: payload,
-      id: dialog.data?.id,
-    });
+    // Panggil Server Action
+    const res = await updateUser(dialog.data?.id, payload);
 
-    refetch();
-    closeDialog();
+    setIsPending(false); // Selesai loading
+
+    if (res.success) {
+      alert("Profil berhasil diperbarui!");
+      closeDialog();
+      // Halaman akan otomatis memuat data baru karena revalidatePath di action
+    } else {
+      alert(res.message); // Tampilkan pesan error (misal: format password salah)
+    }
   };
 
   return (
     <DialogLayout
-      show={dialog.type !== "DELETE" && dialog.show}
+      show={dialog.show}
       onHide={closeDialog}
-      title={`${dialog.type === "CREATE" ? "Tambah User" : "Edit User"}`}
+      title="Edit Profil"
       desc="Lakukan perubahan pada profil Anda di sini. Klik simpan setelah selesai."
     >
       <form onSubmit={handleSubmit} className="grid gap-4 py-4">
@@ -91,6 +100,7 @@ export const DialogEdit = () => {
             value={dialog.data?.username ?? ""}
             onChange={onInputChange}
             required
+            disabled // Biasanya username tidak disarankan untuk diubah bebas
           />
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
@@ -118,7 +128,7 @@ export const DialogEdit = () => {
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
           <p>RT / RW</p>
-          <div className="flex gap-5 justify-between">
+          <div className="flex gap-5 justify-between col-span-3">
             <Select
               onValueChange={(value) => onValueChange(value, "rt")}
               value={dialog.data?.rt ?? ""}
@@ -154,8 +164,8 @@ export const DialogEdit = () => {
         <div className="grid grid-cols-4 items-center gap-4">
           <p>Password</p>
           <Input
-            placeholder="Password"
-            type="text"
+            placeholder="Biarkan kosong jika tidak diubah"
+            type="password" // Ubah jadi password agar aman
             name="password"
             className="col-span-3"
             value={dialog.data?.password ?? ""}
@@ -163,7 +173,10 @@ export const DialogEdit = () => {
           />
         </div>
         <div className="flex justify-end mt-5">
-          <Button type="submit">Simpan Perubahan</Button>
+          <Button type="submit" disabled={isPending}>
+            {isPending ? <LoaderCircle className="animate-spin mr-2" /> : null}
+            {isPending ? "Menyimpan..." : "Simpan Perubahan"}
+          </Button>
         </div>
       </form>
     </DialogLayout>

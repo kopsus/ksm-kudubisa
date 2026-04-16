@@ -1,9 +1,41 @@
 "use server";
 
+import jwt from "jsonwebtoken";
 import pool from "@/lib/db";
 import bcrypt from "bcrypt";
 import { randomUUID } from "crypto";
 import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
+
+export async function getProfile() {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("accessToken")?.value;
+
+    if (!token) {
+      return { success: false, message: "Tidak ada token akses." };
+    }
+
+    // 1. Decode JWT untuk mendapatkan ID
+    const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
+
+    // 2. Ambil data user dari database (tanpa password)
+    const [rows]: any = await pool.query(
+      `SELECT id, namaLengkap, username, noTlp, rt, rw, role, created_at, updated_at 
+       FROM user WHERE id = ?`,
+      [decoded.id],
+    );
+
+    if (rows.length === 0) {
+      return { success: false, message: "User tidak ditemukan" };
+    }
+
+    return { success: true, data: rows[0] };
+  } catch (error) {
+    console.error("Error getProfile:", error);
+    return { success: false, message: "Sesi tidak valid atau telah berakhir." };
+  }
+}
 
 export async function getUsers(role?: string) {
   try {
