@@ -172,7 +172,7 @@ export async function logoutUserAction() {
     return {
       success: true,
       message: "Berhasil logout",
-      redirect: "/auth/login",
+      redirect: "/login",
     };
   } catch (error) {
     console.error("Error logoutUserAction:", error);
