@@ -13,8 +13,11 @@ async function getUserFromToken() {
 
   try {
     return jwt.verify(token, process.env.JWT_SECRET!) as any;
-  } catch (error) {
-    throw new Error("Invalid Token");
+  } catch (error: any) {
+    if (error.digest === "DYNAMIC_SERVER_USAGE") throw error;
+
+    console.error("Error:", error);
+    return { success: false, message: "Terjadi kesalahan..." };
   }
 }
 
@@ -132,7 +135,7 @@ export async function createTransaction(body: any) {
 
     await Promise.all(detailQueries);
 
-    revalidatePath("/transactions"); // Sesuaikan route-mu
+    revalidatePath("/transaksi"); // Sesuaikan route-mu
     revalidatePath("/dashboard");
 
     return { success: true, message: "Transaksi berhasil dibuat!" };
@@ -220,7 +223,7 @@ export async function updateTransaction(id: string, body: any) {
       await Promise.all(detailQueries);
     }
 
-    revalidatePath("/transactions");
+    revalidatePath("/transaksi");
     revalidatePath("/dashboard");
 
     return { success: true, message: "Transaksi berhasil diupdate" };
@@ -239,7 +242,7 @@ export async function deleteTransaction(id: string) {
 
     await pool.query("DELETE FROM transaksi WHERE id = ?", [id]);
 
-    revalidatePath("/transactions");
+    revalidatePath("/transaksi");
     revalidatePath("/dashboard");
 
     return { success: true, message: "Transaksi berhasil dihapus" };

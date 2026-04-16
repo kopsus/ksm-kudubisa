@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { useAtom } from "jotai";
-import { storeDialog } from "@/store/dialog";
 import useImagePreview from "@/hooks/useImagePreview";
 import { uploadFileAction } from "@/lib/action/uploadActions";
 import { createGallery, updateGallery } from "@/lib/action/galleryActions";

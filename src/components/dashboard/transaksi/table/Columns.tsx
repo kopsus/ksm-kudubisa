@@ -1,11 +1,10 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { TypeTransaksi, TypeTransaksiProduk } from "@/api/transaksi/type";
 import { statusesTransaksi } from "@/data/transaksi";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatDate, formatIDR } from "@/lib/formated";
-import { TypeProducts } from "@/api/produk/type";
 import { DataTableRowActions } from "./TableRowActions";
+import { TypeTransaksi } from "@/types/transaction";
 
 export const getColumnsTransaction = (
   setDialog: any,

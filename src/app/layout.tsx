@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Poppins } from "next/font/google";
-import { Query } from "@/providers/component";
 
 const poppins = Poppins({
   weight: ["400"],
@@ -20,9 +19,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${poppins.className}`}>
-        <Query>{children}</Query>
-      </body>
+      <body className={`${poppins.className}`}>{children}</body>
     </html>
   );
 }

@@ -1,6 +1,6 @@
-import { TypeUser } from "@/api/users/type";
 import UserView from "@/components/dashboard/user/UserView";
 import { getUsers } from "@/lib/action/userAction";
+import { TypeUser } from "@/types/user";
 
 export default async function UsersPage({
   searchParams,

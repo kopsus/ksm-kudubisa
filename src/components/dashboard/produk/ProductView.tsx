@@ -3,10 +3,10 @@
 import React, { useState } from "react";
 import Breadcrumb from "../_global/Breadcrumb";
 import { DataTable } from "./table/DataTable";
-import { TypeProducts } from "@/api/produk/type";
 import { getColumns } from "./table/Columns";
 import { DialogCreate } from "./dialog/DialogCreate";
 import { DialogDelete } from "./dialog/DialogDelete";
+import { TypeProducts } from "@/types/product";
 
 export enum EnumJenisSampah {
   BelumDiPilah = "BelumDiPilah",

@@ -9,7 +9,7 @@ import "swiper/css";
 import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Link from "next/link";
-import { TypeProducts } from "@/api/produk/type";
+import { TypeProducts } from "@/types/product";
 
 interface ProductProps {
   dataProduct: TypeProducts[];

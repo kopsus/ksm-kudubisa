@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 import Image from "next/image";
 import { useLightbox } from "@/hooks/useLightbox";
 import { NextLightbox } from "../_global/lightbox/Lightbox";
-import { TypeGallery } from "@/api/gallery/type";
+import { TypeGallery } from "@/types/gallery";
 
 interface GalleryProps {
   dataGallery: TypeGallery[];

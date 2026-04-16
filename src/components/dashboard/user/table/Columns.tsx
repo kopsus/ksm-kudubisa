@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { TypeUser } from "@/api/users/type";
 import { DialogState } from "../../produk/ProductView";
 import { Edit, Trash } from "lucide-react";
+import { TypeUser } from "@/types/user";
 
 export const getColumnsUser = (
   setDialog: React.Dispatch<React.SetStateAction<DialogState>>,

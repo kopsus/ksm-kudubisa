@@ -1,6 +1,6 @@
-import { TypeProducts } from "@/api/produk/type";
 import ProductView from "@/components/dashboard/produk/ProductView";
 import { getProducts } from "@/lib/action/productAction";
+import { TypeProducts } from "@/types/product";
 
 export default async function ProductPage() {
   const response = await getProducts();

@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { dataRT, dataRW } from "@/data/user";
 import { Button } from "@/components/ui/button";
-import { TypeUser } from "@/api/users/type";
+import { TypeUser } from "@/types/user";
 
 export const DialogCreate = ({ dialog, setDialog }: DialogUserProps) => {
   const [isPending, setIsPending] = useState(false);

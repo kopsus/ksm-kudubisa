@@ -31,7 +31,8 @@ export async function getProfile() {
     }
 
     return { success: true, data: rows[0] };
-  } catch (error) {
+  } catch (error: any) {
+    if (error.digest === "DYNAMIC_SERVER_USAGE") throw error;
     console.error("Error getProfile:", error);
     return { success: false, message: "Sesi tidak valid atau telah berakhir." };
   }

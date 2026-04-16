@@ -1,10 +1,10 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { TypeProducts } from "@/api/produk/type";
 import Image from "next/image";
 import { Edit, Trash } from "lucide-react";
 import { DialogState } from "../ProductView";
+import { TypeProducts } from "@/types/product";
 
 export const getColumns = (
   setDialog: React.Dispatch<React.SetStateAction<DialogState>>,

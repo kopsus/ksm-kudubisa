@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { DialogProps } from "../TransaksiMasyarakatView";
 import { deleteTransaction } from "@/lib/action/transactionAction";
 import DialogLayout from "../../_global/Layouts/Dialog";
 import { Button } from "@/components/ui/button";
+import { DialogProps } from "../TransaksiView";
 
 export const DialogDeleteTransaction = ({ dialog, setDialog }: DialogProps) => {
   const [isPending, setIsPending] = useState(false);

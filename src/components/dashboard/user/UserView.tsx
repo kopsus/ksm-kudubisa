@@ -7,8 +7,8 @@ import { DataTable } from "./table/DataTable";
 import { DialogCreate } from "./dialog/DialogCreate";
 import { getColumnsUser } from "./table/Columns";
 import Breadcrumb from "../_global/Breadcrumb";
-import { TypeUser } from "@/api/users/type";
 import { DialogDelete } from "./dialog/DialogDelete";
+import { TypeUser } from "@/types/user";
 
 export enum EnumRole {
   Admin = "Admin",

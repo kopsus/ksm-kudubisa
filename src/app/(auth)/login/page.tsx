@@ -9,7 +9,7 @@ import { LoaderCircle } from "lucide-react";
 import { loginUserAction } from "@/lib/action/authAction";
 import highlightIMG from "@/assets/highlight.jpg";
 
-export const Login = () => {
+const Login = () => {
   const router = useRouter();
 
   const [isPending, setIsPending] = useState(false);

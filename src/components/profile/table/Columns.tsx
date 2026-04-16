@@ -1,12 +1,12 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { TypeTransaksi, TypeTransaksiProduk } from "@/api/transaksi/type";
 import { formatIDR } from "@/lib/formated";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { statusesTransaksi } from "@/data/transaksi";
-import { TypeProducts } from "@/api/produk/type";
+import { TypeTransaksi, TypeTransaksiProduk } from "@/types/transaction";
+import { TypeProducts } from "@/types/product";
 
 export const Columns: ColumnDef<TypeTransaksi>[] = [
   {
