@@ -1,11 +1,9 @@
 "use client";
 
-import React from "react";
-import { Button } from "../ui/button";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Logo } from "./logo";
-import { usePathname } from "next/navigation";
-import { BookX, Home, LogOut, Store, UserCircle, UserCog } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { Home, BookX, UserCog, Store, UserCircle, LogOut } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -13,52 +11,38 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-
+} from "@/components/ui/dropdown-menu";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
-import { useMutationAuth } from "@/api/auth/mutation";
-import { useAtomValue } from "jotai";
-import { profileAtom } from "@/store/profile";
+import { Button } from "@/components/ui/button";
+import { logoutUserAction } from "@/lib/action/authAction";
+import { Logo } from "../logo";
 
-export const Header = () => {
-  const dataProfile = useAtomValue(profileAtom);
+interface HeaderClientProps {
+  userProfile: any; // Data yang dikirim dari Server Component
+}
+
+export const HeaderClient = ({ userProfile }: HeaderClientProps) => {
+  const pathname = usePathname();
+  const router = useRouter();
+  const [scrolled, setScrolled] = useState(false);
 
   const itemHeader = [
-    {
-      label: "Beranda",
-      link: "/",
-      icon: <Home size={16} />,
-    },
-    {
-      label: "Edukasi",
-      link: "/edukasi",
-      icon: <BookX size={16} />,
-    },
-    {
-      label: "Layanan",
-      link: "/layanan",
-      icon: <UserCog size={16} />,
-    },
-    {
-      label: "Tentang",
-      link: "/tentang",
-      icon: <Store size={16} />,
-    },
+    { label: "Beranda", link: "/", icon: <Home size={16} /> },
+    { label: "Edukasi", link: "/edukasi", icon: <BookX size={16} /> },
+    { label: "Layanan", link: "/layanan", icon: <UserCog size={16} /> },
+    { label: "Tentang", link: "/tentang", icon: <Store size={16} /> },
   ];
 
-  const pathname = usePathname();
   const isActiveLink = (href: string) => pathname === href;
 
-  const [scrolled, setScrolled] = React.useState(false);
-
-  React.useEffect(() => {
+  useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 0);
     };
@@ -67,13 +51,12 @@ export const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const { serviceAuth } = useMutationAuth();
-
   const handleLogout = async () => {
-    serviceAuth({
-      type: "logout",
-      body: "",
-    });
+    const res = await logoutUserAction();
+    if (res.success) {
+      // Mengarahkan ke halaman login setelah logout sukses
+      router.push(res.redirect || "/login");
+    }
   };
 
   return (
@@ -83,7 +66,9 @@ export const Header = () => {
       } fixed z-50 w-full max-w-screen-2xl mx-auto flex items-center justify-between px-5 md:px-10 lg:px-20 py-4`}
     >
       <Logo />
-      <div className="fixed z-999999 bottom-0 left-0 w-full grid grid-cols-4 items-center bg-neutral-800 px-5 py-2 gap-4 lg:static lg:bg-transparent lg:flex lg:gap-20 lg:p-0 lg:justify-center">
+
+      {/* Navigasi Menu */}
+      <div className="fixed z-[999999] bottom-0 left-0 w-full grid grid-cols-4 items-center bg-neutral-800 px-5 py-2 gap-4 lg:static lg:bg-transparent lg:flex lg:gap-20 lg:p-0 lg:justify-center">
         {itemHeader.map((item, index) => (
           <Link
             href={item.link}
@@ -97,7 +82,9 @@ export const Header = () => {
           </Link>
         ))}
       </div>
-      {dataProfile ? (
+
+      {/* Profil / Login Button */}
+      {userProfile ? (
         <DropdownMenu>
           <DropdownMenuTrigger className="outline-none">
             <UserCircle className="w-7 h-7 text-white" />
@@ -106,7 +93,7 @@ export const Header = () => {
             <DropdownMenuLabel>
               <Link href={"/profile"} className="flex items-center gap-2">
                 <UserCircle />
-                {dataProfile?.username}
+                {userProfile.username}
               </Link>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
@@ -118,7 +105,7 @@ export const Header = () => {
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle className="text-center">
-                    Apakah Anda Yakin Ingin Keluar ?
+                    Apakah Anda Yakin Ingin Keluar?
                   </DialogTitle>
                   <div className="flex items-center justify-center gap-5 pt-5">
                     <DialogClose asChild>
@@ -145,3 +132,5 @@ export const Header = () => {
     </div>
   );
 };
+
+export default HeaderClient;

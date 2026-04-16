@@ -1,5 +1,5 @@
 import { Footer } from "@/components/_global/footer";
-import { Header } from "@/components/_global/header";
+import { Header } from "@/components/_global/header/header";
 import { Gallery } from "@/components/home/gallery";
 import { HighlightHome } from "@/components/home/highlight";
 import { ListSampah } from "@/components/home/listSampah";
@@ -9,7 +9,7 @@ import ButtonTrigger from "@/components/_global/buttonTrigger";
 import { getGalleries } from "@/lib/action/galleryActions";
 import { TypeGallery } from "@/components/dashboard/gallery/GalleryView";
 import { getProducts } from "@/lib/action/productAction";
-import { TypeProducts } from "@/api/produk/type";
+import { TypeProducts } from "@/types/product";
 
 export default async function Home() {
   const galleries = await getGalleries();

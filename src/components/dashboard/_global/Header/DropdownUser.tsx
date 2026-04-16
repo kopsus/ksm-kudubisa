@@ -1,47 +1,48 @@
+"use client";
+
 import { useState } from "react";
 import Link from "next/link";
-import ClickOutside from "../ClickOutside";
+import { useRouter } from "next/navigation";
 import { ChevronDown, LogOut } from "lucide-react";
-import { useAtomValue } from "jotai";
-import { useMutationAuth } from "@/api/auth/mutation";
-import { profileAtom } from "@/store/profile";
+import { logoutUserAction } from "@/lib/action/authAction";
+import ClickOutside from "../ClickOutside";
 
-const DropdownUser = () => {
-  const dataProfile = useAtomValue(profileAtom);
+const DropdownUser = ({ userProfile }: { userProfile: any }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
-  const { serviceAuth } = useMutationAuth();
+  const router = useRouter();
 
   const handleLogout = async () => {
-    serviceAuth({
-      type: "logout",
-      body: "",
-    });
+    // Panggil aksi logout di server (ini akan menghapus cookie JWT)
+    const result = await logoutUserAction();
 
-    window.location.reload();
+    if (result.success) {
+      // Gunakan router.push agar mulus, tidak perlu reload paksa
+      router.push(result.redirect || "/login");
+    }
   };
 
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
       <Link
-        onClick={() => setDropdownOpen(!dropdownOpen)}
+        onClick={(e) => {
+          e.preventDefault();
+          setDropdownOpen(!dropdownOpen);
+        }}
         className="flex items-center gap-4"
         href="#"
       >
         <span className="hidden text-right lg:block">
+          {/* Ambil data dari props, bukan Jotai lagi */}
           <span className="block text-sm font-medium text-black dark:text-white">
-            {dataProfile?.username}
+            {userProfile?.username || "Guest"}
           </span>
-          <span className="block text-xs">{dataProfile?.role}</span>
+          <span className="block text-xs">{userProfile?.role || "-"}</span>
         </span>
         <ChevronDown />
       </Link>
 
-      {/* <!-- Dropdown Start --> */}
       {dropdownOpen && (
-        <div
-          className={`absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark`}
-        >
+        <div className="absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <button
             onClick={handleLogout}
             className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
@@ -51,7 +52,6 @@ const DropdownUser = () => {
           </button>
         </div>
       )}
-      {/* <!-- Dropdown End --> */}
     </ClickOutside>
   );
 };

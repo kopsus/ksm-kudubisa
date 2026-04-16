@@ -9,7 +9,7 @@ interface AkunProps {
 
 export const Akun = ({ profileData, setDialog }: AkunProps) => {
   return (
-    <Card className="sticky top-20">
+    <Card className="sticky top-0">
       <div className="flex justify-between">
         <p className="titleSection mb-5">Akun Saya</p>
         <Edit

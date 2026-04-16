@@ -1,5 +1,5 @@
 import { Footer } from "@/components/_global/footer";
-import { Header } from "@/components/_global/header";
+import { Header } from "@/components/_global/header/header";
 import ButtonTrigger from "@/components/_global/buttonTrigger";
 import { Metadata } from "next";
 

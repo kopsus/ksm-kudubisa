@@ -26,7 +26,7 @@ const ProfileView = ({ profileData, transactionsData }: ProfileViewProps) => {
     >
       <div className="absolute top-0 left-0 w-full h-full bg-black/70" />
       <div className="Container min-h-screen relative z-10 pt-10">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mt-10">
           <div className="col-span-1 relative">
             <Akun profileData={profileData} setDialog={setDialog} />
           </div>

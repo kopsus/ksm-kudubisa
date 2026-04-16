@@ -1,35 +1,39 @@
 "use client";
+
 import React, { useState } from "react";
 import Sidebar from "../Sidebar";
 import Header from "../Header";
 
 export default function DefaultLayout({
   children,
+  userProfile, // Tangkap dari RootLayout
 }: {
   children: React.ReactNode;
+  userProfile: any;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
     <>
-      {/* <!-- ===== Page Wrapper Start ===== --> */}
-      {/* <!-- ===== Sidebar Start ===== --> */}
-      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-      {/* <!-- ===== Sidebar End ===== --> */}
+      {/* Lempar userProfile ke Sidebar jika menu butuh pembatasan Role */}
+      <Sidebar
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+        userProfile={userProfile}
+      />
 
-      {/* <!-- ===== Content Area Start ===== --> */}
       <div className="relative flex flex-1 flex-col lg:ml-72.5">
-        {/* <!-- ===== Header Start ===== --> */}
-        <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-        {/* <!-- ===== Header End ===== --> */}
+        {/* Lempar userProfile ke Header */}
+        <Header
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+          userProfile={userProfile}
+        />
 
-        {/* <!-- ===== Main Content Start ===== --> */}
         <main>
           <div className="p-4 md:p-6 2xl:p-10">{children}</div>
         </main>
-        {/* <!-- ===== Main Content End ===== --> */}
       </div>
-      {/* <!-- ===== Content Area End ===== --> */}
-      {/* <!-- ===== Page Wrapper End ===== --> */}
     </>
   );
 }
