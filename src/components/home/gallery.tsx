@@ -47,6 +47,7 @@ export const Gallery = ({ dataGallery }: GalleryProps) => {
               fill
               sizes="(max-width: 768px) 50vw, 33vw"
               className="object-cover hover:scale-105 transition-transform duration-300"
+              unoptimized
             />
           </div>
         ))}
