@@ -74,6 +74,7 @@ export const Cart = ({ cartItems, setCartItems, userProfile }: any) => {
                           fill
                           className="object-cover"
                           sizes="100vw"
+                          unoptimized
                         />
                       </div>
                       <p>{item.product_name}</p>

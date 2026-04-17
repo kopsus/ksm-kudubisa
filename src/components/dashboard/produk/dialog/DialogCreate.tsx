@@ -144,6 +144,7 @@ export const DialogCreate = ({ dialog, setDialog }: DialogProductProps) => {
                 height={0}
                 sizes="100vw"
                 className="w-full h-full object-cover"
+                unoptimized
               />
             ) : null}
           </div>

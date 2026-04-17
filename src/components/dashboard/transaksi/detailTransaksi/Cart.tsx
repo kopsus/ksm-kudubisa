@@ -40,6 +40,7 @@ export const Cart = ({ cartItems, handleSubmit, isPending }: ICart) => {
                         fill
                         className="object-cover"
                         sizes="100vw"
+                        unoptimized
                       />
                     </div>
                     <p>{item?.product_name}</p>

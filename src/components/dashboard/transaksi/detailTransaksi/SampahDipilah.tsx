@@ -40,6 +40,7 @@ export const SampahDipilah = ({
                     fill
                     className="object-cover"
                     sizes="100vw"
+                    unoptimized
                   />
                 </div>
                 <div className="flex flex-col gap-2">

@@ -17,7 +17,13 @@ export const getColumns = (
 
       return (
         <div className="relative w-16 h-16 rounded overflow-hidden">
-          <Image src={imagePath} alt="product" fill className="object-cover" />
+          <Image
+            src={imagePath}
+            alt="product"
+            fill
+            className="object-cover"
+            unoptimized
+          />
         </div>
       );
     },

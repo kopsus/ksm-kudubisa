@@ -129,6 +129,7 @@ export const DialogCreate = ({ dialog, setDialog }: DialogProps) => {
               sizes="100vw"
               // Pastikan ada class object-cover agar gambar tidak gepeng
               className="w-full h-full object-cover"
+              unoptimized
             />
           ) : null}
         </div>
