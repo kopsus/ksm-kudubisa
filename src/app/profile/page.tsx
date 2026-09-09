@@ -3,6 +3,8 @@ import { getTransactions } from "@/lib/action/transactionAction";
 import { getProfile } from "@/lib/action/userAction";
 import { redirect } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 export default async function ProfilePage() {
   const [profileRes, transRes] = await Promise.all([
     getProfile(),

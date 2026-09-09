@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import TransaksiView from "@/components/dashboard/transaksi/TransaksiView";
 import { getTransactions } from "@/lib/action/transactionAction";
 import jwt from "jsonwebtoken";
